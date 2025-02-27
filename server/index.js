@@ -51,10 +51,17 @@ app.get('/auth/failure', (req, res) => {
 })
 
 app.get("/protected", isLoggedIn, (req, res) => {
-  res.send("Hello world");
+
+  res.send(`Hello ${req.user.displayName}`);
 });
 
 
+app.route('/logout')
+.get((req, res) => {
+req. logout(function(err) {
+if (err) { return next(err); } res.redirect('/');
+});
+})
 
 app.listen(port, () => {
   console.log(`Spooler listening At http://localhost:${port}`);
