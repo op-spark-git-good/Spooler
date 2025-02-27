@@ -1,5 +1,6 @@
 const { connect, Schema } = require("mongoose");
-const { Fabrics } = require("server/database/models/Fabrics.js");
+const { Fabrics } = require("./models/Fabrics.js");
+const { Users } = require("./models/Users.js");
 
 const db = "Spooler";
 const dbUri = `mongodb://localhost:27017/${db}`;
@@ -14,4 +15,5 @@ connect(dbUri)
 
 module.exports = {
   Fabrics,
+  Users,
 };
