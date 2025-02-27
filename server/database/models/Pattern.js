@@ -4,7 +4,7 @@ const PatternSchema = {
   // Owner ID (Reference to the User model)
   ownerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to the User model
+    ref: 'Users', // Reference to the User model
     required: true
   },
 
