@@ -1,5 +1,5 @@
 const {connect, Schema} = require("mongoose");
-const { Fabrics } = require("./models/Fabrics");
+const { Fabrics } = require("server/database/models/Fabrics.js");
 
 const db = 'Spooler'
 const dbUri = `mongodb://localhost:27017/${db}`
