@@ -1,5 +1,5 @@
 const { connect, Schema } = require("mongoose");
-const { Fabrics } = require("./models/Fabrics.js");
+const { Fabrics } = require("server/database/models/Fabrics.js");
 const { Users } = require("./models/Users.js");
 
 const db = "Spooler";
