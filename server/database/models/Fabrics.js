@@ -13,7 +13,7 @@ const FabricsSchema = {
 
 }
 
-const Fabrics = model('Fabric', new mongoose.Schema(FabricsSchema));
+const Fabrics = model ('Fabric', new mongoose.Schema(FabricsSchema));
 
 module.exports = {
   Fabrics,
