@@ -9,8 +9,6 @@ const FabricsSchema = {
   weave: { type: String },
   brand: { type: String },
   origin: { type: String },
-  threadCount: { type: Number },
-
 }
 
 const Fabrics = model ('Fabric', new mongoose.Schema(FabricsSchema));
