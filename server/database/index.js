@@ -1,6 +1,7 @@
 const { connect, Schema } = require("mongoose");
 const { Fabrics } = require("./models/Fabrics.js");
 const { Users } = require("./models/Users.js");
+const { Projects } = require("./models/Projects.js");
 
 const db = "Spooler";
 const dbUri = `mongodb://localhost:27017/${db}`;
