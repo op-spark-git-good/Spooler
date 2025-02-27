@@ -1,4 +1,4 @@
-const { model } = require('mongoose');
+const { model } = require("mongoose");
 
 const FabricsSchema = {
   name: { type: String, required: true },
@@ -10,11 +10,10 @@ const FabricsSchema = {
   brand: { type: String },
   origin: { type: String },
   threadCount: { type: Number },
+};
 
-}
-
-const Fabrics = model('Fabric', new mongoose.Schema(FabricsSchema));
+const Fabrics = model("Fabric", new mongoose.Schema(FabricsSchema));
 
 module.exports = {
   Fabrics,
-}
+};
