@@ -12,10 +12,9 @@ passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL: "http://localhost:5500/auth/google/callback",
-    passReqToCallback: true,
   },
   function(accessToken, refreshToken, profile, done) {
-     return done(err, profile);
+     return done(null, profile);
     // User.findOrCreate({ googleId: profile.id }, function (err, user) {
     //   return done(err, profile);
     // });
