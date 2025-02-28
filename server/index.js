@@ -2,10 +2,11 @@ const express = require("express");
 const passport = require("passport");
 const path = require("path");
 const session = require("express-session");
+const router = require("./routes/fabrics.js");
 require("./passport.js");
 require("dotenv").config();
 
-const port = 5500;
+const port = 8080;
 
 function isLoggedIn(req, res, next) {
   req.user ? next() : res.sendStatus(401);
@@ -23,12 +24,13 @@ app.use(passport.session());
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "dist")));
+app.use(express.static(path.join(__dirname, "..", "dist")));
+app.use("/fabrics", router);
 
 //Routes
-app.get("/", (req, res) => {
-  res.send('<a href="/auth/google"> Authenticate with Google </a>');
-});
+// app.get("/login", (req, res) => {
+//   res.render('login');
+// });
 
 app.get(
   "/auth/google",

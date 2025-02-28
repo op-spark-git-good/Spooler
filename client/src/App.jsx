@@ -2,13 +2,21 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Fabrics from "./Fabrics.jsx";
 import Home from "./Home.jsx";
+import Login from "./Login.jsx";
+import Layout from "./Layout.jsx";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/fabrics" element={<Fabrics />} />
-    </Routes>
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
+          {/* <Route path="home" element={<Home />} /> */}
+          <Route path="fabrics" element={<Fabrics />} />
+        </Route>
+      </Routes>
+  </div>
   );
 }
 
