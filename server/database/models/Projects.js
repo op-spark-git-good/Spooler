@@ -4,9 +4,28 @@ const ProjectSchema = new mongoose.Schema({
   ownerId: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
   name: { type: String},
   description: { type: String },
-  // fabrics and notions should contain objects describing materials
-  fabrics: { type: Array }, 
-  notions: { type: Array },
+  // a todo list for a project
+  tasks: [{
+      name: { type: String, required: true },
+      description: { type: String },
+      isComplete: { type: Boolean, default: false },
+      priority: { type: Number }
+  },],
+  // patterns, fabrics and notions should contain objects describing materials
+  patterns: [{
+    description: { type: String },
+    stashed: { type: mongoose.Schema.Types.ObjectId, ref: "Patterns" },
+  },],
+  fabrics: [{
+    description: { type: String },
+    quantity : { type: Number, default: 0 },
+    stashed: { type: mongoose.Schema.Types.ObjectId, ref: "Fabrics" },
+  },],
+  notions: [{
+    description: { type: String },
+    quantity : { type: Number, default: 1 },
+    stashed: { type: mongoose.Schema.Types.ObjectId, ref: "Notions" },
+  },],
   createdAt: { type: Date, default: Date.now },
   // Below is for after base functionality is complete
   // thumbnail: { type: String }, // implement after base functionality is done
