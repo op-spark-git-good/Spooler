@@ -13,6 +13,7 @@ const ProjectSchema = new mongoose.Schema({
   },],
   // patterns, fabrics and notions should contain objects describing materials
   patterns: [{
+    name: { type: String, required: true },
     description: { type: String },
     stashed: { type: mongoose.Schema.Types.ObjectId, ref: "Patterns" },
   },],
