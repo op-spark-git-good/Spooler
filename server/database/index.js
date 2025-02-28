@@ -1,4 +1,4 @@
-const { connect, Schema } = require("mongoose");
+const { connect } = require("mongoose");
 const { Fabrics } = require("server/database/models/Fabrics.js");
 const { Users } = require("./models/Users.js");
 const { Projects } = require("./models/Projects.js");
@@ -17,4 +17,5 @@ connect(dbUri)
 module.exports = {
   Fabrics,
   Users,
+  Projects,
 };
