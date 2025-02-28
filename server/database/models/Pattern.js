@@ -1,6 +1,13 @@
 const { model } = require('mongoose');
 
 const PatternSchema = {
+
+   // Name of the pattern
+   name: {
+    type: String,
+    required: true,
+  },
+
   // Owner ID (Reference to the User model)
   ownerId: {
     type: mongoose.Schema.Types.ObjectId,
