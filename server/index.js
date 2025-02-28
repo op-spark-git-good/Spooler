@@ -2,8 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const path = require('path');
 const session = require('express-session');
-const router = require('./routes/fabrics.js');
-const loginRouter = require('./routes/login.js');
+const fabricsRouter = require('./routes/fabrics.js');
 require('./passport.js');
 require('dotenv').config();
 
@@ -27,13 +26,7 @@ app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'dist')));
-app.use('/fabrics', router);
-app.use('/login', loginRouter);
-
-//Routes
-// app.get("/login", (req, res) => {
-//   res.render('login');
-// });
+app.use('/fabrics', fabricsRouter);
 
 app.get(
   '/auth/google',
