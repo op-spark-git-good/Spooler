@@ -4,7 +4,9 @@ const Home = () => {
   return (
     <div>
       <h1>WELCOME TO SPOOLER!!
-        <button>Spool away!</button>
+      <a href="/auth/google">
+        <button >Spool away!</button>
+        </a>
       </h1>
     </div>
   )
