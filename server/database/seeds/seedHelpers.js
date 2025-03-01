@@ -1,17 +1,19 @@
 const { connection } = require('mongoose');
-const { Fabrics,
+const {
+  Fabrics,
   Users,
   Projects,
   Patterns,
   Posts,
   Notions } = require("../../database");
-const fabricsData = require("./fabricSeed.js")
-const notionsData = require("./notionsSeed.js")
-const patternsData = require("./patternSeed.js")
+
+const fabricsData = require("./fabricSeed.js");
+const notionsData = require("./notionsSeed.js");
+const usersData = require("./userSeed.js")
 
 const seedAll = () => {
-  let models = [Fabrics, Notions, Patterns];
-  let arrays = [fabricsData, notionsData, patternsData]
+  let models = [Fabrics, Notions, Users];
+  let arrays = [fabricsData, notionsData, usersData]
   models.forEach((mod, i) => {
   //   const array = model.toLowerCased
   seedDatabase(mod, arrays[i]);
