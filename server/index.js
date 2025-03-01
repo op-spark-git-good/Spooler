@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const session = require('express-session');
 const fabricsRouter = require('./routes/fabrics.js');
+const postsRouter = require("./routes/posts");
 require('./passport.js');
 require('dotenv').config();
 
@@ -43,6 +44,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 app.use('/fabrics', isLoggedIn, fabricsRouter);
+app.use('/fabrics', fabricsRouter);
+app.use("/posts", postsRouter);
 
 app.get(
   '/auth/google',
