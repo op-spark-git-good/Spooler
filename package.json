@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server/index.js",
     "build": "webpack --mode production --mode development --watch",
-    "seed": "server/database/seed_data/fabricSeed.js"
+    "seed": "node server/database/seeds/seedHelpers.js"
   },
   "author": "",
   "license": "MIT",

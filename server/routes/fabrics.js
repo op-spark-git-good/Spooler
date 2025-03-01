@@ -11,11 +11,11 @@ const fabricsRouter = Router();
 
 
 // Create a get request to take in all of the fabric documents from the database
-fabricsRouter.get('/', (req, res) => {
-  Fabrics.find().then((data) => {
-    console.log(data);
-    // res.status(200).send(data);
-  }).catch((err) => errCatch('get fabrics', err));
-});
+// fabricsRouter.get('/', (req, res) => {
+//   Fabrics.find().then((data) => {
+//     console.log(data);
+//     // res.status(200).send(data);
+//   }).catch((err) => errCatch('get fabrics', err));
+// });
 
 module.exports = fabricsRouter;
