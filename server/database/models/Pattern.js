@@ -13,6 +13,7 @@ const PatternSchema = {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users', // Reference to the User model
     required: true
+    
   },
 
   // Description of the pattern

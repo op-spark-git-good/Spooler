@@ -7,10 +7,11 @@ const { Fabrics,
   Notions } = require("../../database");
 const fabricsData = require("./fabricSeed.js")
 const notionsData = require("./notionsSeed.js")
+const patternsData = require("./patternSeed.js")
 
 const seedAll = () => {
-  let models = [Fabrics, Notions];
-  let arrays = [fabricsData, notionsData]
+  let models = [Fabrics, Notions, Patterns];
+  let arrays = [fabricsData, notionsData, patternsData]
   models.forEach((mod, i) => {
   //   const array = model.toLowerCased
   seedDatabase(mod, arrays[i]);
