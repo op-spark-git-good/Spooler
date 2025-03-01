@@ -12,13 +12,12 @@ const notionsData = require("./notionsSeed.js");
 const usersData = require("./userSeed.js")
 
 const seedAll = () => {
-  // let models = [Fabrics, Users, Projects, Patterns, Posts, Notions];
-  // let arrays = [fabricsData]
-  // models.forEach((model) => {
+  let models = [Fabrics, Notions, Users];
+  let arrays = [fabricsData, notionsData, usersData]
+  models.forEach((mod, i) => {
   //   const array = model.toLowerCased
-  seedDatabase(Users, usersData);
-  seedDatabase(Fabrics, fabricsData);
-  
+  seedDatabase(mod, arrays[i]);
+})
 }
 
 
