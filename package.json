@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server/index.js",
-    "build": "webpack --mode production --mode development --watch"
+    "build": "webpack --mode production --mode development --watch",
+    "seed": "node server/database/seeds/seedHelpers.js"
   },
   "author": "",
   "license": "MIT",

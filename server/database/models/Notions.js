@@ -1,4 +1,4 @@
-const { model } = require("mongoose");
+const mongoose = require("mongoose");
 
 const NotionsSchema = {
   upc: { type: String },
@@ -8,7 +8,7 @@ const NotionsSchema = {
   brand: { type: String },
 
 }
-const Notions = model("Notion", new mongoose.Schema(NotionsSchema));
+const Notions = mongoose.model("Notion", new mongoose.Schema(NotionsSchema));
 
 module.exports = {
   Notions,

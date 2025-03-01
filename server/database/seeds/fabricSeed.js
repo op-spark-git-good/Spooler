@@ -56,4 +56,5 @@ const fabricsData = [
   },
 ];
 
+
 module.exports = fabricsData;
