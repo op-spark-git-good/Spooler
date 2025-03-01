@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const { mongoose, model } = require("mongoose");
 
 const FabricsSchema = {
   name: { type: String, required: true },
