@@ -67,6 +67,9 @@ app.get('/auth/failure', (req, res) => {
 });
 
 app.get('/protected', isLoggedIn, (req, res) => {
+  if(!req.user){
+    res.status(401).send('Unauthorized')
+  }
   res.send(`Hello ${req.user.displayName}`);
 });
 
