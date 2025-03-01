@@ -1,4 +1,4 @@
-const { model } = require("mongoose");
+const mongoose = require("mongoose");
 
 const FabricsSchema = {
   name: { type: String, required: true },
@@ -13,7 +13,7 @@ const FabricsSchema = {
   notes: {type: String, required: false },
 };
 
-const Fabrics = model("Fabric", new mongoose.Schema(FabricsSchema));
+const Fabrics = mongoose.model("Fabric", new mongoose.Schema(FabricsSchema));
 
 module.exports = {
   Fabrics,
