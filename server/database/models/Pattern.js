@@ -1,4 +1,4 @@
-const { model } = require('mongoose');
+const mongoose = require('mongoose');
 
 const PatternSchema = {
 
@@ -44,7 +44,7 @@ const PatternSchema = {
   brand: { type: String, required: true }
 };
 
-const Patterns = model('Pattern', new mongoose.Schema(PatternSchema));
+const Patterns = mongoose.model('Pattern', new mongoose.Schema(PatternSchema));
 
 module.exports = {
   Patterns
