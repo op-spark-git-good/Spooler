@@ -5,15 +5,16 @@ const { Fabrics,
   Patterns,
   Posts,
   Notions } = require("../../database");
-  const fabricsData = require("./fabricSeed.js")
+const fabricsData = require("./fabricSeed.js")
+const notionsData = require("./notionsSeed.js")
 
 const seedAll = () => {
   // let models = [Fabrics, Users, Projects, Patterns, Posts, Notions];
   // let arrays = [fabricsData]
   // models.forEach((model) => {
   //   const array = model.toLowerCased
-    seedDatabase(Fabrics, fabricsData)
-  }
+  seedDatabase(Fabrics, fabricsData)
+}
 
 
 
@@ -34,7 +35,7 @@ const seedDatabase = (model, array) => {
 };
 seedAll();
 
-module.exports ={
+module.exports = {
   seedDatabase,
   seedAll,
 }
