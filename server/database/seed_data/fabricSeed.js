@@ -25,7 +25,7 @@ const fabricsData = [
     image: "https://th.bing.com/th?id=OPHS.Fu4ZoUylmSegmg474C474&w=592&h=550&o=5&dpr=1.3&pid=21.1",
     description: "Suitable for designing ladies clothes, dresses, scarves and stoles along with various decorative pieces of fabric work. Viscose chiffon carries unique coloring impact with their hand dyed or dip-dyed texture pattern. Smoothness, attractive design, colorful pattern, and tear resistant are outstanding features.",
     quantity: 4,
-    color: ["fuschia""pink"],
+    color: ["fuschia", "pink"],
     weave: ["viscose, chiffon"],
     brand: "oneOone",
     origin: "Walmart",
@@ -33,7 +33,7 @@ const fabricsData = [
     notes: "V/light-weight, thin and sheer. Great for designing dresses and scarves",
   },
   {
-    name: "Shiny Spandex Fabric Dance Dress Costume Sewing Matrial ",
+    name: "Shiny Spandex Fabric Dance Dress Costume Sewing Material ",
     image: "https://i.ebayimg.com/images/g/vkoAAOSweFhe3xgy/s-l960.webp",
     description: "Stretchy Silver costume material I found on Ebay.",
     quantity: 12,
