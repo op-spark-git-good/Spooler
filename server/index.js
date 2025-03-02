@@ -70,7 +70,7 @@ app.get('/protected', isLoggedIn, (req, res) => {
   if(!req.user){
     res.status(401).send('Unauthorized')
   }
-  res.send(`Hello ${req.user.displayName}`);
+  res.send(`Hello ${req.user.username}`);
 });
 
 app.route('/logout').get((req, res) => {

@@ -6,14 +6,14 @@ const PatternSchema = {
    name: {
     type: String,
     required: true,
+    default: "unknown"
   },
 
   // Owner ID (Reference to the User model)
   ownerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users', // Reference to the User model
-    required: true
-
+    
   },
 
   // Description of the pattern
@@ -23,7 +23,7 @@ const PatternSchema = {
   patternImage: { type: String },
 
   // Materials
-  fabricType: { type: String, enum: ['woven', 'stretched'], required: true },
+  fabricType: { type: String, enum: ['woven', 'stretched', "unknown"], required: true, default: "unknown" },
 
   // Notions (e.g., buttons, zippers, elastic)
   notions: [{ type: String }],
@@ -39,10 +39,10 @@ const PatternSchema = {
   },
 
   // Designer
-  designer: { type: String, required: true },
+  designer: { type: String, required: true, default: "unknown"},
 
   // Brand
-  brand: { type: String, required: true }
+  brand: { type: String, required: true, default: "unknown"}
 };
 
 const Patterns = mongoose.model('Pattern', new mongoose.Schema(PatternSchema));
