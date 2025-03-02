@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios'
-const Notions = () => {
+import NotionsList from "./NotionsList";
+const Notions = (props) => {
   const [notions, setNotions] = useState([])
   const getAllNotionsDB = () => {
 
@@ -9,17 +10,17 @@ const Notions = () => {
         setNotions(responceObj.data)
 
       })
-      .catch(() => console.log())
+      .catch(() => console.log('Failed to get Notions from Database'))
 
   };
   useEffect(() => {
     getAllNotionsDB()
   }, []);
-  console.log(notions)
+
   return (
     <div>
       <h1>Notions Stash</h1>
-
+      <NotionsList notions={notions} />
     </div>
   )
 
