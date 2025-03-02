@@ -6,6 +6,7 @@ const session = require('express-session');
 const fabricsRouter = require('./routes/fabrics.js');
 const postsRouter = require("./routes/posts");
 const patternRouter = require("./routes/pattern.js")
+const notionsRouter = require("./routes/notions.js")
 require('./passport.js');
 require('dotenv').config();
 
@@ -16,7 +17,7 @@ mongoose
   .connect(process.env.MONGODB_URI, {
   })
   .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('Failed to connect to DB'));
+  .catch(err => console.error('Failed to connect to DB', err));
 
 function isLoggedIn(req, res, next) {
   req.user ? next() : res.sendStatus(401);
@@ -44,10 +45,11 @@ app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'dist')));
-// app.use('/fabrics', isLoggedIn, fabricsRouter);
-app.use('api/fabrics', fabricsRouter);
-app.use("api/posts", postsRouter);
-app.use("api/pattern", patternRouter )
+app.use('/fabrics', isLoggedIn, fabricsRouter);
+app.use("/api/posts", postsRouter);
+app.use("/api/pattern", patternRouter)
+app.use('/api/notions', notionsRouter)
+
 app.get(
   '/auth/google',
   passport.authenticate('google', { scope: ['email', 'profile'] })
@@ -67,7 +69,7 @@ app.get('/auth/failure', (req, res) => {
 });
 
 app.get('/protected', isLoggedIn, (req, res) => {
-  if(!req.user){
+  if (!req.user) {
     res.status(401).send('Unauthorized')
   }
   res.send(`Hello ${req.user.username}`);
