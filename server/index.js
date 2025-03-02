@@ -49,7 +49,7 @@ app.use('/fabrics', isLoggedIn, fabricsRouter);
 app.use('/fabrics', fabricsRouter);
 app.use("/posts", postsRouter);
 app.use("/pattern", patternRouter)
-app.use('/notions', notionsRouter)
+app.use('/api/notions', notionsRouter)
 app.get(
   '/auth/google',
   passport.authenticate('google', { scope: ['email', 'profile'] })
