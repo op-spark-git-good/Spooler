@@ -49,7 +49,6 @@ app.use('/fabrics', isLoggedIn, fabricsRouter);
 app.use('/fabrics', fabricsRouter);
 app.use("/posts", postsRouter);
 app.use("/pattern", patternRouter)
-app.use('/api/notions', notionsRouter)
 app.get(
   '/auth/google',
   passport.authenticate('google', { scope: ['email', 'profile'] })
@@ -72,7 +71,7 @@ app.get('/protected', isLoggedIn, (req, res) => {
   if (!req.user) {
     res.status(401).send('Unauthorized')
   }
-  res.send(`Hello ${req.user.displayName}`);
+  res.send(`Hello ${req.user.username}`);
 });
 
 app.route('/logout').get((req, res) => {
