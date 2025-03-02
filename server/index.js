@@ -46,9 +46,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 app.use('/fabrics', isLoggedIn, fabricsRouter);
-app.use('/fabrics', fabricsRouter);
-app.use("/posts", postsRouter);
-app.use("/pattern", patternRouter)
+app.use("/api/posts", postsRouter);
+app.use("/api/pattern", patternRouter)
+app.use('/api/pattern', notionsRouter)
+
 app.get(
   '/auth/google',
   passport.authenticate('google', { scope: ['email', 'profile'] })
