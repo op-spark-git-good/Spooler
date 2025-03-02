@@ -48,7 +48,7 @@ app.use(express.static(path.join(__dirname, '..', 'dist')));
 app.use('/fabrics', isLoggedIn, fabricsRouter);
 app.use("/api/posts", postsRouter);
 app.use("/api/pattern", patternRouter)
-app.use('/api/pattern', notionsRouter)
+app.use('/api/notions', notionsRouter)
 
 app.get(
   '/auth/google',
