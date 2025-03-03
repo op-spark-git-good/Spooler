@@ -50,9 +50,9 @@ app.use("/posts", isLoggedIn);
 app.use("/patterns", isLoggedIn);
 app.use("/notions", isLoggedIn);
 app.use('/api/fabrics', isLoggedIn, fabricsRouter);
-app.use("/api/posts", isLoggedIn, postsRouter);
-app.use("/api/patterns", isLoggedIn,  patternRouter);
-app.use('/api/notions', isLoggedIn, notionsRouter);
+app.use("/api/posts", postsRouter);
+app.use("/api/patterns", patternRouter)
+app.use('/api/notions', notionsRouter)
 
 app.get(
   '/auth/google',
