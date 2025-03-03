@@ -10,6 +10,7 @@ const patterns = [
     difficultyLevel: 'beginner',
     designer: 'Jane Doe',
     brand: 'Sewing Co.',
+    format: 'pdf', // New field
   },
   {
     ownerId: '67c33adbdccdf98684f9c101',
@@ -22,6 +23,7 @@ const patterns = [
     difficultyLevel: 'intermediate',
     designer: 'John Smith',
     brand: 'Stitch It Right',
+    format: 'paper', // New field
   },
   {
     ownerId: '67c33b61493fa7a42c3ed863',
@@ -34,5 +36,6 @@ const patterns = [
     difficultyLevel: 'advanced',
     designer: 'Emily Johnson',
     brand: 'Fashion Forward',
+    format: 'pdf', // New field
   },
 ];

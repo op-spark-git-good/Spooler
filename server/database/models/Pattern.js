@@ -13,7 +13,7 @@ const PatternSchema = {
   ownerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users', // Reference to the User model
-    
+
   },
 
   // Description of the pattern
@@ -42,7 +42,13 @@ const PatternSchema = {
   designer: { type: String, required: true, default: "unknown"},
 
   // Brand
-  brand: { type: String, required: true, default: "unknown"}
+  brand: { type: String, required: true, default: "unknown"},
+
+  //format
+  format: {
+    type: String,
+    enum: ['paper', 'pdf'], // Restrict values to 'paper' or 'pdf'
+  }
 };
 
 const Patterns = mongoose.model('Pattern', new mongoose.Schema(PatternSchema));
