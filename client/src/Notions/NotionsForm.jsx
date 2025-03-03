@@ -1,5 +1,5 @@
 import React from 'react'
-import SearchApi from './SearchApi'
+import SearchApi from '../SearchApi'
 const NotionsForm = (props) => {
   return (
     <div>
