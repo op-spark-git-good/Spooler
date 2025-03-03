@@ -46,7 +46,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 app.use('/api/fabrics', isLoggedIn, fabricsRouter);
-app.use("/fabrics", isLoggedIn);
 app.use("/api/posts", postsRouter);
 app.use("/api/pattern", patternRouter);
 app.use('/api/notions', notionsRouter);

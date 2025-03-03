@@ -10,6 +10,7 @@ const patterns = [
     difficultyLevel: 'beginner',
     designer: 'Jane Doe',
     brand: 'Sewing Co.',
+    format: 'pdf', // New field
   },
   {
     name: 'Pencil Skirt Pattern',
@@ -22,6 +23,7 @@ const patterns = [
     difficultyLevel: 'intermediate',
     designer: 'John Smith',
     brand: 'Stitch It Right',
+    format: 'paper', // New field
   },
   {
     name: 'Wrap Dress Pattern',
@@ -34,5 +36,6 @@ const patterns = [
     difficultyLevel: 'advanced',
     designer: 'Emily Johnson',
     brand: 'Fashion Forward',
+    format: 'pdf', // New field
   },
 ];
