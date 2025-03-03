@@ -45,11 +45,7 @@ app.use(passport.session());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'dist')));
-app.use("/fabrics", isLoggedIn);
-app.use("/posts", isLoggedIn);
-app.use("/patterns", isLoggedIn);
-app.use("/notions", isLoggedIn);
-app.use('/api/fabrics', isLoggedIn, fabricsRouter);
+app.use('/api/fabrics', fabricsRouter);
 app.use("/api/posts", postsRouter);
 app.use("/api/patterns", patternRouter)
 app.use('/api/notions', notionsRouter)
@@ -97,7 +93,7 @@ app.route('/logout').get((req, res) => {
   });
 });
 
-app.get('*', (req, res) => {
+app.get('*', isLoggedIn, (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '..', 'dist') });
 });
 
