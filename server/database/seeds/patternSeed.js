@@ -1,7 +1,7 @@
 const patterns = [
   {
-    ownerId: '65c87eb27a77b2d4d9f022ff',
     name: 'A-line Dress Pattern',
+    ownerId: '65c87eb27a77b2d4d9f022ff',
     description: 'A-line dress pattern for beginners.',
     patternImage: 'uploads/aline-dress.jpg',
     fabricType: 'woven',
@@ -13,8 +13,8 @@ const patterns = [
     format: 'pdf' // New field
   },
   {
-    ownerId: '67c33adbdccdf98684f9c101',
     name: 'Pencil Skirt Pattern',
+    ownerId: '67c33adbdccdf98684f9c101',
     description: 'Classic pencil skirt pattern for intermediate sewers.',
     patternImage: 'uploads/pencil-skirt.jpg',
     fabricType: 'stretched',
@@ -26,8 +26,8 @@ const patterns = [
     format: 'paper' // New field
   },
   {
-    ownerId: '67c33b61493fa7a42c3ed863',
     name: 'Wrap Dress Pattern',
+    ownerId: '67c33b61493fa7a42c3ed863',
     description: 'Elegant wrap dress pattern for advanced sewers.',
     patternImage: 'uploads/wrap-dress.jpg',
     fabricType: 'woven',
