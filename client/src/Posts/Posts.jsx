@@ -39,6 +39,7 @@ const Posts = () => {
           onChange={(event) => setNewPost({ ...newPost, title: event.target.value })}
           style={styles.input}
         />
+        {/* have to integrate auth later */}
         <input
           type="text"
           placeholder="Author"
@@ -64,7 +65,11 @@ const Posts = () => {
 
 // styling
 const styles = {
-  
+    container: { maxWidth: "600px", margin: "auto", padding: "20px" },
+  form: { display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" },
+  input: { padding: "10px", fontSize: "16px", width: "100%", border: "1px solid #ccc", borderRadius: "5px" },
+  textarea: { padding: "10px", fontSize: "16px", height: "100px", width: "100%", border: "1px solid #ccc", borderRadius: "5px" },
+  button: { padding: "10px", background: "#333", color: "white", border: "none", cursor: "pointer", borderRadius: "5px" },
 };
 
 export default Posts;
