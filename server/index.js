@@ -5,8 +5,9 @@ const path = require('path');
 const session = require('express-session');
 const fabricsRouter = require('./routes/fabrics.js');
 const postsRouter = require("./routes/posts");
-const patternRouter = require("./routes/pattern.js")
-const notionsRouter = require("./routes/notions.js")
+const patternRouter = require("./routes/pattern.js");
+const notionsRouter = require("./routes/notions.js");
+const projectsRouter = require("./routes/projects.js")
 require('./passport.js');
 require('dotenv').config();
 
@@ -49,6 +50,7 @@ app.use('/api/fabrics', isLoggedIn, fabricsRouter);
 app.use("/api/posts", postsRouter);
 app.use("/api/patterns", patternRouter)
 app.use('/api/notions', notionsRouter)
+app.use('/api/projects', projectsRouter)
 
 app.get(
   '/auth/google',
