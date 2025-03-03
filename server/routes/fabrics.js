@@ -25,7 +25,13 @@ fabricsRouter.get("/", (req, res) => {
 // set a POSt request handler to send in new fabrics to the database
 fabricsRouter.post("/", (req, res) => {
   const { info } = req.body;
-  Fabrics.create().then().catch((err => {
+  Fabrics.create(info).then((fabric) => {
+    if (fabric) {
+      res.status(201).send("Fabric Added!");
+    } else {
+      res.status(404).send("Something went wrong");
+    }
+  }).catch((err => {
     console.error("Failed to save fabric", err);
     res.sendStatus(500);
   }))
