@@ -1,6 +1,6 @@
 import React from "react";
 import {Route, Routes } from "react-router-dom";
-import Navbar from './NavBar.jsx';
+import Navbar from './NavBar.jsx'; 
 import Fabrics from "./Fabrics.jsx";
 import Home from "./Home.jsx";
 import Layout from "./Layout.jsx";
