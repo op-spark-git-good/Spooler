@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Fabrics from "./Fabrics.jsx";
 import Home from "./Home.jsx";
 import Layout from "./Layout.jsx";
-import Notions from "./NotionsList.jsx";
+import Notions from "./Notions/Notions.jsx";
 
 function App() {
   return (
