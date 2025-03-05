@@ -45,5 +45,18 @@ notionsRouter.get('/search', async (req, res) => {
     res.status(500).send(`search BarcodeSpider API ${err}`);
   }
 })
+notionsRouter.delete('/:id', (req, res) => {
+  const { id } = req.params
+  Notions.findByIdAndDelete(id)
+    .then((deletedDocument) => {
+      console.log(deletedDocument)
+      res.sendStatus(200)
+
+    })
+    .catch((err) => {
+      console.error('Could not delete document:', err)
+      res.sendStatus(500)
+    })
+})
 
 module.exports = notionsRouter;
