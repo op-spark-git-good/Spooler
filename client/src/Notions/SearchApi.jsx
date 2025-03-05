@@ -1,11 +1,14 @@
 import React from 'react'
-import axios from 'axios'
-import { useState } from 'react'
+import axios from 'axios';
+
+import { useState, useEffect } from 'react';
+
 const SearchApi = () => {
   const [keyword, setSearchKeyword] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const handleSearch = async () => {
     if (!keyword) return; // Don't make request if there's no search query
@@ -14,14 +17,13 @@ const SearchApi = () => {
     setError(null);
 
     try {
-      // Send the user input (searchQuery) to the backend
       const response = await axios.get('/api/notions/search', {
         params: {
           query: keyword,
         },
       });
 
-      setResults(response.data.Data);  // Set the results from the API
+      setResults(response.data.Data); // Assuming the data returned has a "Data" key
     } catch (err) {
       console.error('Error fetching data:', err);
       setError('Something went wrong!');
@@ -30,9 +32,35 @@ const SearchApi = () => {
     }
   };
 
+  const handleAttributes = (title, image, color, brand, upc) => {
+    // Add the selected title to the selectedItems state
+    setSelectedItems((prevItems) => [...prevItems, title, image, color, brand, upc]);
+
+    // Here, make sure the POST request to the backend is made properly
+    axios
+      .post('/api/notions/', {
+        item: {
+          title,
+          image,
+          color,
+          brand,
+          upc,
+        },
+      })
+      .then((response) => {
+        console.log('Item added:', response.data);
+        alert('Item added successfully!');
+      })
+      .catch((error) => {
+        console.error('Error adding item:', error);
+        alert('Failed to add item!');
+      });
+  };
+
+
+
   return (
     <div>
-
       <input
         type="text"
         value={keyword}
@@ -43,27 +71,45 @@ const SearchApi = () => {
         {loading ? 'Searching...' : 'Search'}
       </button>
 
+
       {error && <p>{error}</p>}
 
+      {/* Search Results */}
       <div>
-
-
-        {results.map((notion,) => (
-          <div>
-
-            <li key={notion.item_attributes.upc}></li>
-
-            <li>{notion.item_attributes.title}</li>
-            <li>{notion.item_attributes.brand}</li>
-            <li>{notion.item_attributes.color}</li>
-            <img src={`${notion.item_attributes.image}`}></img>
-            <button>Add to Notion Stash</button>
-          </div>
-        ))}
-
-
+        {results.length > 0 ? (
+          <ul>
+            {results.map((notion) => (
+              <li key={notion.item_attributes.upc}>
+                <h3>{notion.item_attributes.title}</h3>
+                <p>Brand: {notion.item_attributes.brand}</p>
+                <p>Color: {notion.item_attributes.color}</p>
+                <img
+                  src={notion.item_attributes.image}
+                  alt={notion.item_attributes.title}
+                  style={{ width: '100px', height: 'auto' }}
+                />
+                <button
+                  onClick={() =>
+                    handleAttributes(
+                      notion.item_attributes.title,
+                      notion.item_attributes.image,
+                      notion.item_attributes.color,
+                      notion.item_attributes.brand,
+                      notion.item_attributes.upc
+                    )
+                  }
+                >
+                  Add to Notion Stash
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No results found.</p>
+        )}
       </div>
     </div>
   );
-}
-export default SearchApi
+};
+
+export default SearchApi;
