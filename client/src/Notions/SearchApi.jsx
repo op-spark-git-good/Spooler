@@ -8,7 +8,7 @@ const SearchApi = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedItems, setSelectedItems] = useState([]);
+  // const [selectedItems, setSelectedItems] = useState([]);
 
   const handleSearch = async () => {
     if (!keyword) return; // Don't make request if there's no search query
