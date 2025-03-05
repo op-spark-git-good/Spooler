@@ -1,5 +1,6 @@
 import React from 'react'
-import SearchApi from '../SearchApi'
+import SearchApi from './SearchApi'
+import axios from 'axios'
 const NotionsForm = (props) => {
   return (
     <div>
