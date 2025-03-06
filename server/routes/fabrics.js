@@ -27,7 +27,7 @@ fabricsRouter.post("/", (req, res) => {
   const { info } = req.body;
   Fabrics.create(info).then((fabric) => {
     if (fabric) {
-      res.status(201).send("Fabric Added!");
+      res.status(201).send(fabric);
     } else {
       res.status(404).send("Something went wrong");
     }

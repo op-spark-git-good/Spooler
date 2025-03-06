@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useForm } from 'react-hook-form';
 import axios from "axios";
 
-const FabricForm = () => {
+const FabricForm = ({getAllFabrics}) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
 // set the onSubmit function to play with the useForm hook so that when the submission is made
 // We make a POST request to the db with the info the form holds, then empty out the form info
-const onSubmit = (info) => {
-  console.log("We've done it!! Look:")
-  console.log(info)
+const postForm = (info) => {
+  axios.post("/api/fabrics", {info})
+  .then((result) => {
+    console.log(result);
+    getAllFabrics;
+  })
+  .catch((err) => console.error(err));
 }
 
 return (
@@ -19,7 +23,7 @@ return (
       })}
        type="text" 
        id="fab-name" 
-       placeholder="Name fabric here"/><br></br>
+       placeholder="Name fabric here"/><br>{errors.name?.message}</br>
       <label htmlFor="image">Image URL:</label>
       <input {...register("image")} 
       type="text" id="fab-image" 
@@ -70,7 +74,7 @@ return (
       id="fab-notes" 
       placeholder="Anything else you'd like to say?"
       /><br></br>
-      <input onClick={handleSubmit(onSubmit)} type="submit" value="submit" />
+      <input onClick={handleSubmit(postForm)} type="submit" value="submit" />
     </div>
   )
 }
