@@ -11,20 +11,18 @@ const Posts = () => {
   const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
 
-  // fetching posts
+  // get post
   useEffect(() => {
-    // GET request
     axios.get("/api/posts")
       .then((res) => setPosts(res.data))
       .catch((err) => console.error("err fetching posts", err));
   }, []);
 
 
-    // handling submit
+  // new post
   const handleSubmit = async () => {
     const newPost = { title, author, content };
     try {
-      // POST request
       const response = await axios.post("/api/posts", newPost);
       setPosts([response.data, ...posts]);
       setTitle("");
@@ -35,7 +33,7 @@ const Posts = () => {
     }
   };
 
-  // handling delete
+  // delete post
   const handleDelete = async (postId) => {
     try {
       await axios.delete(`/api/posts/${postId}`);

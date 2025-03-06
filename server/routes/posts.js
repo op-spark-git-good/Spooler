@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// getting posts
+// get post
 router.get("/", async (req, res) => {
   try {
     const posts = await Posts.find();
@@ -30,7 +30,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// deleting posts
+// delete post
 router.delete("/:postId", async (req, res) => {
   try {
     const deleted = await Posts.findByIdAndDelete(req.params.postId);
@@ -41,5 +41,19 @@ router.delete("/:postId", async (req, res) => {
   }
 });
 
+// update post
+router.put("/:postId", async (req, res) => {
+  try {
+    const updatedPost = await Posts.findByIdAndUpdate(
+      req.params.postId,
+      req.body,
+      { new: true }
+    );
+    res.json(updatedPost);
+  } catch (err) {
+    console.error("err updating post", err);
+    res.sendStatus(500);
+  }
+});
 
 module.exports = router;
