@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react';
 import axios from 'axios';
-
-import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SearchApi = ({ getAllNotionsDB }) => {
   const [keyword, setSearchKeyword] = useState('');
@@ -9,6 +8,7 @@ const SearchApi = ({ getAllNotionsDB }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
+  const navigate = useNavigate(); // Use the `useNavigate` hook for navigation
 
   const handleSearch = async () => {
     if (!keyword) return; // Don't make request if there's no search query
@@ -33,9 +33,19 @@ const SearchApi = ({ getAllNotionsDB }) => {
   };
 
   const handleAttributes = (title, image, color, brand, upc) => {
-    // Add the selected title to the selectedItems state
+    // Add the selected item to the selectedItems state
     setSelectedItems((prevItems) => [...prevItems, title, image, color, brand, upc]);
 
+    // Redirect to the form and pass the selected item data as state
+    navigate('/notion-form', {
+      state: {
+        title,
+        image,
+        color,
+        brand,
+        upc,
+      },
+    });
 
     axios
       .post('/api/notions/', {
@@ -47,16 +57,12 @@ const SearchApi = ({ getAllNotionsDB }) => {
           upc,
         },
       })
-      .then(
-        getAllNotionsDB
-      )
+      .then(() => getAllNotionsDB())
       .catch((error) => {
-        console.error('Error adding item:', error);
-        alert('Failed to add item!');
+        console.error('Error adding Notion:', error);
+        alert('Failed to add Notion!');
       });
   };
-
-
 
   return (
     <div>
@@ -69,7 +75,6 @@ const SearchApi = ({ getAllNotionsDB }) => {
       <button onClick={handleSearch} disabled={loading}>
         {loading ? 'Searching...' : 'Search'}
       </button>
-
 
       {error && <p>{error}</p>}
 
@@ -98,7 +103,7 @@ const SearchApi = ({ getAllNotionsDB }) => {
                     )
                   }
                 >
-                  Add to Notion Stash
+                  Edit information
                 </button>
               </li>
             ))}
