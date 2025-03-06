@@ -3,12 +3,12 @@ import axios from 'axios';
 
 import { useState, useEffect } from 'react';
 
-const SearchApi = () => {
+const SearchApi = ({ getAllNotionsDB }) => {
   const [keyword, setSearchKeyword] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  // const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const handleSearch = async () => {
     if (!keyword) return; // Don't make request if there's no search query
@@ -47,10 +47,9 @@ const SearchApi = () => {
           upc,
         },
       })
-      .then((response) => {
-        console.log('Item added:', response.data);
-        alert('Item added successfully!');
-      })
+      .then(
+        getAllNotionsDB
+      )
       .catch((error) => {
         console.error('Error adding item:', error);
         alert('Failed to add item!');

@@ -34,7 +34,7 @@ const NotionList = () => {
                 color={notion.color}
                 image={notion.image}
                 id={notion._id}
-                getAllNotionsDB={getAllNotionsDB} // Pass down the getAllNotionsDB function
+                getAllNotionsDB={getAllNotionsDB}
               />
             </li>
           ))}
