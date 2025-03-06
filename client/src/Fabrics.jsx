@@ -64,7 +64,7 @@ const turnStyle = (direction) => {
         <div className="fabric-brand">Brand: {currFabric.brand}</div>
         <button className="fabric-changer-back" onClick={() => turnStyle("back")}>PREVIOUS FABRIC</button>
         <button className="fabric-changer-forward" onClick={() => turnStyle("forward")}>NEXT FABRIC</button>
-          <FabricForm />
+          <FabricForm getAllFabrics={getAllFabrics}/>
       </div>
         );
     } else {
