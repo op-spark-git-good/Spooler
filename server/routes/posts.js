@@ -16,8 +16,14 @@ router.post("/", async (req, res) => {
 // getting posts
 router.get("/", async (req, res) => {
   try {
-    const post = await Posts.find()
-    res.json(post);
+    const posts = await Posts.find();
+    const formPosts = posts.map((post) => ({
+      _id: post._id,
+      title: post.title,
+      author: post.author,
+      content: post.content,
+    }));
+    res.json(formPosts);
   } catch (err) {
     console.error("err getting posts", err);
     res.sendStatus(500);
