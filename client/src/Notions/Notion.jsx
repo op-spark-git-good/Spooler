@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 const Notion = ({ brand, color, image, title, id, getAllNotionsDB }) => {
-  console.log(id);
+
 
   const handleDelete = () => {
     axios.delete(`/api/notions/${id}`)
@@ -23,6 +23,7 @@ const Notion = ({ brand, color, image, title, id, getAllNotionsDB }) => {
       <div>{brand}</div>
       <img src={image} alt={title} style={{ width: '100px', height: 'auto' }} />
       <div>{color}</div>
+      <button>Update</button>
       <button onClick={handleDelete}>Delete</button>
     </div>
   );

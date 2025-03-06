@@ -23,7 +23,7 @@ const SearchApi = ({ getAllNotionsDB }) => {
         },
       });
 
-      setResults(response.data.Data); // Assuming the data returned has a "Data" key
+      setResults(response.data.Data);
     } catch (err) {
       console.error('Error fetching data:', err);
       setError('Something went wrong!');
@@ -36,7 +36,7 @@ const SearchApi = ({ getAllNotionsDB }) => {
     // Add the selected title to the selectedItems state
     setSelectedItems((prevItems) => [...prevItems, title, image, color, brand, upc]);
 
-    // Here, make sure the POST request to the backend is made properly
+
     axios
       .post('/api/notions/', {
         item: {

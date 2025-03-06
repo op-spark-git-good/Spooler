@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios'
-import NotionsList from "./NotionsList";
-import NotionsForm from "./NotionsForm";
+
+
 import Notion from './Notion.jsx'
 import SearchApi from "./SearchApi";
 const Notions = (props) => {
