@@ -56,4 +56,26 @@ router.put("/:postId", async (req, res) => {
   }
 });
 
+// like post
+router.put("/:postId/like", async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const post = await Posts.findById(req.params.postId);
+    // already liked
+    const liked = post.likes.includes(userId);
+    if (liked) {
+      // unlike
+      post.likes = post.likes.filter((id) => id.toString() !== userId);
+    } else {
+      // like
+      post.likes.push(userId);
+    }
+    await post.save();
+    res.json(post);
+  } catch (err) {
+    console.error("err liking post", err);
+    res.sendStatus(500);
+  }
+});
+
 module.exports = router;

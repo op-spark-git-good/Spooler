@@ -61,7 +61,7 @@ const Posts = () => {
 
   return (
     <div style={styles.container}>
-      <h2>Posts</h2>
+      <h2>Community</h2>
       <form onSubmit={handleSubmit} style={styles.form}>
         <input
           type="text"
