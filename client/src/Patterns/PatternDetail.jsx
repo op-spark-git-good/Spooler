@@ -1,42 +1,105 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const PatternDetail = () => {
-  const { id } = useParams(); // Get the pattern ID from the URL
-  const [pattern, setPattern] = useState(null);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    patternImage: '',
+    fabricType: 'woven',
+    notions: '',
+    size: '',
+    difficultyLevel: 'beginner',
+    designer: '',
+    brand: '',
+    format: 'pdf',
+  });
 
-  const handleFetchPattern = async () => {
+  useEffect(() => {
+    const fetchPattern = async () => {
+      try {
+        const response = await axios.get(`api/patterns/${id}`);
+        setFormData(response.data);
+      } catch (error) {
+        console.error('Error fetching pattern:', error);
+      }
+    };
+
+    fetchPattern();
+  }, [id]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.get(`/api/patterns/${id}`); // Fetch pattern details
-      setPattern(response.data); // Update state with fetched pattern
+      await axios.put(`/api/patterns/${id}`, formData);
+      navigate('/patterns'); // Redirect to the patterns list after update
     } catch (error) {
-      console.error('Error fetching pattern details:', error);
+      console.error('Error updating pattern:', error);
     }
   };
 
-  // Fetch pattern details when the component mounts or the ID changes
-  React.useEffect(() => {
-    handleFetchPattern();
-  }, [id]);
-
-  if (!pattern) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <div>
-      <h1>{pattern.name}</h1>
-      <img src={pattern.patternImage} alt={pattern.name} />
-      <p>{pattern.description}</p>
-      <p><strong>Fabric Type:</strong> {pattern.fabricType}</p>
-      <p><strong>Notions:</strong> {pattern.notions.join(', ')}</p>
-      <p><strong>Size:</strong> {pattern.size}</p>
-      <p><strong>Difficulty Level:</strong> {pattern.difficultyLevel}</p>
-      <p><strong>Designer:</strong> {pattern.designer}</p>
-      <p><strong>Brand:</strong> {pattern.brand}</p>
-      <p><strong>Format:</strong> {pattern.format}</p>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>Name:</label>
+        <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+      </div>
+      <div>
+        <label>Description:</label>
+        <textarea name="description" value={formData.description} onChange={handleChange} required />
+      </div>
+      <div>
+        <label>Pattern Image URL:</label>
+        <input type="text" name="patternImage" value={formData.patternImage} onChange={handleChange} required />
+      </div>
+      <div>
+        <label>Fabric Type:</label>
+        <select name="fabricType" value={formData.fabricType} onChange={handleChange}>
+          <option value="woven">Woven</option>
+          <option value="stretched">Stretched</option>
+        </select>
+      </div>
+      <div>
+        <label>Notions (comma-separated):</label>
+        <input type="text" name="notions" value={formData.notions} onChange={handleChange} required />
+      </div>
+      <div>
+        <label>Size Range:</label>
+        <input type="text" name="size" value={formData.size} onChange={handleChange} required />
+      </div>
+      <div>
+        <label>Difficulty Level:</label>
+        <select name="difficultyLevel" value={formData.difficultyLevel} onChange={handleChange}>
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </div>
+      <div>
+        <label>Designer:</label>
+        <input type="text" name="designer" value={formData.designer} onChange={handleChange} required />
+      </div>
+      <div>
+        <label>Brand:</label>
+        <input type="text" name="brand" value={formData.brand} onChange={handleChange} required />
+      </div>
+      <div>
+        <label>Format:</label>
+        <select name="format" value={formData.format} onChange={handleChange}>
+          <option value="pdf">PDF</option>
+          <option value="paper">Paper</option>
+        </select>
+      </div>
+      <button type="submit">Update Pattern</button>
+    </form>
   );
 };
 
