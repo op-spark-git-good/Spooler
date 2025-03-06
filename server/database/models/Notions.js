@@ -6,6 +6,9 @@ const NotionsSchema = {
   color: { type: String },
   image: { type: String },
   brand: { type: String },
+  colorNum: { type: Number },
+  quantity: { type: Number },
+  length: { type: Number },
 
 }
 const Notions = mongoose.model("Notion", new mongoose.Schema(NotionsSchema));
