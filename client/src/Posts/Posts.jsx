@@ -3,13 +3,12 @@ import axios from "axios";
 import Post from "./Post.jsx";
 
 const Posts = () => {
-  // fetched posts, updating state
   const [posts, setPosts] = useState([]);
-  // new posts, updating form
-  // const [newPost, setNewPost] = useState({ title: "", content: "", author: "" });
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
+  const [editingPostId, setEditingPostId] = useState(null);
+  const [editedPost, setEditedPost] = useState({ title: "", author: "", content: "" });
 
   // get post
   useEffect(() => {
@@ -43,6 +42,23 @@ const Posts = () => {
     }
   };
 
+   // edit post
+   const handleEdit = (post) => {
+    setEditingPostId(post._id);
+    setEditedPost({ title: post.title, author: post.author, content: post.content });
+  };
+
+  // save edit
+  const handleUpdate = async (postId) => {
+    try {
+      const response = await axios.put(`/api/posts/${postId}`, editedPost);
+      setPosts(posts.map(post => post._id === postId ? response.data : post));
+      setEditingPostId(null);
+    } catch (err) {
+      console.error("err updating post", err);
+    }
+  };
+
   return (
     <div style={styles.container}>
       <h2>Posts</h2>
@@ -52,27 +68,58 @@ const Posts = () => {
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           style={styles.input}
+          placeholder="Title"
         />
         <input
           type="text"
           value={author}
           onChange={(event) => setAuthor(event.target.value)}
           style={styles.input}
+          placeholder="Author"
         />
         <textarea
           value={content}
           onChange={(event) => setContent(event.target.value)}
           style={styles.textarea}
+          placeholder="Spool Away.."
         />
         <button type="submit" style={styles.button}>Post</button>
       </form>
 
       {posts.map((post) => (
         <div key={post._id} style={styles.post}>
-          <h3>{post.title}</h3>
-          <p>{post.author}</p>
-          <p>{post.content}</p>
-          <button onClick={() => handleDelete(post._id)} style={styles.deleteButton}>Delete</button>
+          {editingPostId === post._id ? (
+            // edit
+            <>
+              <input
+                type="text"
+                value={editedPost.title}
+                onChange={(event) => setEditedPost({ ...editedPost, title: event.target.value })}
+                style={styles.input}
+              />
+              <input
+                type="text"
+                value={editedPost.author}
+                onChange={(event) => setEditedPost({ ...editedPost, author: event.target.value })}
+                style={styles.input}
+              />
+              <textarea
+                value={editedPost.content}
+                onChange={(event) => setEditedPost({ ...editedPost, content: event.target.value })}
+                style={styles.textarea}
+              />
+              <button onClick={() => handleUpdate(post._id)} style={styles.saveButton}>Save</button>
+            </>
+          ) : (
+            // view
+            <>
+              <h3>{post.title}</h3>
+              <p><strong>By:</strong> {post.author}</p>
+              <p>{post.content}</p>
+              <button onClick={() => handleEdit(post)} style={styles.editButton}>Edit</button>
+              <button onClick={() => handleDelete(post._id)} style={styles.deleteButton}>Delete</button>
+            </>
+          )}
         </div>
       ))}
     </div>
@@ -87,7 +134,9 @@ const styles = {
   textarea: { padding: "10px", fontSize: "16px", height: "100px", width: "100%", border: "1px solid #ccc", borderRadius: "5px" },
   button: { padding: "10px", background: "#333", color: "white", border: "none", cursor: "pointer", borderRadius: "5px" },
   post: { border: "1px solid #ddd", padding: "15px", borderRadius: "5px", marginBottom: "10px", backgroundColor: "#f9f9f9" },
-  deleteButton: { padding: "8px", background: "grey", color: "white", border: "none", cursor: "pointer", borderRadius: "5px", marginTop: "10px" },
+  deleteButton: { padding: "6px", background: "grey", color: "white", border: "none", cursor: "pointer", borderRadius: "5px", marginTop: "10px" },
+  editButton: { padding: "6px", background: "white", color: "black", border: "1px solid grey", cursor: "pointer", borderRadius: "5px", marginRight: "5px" },
+  saveButton: { padding: "6px", background: "green", color: "white", border: "none", cursor: "pointer", borderRadius: "5px", marginTop: "5px" },
 };
 
 export default Posts;
