@@ -10,6 +10,7 @@ import PatternList from './Patterns/PatternList.jsx'
 import PatternDetail from './Patterns/PatternDetail.jsx';
 import Posts from './Posts/Posts.jsx';
 import PatternForm from './Patterns/PatternForm.jsx';
+import Projects from './Projects.jsx'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path='fabrics' element={<Fabrics />} />
         <Route path='notions' element={<Notions />} />
+        <Route path='projects' element={<Projects />} />
         <Route path='/patterns' element={<PatternList />} />
         <Route path='/create-pattern' element={<PatternForm />} />
         <Route path='/patterns/:id' element={<PatternDetail />} />

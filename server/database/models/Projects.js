@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const ProjectSchema = new mongoose.Schema({
-  ownerId: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: "Users", default: null},
   name: { type: String},
   description: { type: String },
   // a todo list for a project
