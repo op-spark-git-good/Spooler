@@ -26,23 +26,21 @@ notionsRouter.post('/', (req, res) => {
     .catch((err) => {
       // Handle any errors that occur during the find or create process
       console.error('Error:', err);
-      res.status(500).json({ message: 'Failed to add item to Notion Stash.', error: err.message });
+      res.status(500).send({ message: 'Failed to add item to Notion Stash.', error: err.message });
     });
 })
 
-notionsRouter.get('/search', async (req, res) => {
-  const { query } = req.query
+notionsRouter.get('/search', (req, res) => {
+  const { query } = req.query;
 
-  try {
-    const searchApi = await getBarcodeInfobySearch(query)
-
-    res.json(searchApi)
-
-  }
-  catch (err) {
-    res.status(500).send(`search BarcodeSpider API ${err}`);
-  }
-})
+  getBarcodeInfobySearch(query)
+    .then((searchApi) => {
+      res.send(searchApi);
+    })
+    .catch((err) => {
+      res.status(500).send(`Search BarcodeSpider API Error: ${err}`);
+    });
+});
 notionsRouter.delete('/:id', (req, res) => {
   const { id } = req.params
   Notions.findByIdAndDelete(id)
