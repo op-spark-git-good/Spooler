@@ -1,18 +1,8 @@
 import React from "react";
 import axios from 'axios';
 
-class Projects extends(React.Component){
-  constructor(props){
-    super(props)
-    this.state = {
-      projects: []
-    }
+const Projects = () => {
 
-  }
-  // getProjects = async () => {
-  //   const projects = await axios.get('/')
-  // }
-  render () {
     return (
       <div>
         <div className="project-entry">
@@ -89,7 +79,6 @@ class Projects extends(React.Component){
         </div>
       </div>
     )
-  }
 };
 
 
