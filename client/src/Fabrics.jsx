@@ -3,80 +3,72 @@ import axios from 'axios';
 
 // This component will hold the list of fabrics
 
-const Fabrics = (props) => {
-  const [fabrics, setFabrics] = useState([])
-  return (
-    <div>
-      <div className="fabric-block">
-        <img
-          className="fabric-image"
-          src="https://t3.ftcdn.net/jpg/02/75/99/76/360_F_275997695_qzNes2IeCiNtB0ULVZehPDz6hjYz2bWi.jpg"
-        />
-        <div className="fabric-name">Ghost Sheet</div>
-        <p className="fabric-description">
-          This fabric is great to give you a scare!! Nice, simple, comfy cotton
-          makes this a winner all through the summer. Or Halloween night!
-        </p>
-        <div className="fabric-thread-count">Thread Count: 400</div>
-        <div className="fabric-color">Color: white</div>
-        <div className="fabric-quantity">Inventory: 8 yards</div>
-        <div className="fabric-weave">Type: cotton</div>
-        <div className="fabric-origin">From: The Wayward Haberdashery</div>
-        <div className="fabric-brand">Brand: Boo-niversity </div>
-      </div>
-      <div className="fabric-block">
-        <img
-          className="fabric-image"
-          src="https://t3.ftcdn.net/jpg/02/75/99/76/360_F_275997695_qzNes2IeCiNtB0ULVZehPDz6hjYz2bWi.jpg"
-        />
-        <div className="fabric-name">Ghost Sheet</div>
-        <p className="fabric-description">
-          This fabric is great to give you a scare!! Nice, simple, comfy cotton
-          makes this a winner all through the summer. Or Halloween night!
-        </p>
-        <div className="fabric-thread-count">Thread Count: 400</div>
-        <div className="fabric-color">Color: white</div>
-        <div className="fabric-quantity">Inventory: 8 yards</div>
-        <div className="fabric-weave">Type: cotton</div>
-        <div className="fabric-origin">From: The Wayward Haberdashery</div>
-        <div className="fabric-brand">Brand: Boo-niversity </div>
-      </div>
-      <div className="fabric-block">
-        <img
-          className="fabric-image"
-          src="https://t3.ftcdn.net/jpg/02/75/99/76/360_F_275997695_qzNes2IeCiNtB0ULVZehPDz6hjYz2bWi.jpg"
-        />
-        <div className="fabric-name">Ghost Sheet</div>
-        <p className="fabric-description">
-          This fabric is great to give you a scare!! Nice, simple, comfy cotton
-          makes this a winner all through the summer. Or Halloween night!
-        </p>
-        <div className="fabric-thread-count">Thread Count: 400</div>
-        <div className="fabric-color">Color: white</div>
-        <div className="fabric-quantity">Inventory: 8 yards</div>
-        <div className="fabric-weave">Type: cotton</div>
-        <div className="fabric-origin">From: The Wayward Haberdashery</div>
-        <div className="fabric-brand">Brand: Boo-niversity </div>
-      </div>
-      <div className="fabric-block">
-        <img
-          className="fabric-image"
-          src="https://t3.ftcdn.net/jpg/02/75/99/76/360_F_275997695_qzNes2IeCiNtB0ULVZehPDz6hjYz2bWi.jpg"
-        />
-        <div className="fabric-name">Ghost Sheet</div>
-        <p className="fabric-description">
-          This fabric is great to give you a scare!! Nice, simple, comfy cotton
-          makes this a winner all through the summer. Or Halloween night!
-        </p>
-        <div className="fabric-thread-count">Thread Count: 400</div>
-        <div className="fabric-color">Color: white</div>
-        <div className="fabric-quantity">Inventory: 8 yards</div>
-        <div className="fabric-weave">Type: cotton</div>
-        <div className="fabric-origin">From: The Wayward Haberdashery</div>
-        <div className="fabric-brand">Brand: Boo-niversity </div>
-      </div>
-    </div>
-  );
-};
+const Fabrics = () => {
+  const [fabrics, setFabrics] = useState([]);
+  const [fabricsNum, setFabricsNum] = useState(0);
+  const [currFabric, setCurrFabric] = useState(fabrics[0]);
+  // have the below get request run upon mounting(with use effect);
+  // create a request that takes in all fabric documents from the database
+  const getAllFabrics = () => {
 
+    axios.get("/api/fabrics").then(({ data }) => {
+      setFabrics(data);
+      setCurrFabric(data[0]);
+    }).catch((err) => console.error(err));
+  }
+  useEffect(getAllFabrics, []);
+// maybe set the post function in here and pass it down as props so we can reset every time it gets called?
+
+// make a function that changes the currFabric variable to the next or previous number in the fabrics array
+const turnStyle = (direction) => {
+  const max = fabrics.length - 1;
+  switch (direction) {
+    case "forward":
+      if (fabricsNum === max) {
+        setFabricsNum(0);
+        setCurrFabric(fabrics[0]);
+      } else {
+        setFabricsNum(fabricsNum + 1);
+        setCurrFabric(fabrics[fabricsNum + 1]);
+      }
+      break;
+      case "back":
+        if (fabricsNum === 0) {
+          setFabricsNum(max);
+          setCurrFabric(fabrics[max]);
+        } else {
+          setFabricsNum(fabricsNum - 1);
+          setCurrFabric(fabrics[fabricsNum - 1]);
+        }
+        break
+  }
+
+}
+
+  if (fabrics.length) {
+      return (
+        <div key={currFabric._id} className="fabric-block">
+        <img
+          className="fabric-image"
+          src={currFabric.image}
+          style={{width: "300px"}}
+          />
+        <div className="fabric-name">{currFabric.name}</div>
+        <p className="fabric-description">{currFabric.description}
+        </p>
+        <div className="fabric-color">Color: {currFabric.color.join(', ')}</div>
+        <div className="fabric-quantity">Inventory: {currFabric.quantity}</div>
+        <div className="fabric-weave">Type: {currFabric.weave}</div>
+        <div className="fabric-origin">From: {currFabric.origin}</div>
+        <div className="fabric-brand">Brand: {currFabric.brand}</div>
+        <button className="fabric-changer-forward" onClick={() => turnStyle("forward")}>NEXT FABRIC</button>
+        <button className="fabric-changer-back" onClick={() => turnStyle("back")}>PREVIOUS FABRIC</button>
+      </div>
+        );
+    } else {
+      return (
+        <button onClick={getAllFabrics}>GET FABRICS</button>
+      )
+    }
+  }
 export default Fabrics;

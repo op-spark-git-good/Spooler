@@ -94,8 +94,8 @@ app.route('/logout').get((req, res) => {
     });
   });
 });
-
-app.get('*', isLoggedIn, (req, res) => {
+// temporarily removing "isLoggedIn" from the below router, just to make editing easier until we figure out Link security
+app.get('*', /*isLoggedIn, */(req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '..', 'dist') });
 });
 
