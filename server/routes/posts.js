@@ -16,10 +16,11 @@ router.post("/", async (req, res) => {
 // getting posts
 router.get("/", async (req, res) => {
   try {
-    const posts = await Posts.find().populate("ownerId", "name");
+    const posts = await Posts.find();
+    console.log("Successfully fetched posts", posts);
     res.json(posts);
   } catch (err) {
-    console.error(err);
+    console.error("Error getting posts", err);
     res.sendStatus(500);
   }
 });

@@ -10,7 +10,7 @@ const fabricsRouter = Router();
   // res.sendStatus(500);
 // };
 
-// Create a get request to take in all of the fabric documents from the database
+// Create a get request handler to take in all of the fabric documents from the database
 fabricsRouter.get("/", (req, res) => {
   Fabrics.find()
     .then((entries) => {
@@ -21,5 +21,20 @@ fabricsRouter.get("/", (req, res) => {
       res.sendStatus(500);
     });
 });
+
+// set a POSt request handler to send in new fabrics to the database
+// fabricsRouter.post("/", (req, res) => {
+//   const { info } = req.body;
+//   Fabrics.create(info).then((fabric) => {
+//     if (fabric) {
+//       res.status(201).send("Fabric Added!");
+//     } else {
+//       res.status(404).send("Something went wrong");
+//     }
+//   }).catch((err => {
+//     console.error("Failed to save fabric", err);
+//     res.sendStatus(500);
+//   }))
+// })
 
 module.exports = fabricsRouter;
