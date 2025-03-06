@@ -22,7 +22,7 @@ passport.use(
           // create new user
           user = await Users.create({
             googleId: profile.id,
-            username: profile.username,
+            username: profile.displayName,
             email: profile.emails[0].value,
             profilePicture: profile.photos[0].value,
           });
