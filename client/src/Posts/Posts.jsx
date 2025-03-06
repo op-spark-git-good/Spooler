@@ -114,7 +114,7 @@ const Posts = () => {
             // view
             <>
               <h3>{post.title}</h3>
-              <p><strong>By:</strong> {post.author}</p>
+              <p>{post.author}</p>
               <p>{post.content}</p>
               <button onClick={() => handleEdit(post)} style={styles.editButton}>Edit</button>
               <button onClick={() => handleDelete(post._id)} style={styles.deleteButton}>Delete</button>

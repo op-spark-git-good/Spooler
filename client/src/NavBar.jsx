@@ -17,6 +17,9 @@ const Navbar = () => {
         <li style={styles.li}>
           <Link to="/patterns" style={styles.link}>Patterns</Link>
         </li>
+        <li style={styles.li}>
+          <Link to="/posts" style={styles.link}>Community</Link>
+        </li>
       </ul>
     </nav>
   );
