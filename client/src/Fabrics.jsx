@@ -57,7 +57,7 @@ const turnStyle = (direction) => {
         <p className="fabric-description">{currFabric.description}
         </p>
         <div className="fabric-color">Color: {currFabric.color.join(', ')}</div>
-        <div className="fabric-quantity">Inventory: {currFabric.quantity}</div>
+        <div className="fabric-quantity">Inventory: {currFabric.quantity}yds</div>
         <div className="fabric-weave">Type: {currFabric.weave}</div>
         <div className="fabric-origin">From: {currFabric.origin}</div>
         <div className="fabric-brand">Brand: {currFabric.brand}</div>
