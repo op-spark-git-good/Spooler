@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const NotionsSchema = {
+  ownerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Users',
+  },
   upc: { type: String },
   title: { type: String },
   color: { type: String },
