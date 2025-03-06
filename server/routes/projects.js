@@ -5,8 +5,8 @@ const { Projects } = require("../database/models/Projects");
 // get all projects
 router.get("/", async (req, res) => {
   try {
-    const Projects = await Projects.find();
-    res.status(200).send(Projects);
+    const projects = await Projects.find();
+    res.status(200).send(projects);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);

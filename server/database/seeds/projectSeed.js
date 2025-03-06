@@ -5,7 +5,7 @@ const projects = [
   tasks: [
     {
       name:'Cut fabric to pattern',
-      description: null,
+      description: 'Cut fabric to pattern',
       isComplete: false,
       priority: 1
     },

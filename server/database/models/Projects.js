@@ -19,7 +19,7 @@ const ProjectSchema = new mongoose.Schema({
   },],
   fabrics: [{
     description: { type: String },
-    quantity : { type: Number, default: 0 },
+    quantity : { type: Number, default: null },
     stashed: { type: mongoose.Schema.Types.ObjectId, ref: "Fabrics" },
   },],
   notions: [{
