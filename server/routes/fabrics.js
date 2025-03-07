@@ -37,4 +37,36 @@ fabricsRouter.post("/", (req, res) => {
   }))
 })
 
+// PUT request to replace given fabric with new form info
+fabricsRouter.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const { info } = req.body;
+  Fabrics.findByIdAndUpdate(id, info).then((result) => {
+    if (result) {
+      res.sendStatus(200);
+    } else {
+      res.status(404).send("Unable to perform fabric request");
+    }
+  }).catch((err) => {
+    console.error("failed to update fabric", err);
+    res.sendStatus(500);
+  })
+});
+
+// Set request to delete by id
+fabricsRouter.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  Fabrics.findByIdAndDelete(id).then((result) => {
+    if (result) {
+      res.sendStatus(200);
+    } else {
+      res.status(404).send("The fabric remains");
+    }
+  }).catch((err) => {
+    console.error("failed to delete fabric", err);
+    res.sendStatus(500);
+  })
+})
+
+
 module.exports = fabricsRouter;

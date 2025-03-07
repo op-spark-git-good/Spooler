@@ -1,7 +1,8 @@
 import React from "react";
-import {Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Navbar from './NavBar.jsx';
 import Fabrics from "./Fabrics.jsx";
+import FabricForm from "./FabricForm.jsx";
 import Home from "./Home.jsx";
 import Layout from "./Layout.jsx";
 import Notions from "./Notions/Notions.jsx";
@@ -11,6 +12,7 @@ import PatternDetail from './Patterns/PatternDetail.jsx';
 import Posts from './Posts/Posts.jsx';
 import PatternForm from './Patterns/PatternForm.jsx';
 import Projects from './Projects.jsx'
+import NotionsForm from "./Notions/NotionsForm.jsx";
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path='fabrics' element={<Fabrics />} />
         <Route path='notions' element={<Notions />} />
+        <Route path='/notion-form' element={<NotionsForm />} />
         <Route path='projects' element={<Projects />} />
         <Route path='/patterns' element={<PatternList />} />
         <Route path='/create-pattern' element={<PatternForm />} />

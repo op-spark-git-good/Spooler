@@ -21,30 +21,26 @@ notionsRouter.post('/', (req, res) => {
 
     .then((savedItem) => {
       // Send a response back with the created item
-      res.status(201).json({ message: 'Item added successfully!', item: savedItem });
+      res.status(201).send({ message: 'Item added successfully!', item: savedItem });
     })
     .catch((err) => {
       // Handle any errors that occur during the find or create process
       console.error('Error:', err);
-      res.status(500).json({ message: 'Failed to add item to Notion Stash.', error: err.message });
+      res.status(500).send({ message: 'Failed to add item to Notion Stash.', error: err.message });
     });
 })
 
-notionsRouter.get('/search', async (req, res) => {
-  const { query } = req.query
+notionsRouter.get('/search', (req, res) => {
+  const { query } = req.query;
 
-  // console.log(keyword, 'keyword')
-  // if (keyword)
-  try {
-    const searchApi = await getBarcodeInfobySearch(query)
-
-    res.json(searchApi)
-
-  }
-  catch (err) {
-    res.status(500).send(`search BarcodeSpider API ${err}`);
-  }
-})
+  getBarcodeInfobySearch(query)
+    .then((searchApi) => {
+      res.send(searchApi);
+    })
+    .catch((err) => {
+      res.status(500).send(`Search BarcodeSpider API Error: ${err}`);
+    });
+});
 notionsRouter.delete('/:id', (req, res) => {
   const { id } = req.params
   Notions.findByIdAndDelete(id)
@@ -58,5 +54,22 @@ notionsRouter.delete('/:id', (req, res) => {
       res.sendStatus(500)
     })
 })
+notionsRouter.put('/:id', (req, res) => {
+  const { item } = req.body;
+  const { id } = req.params;
+
+  Notions.findOneAndReplace({ _id: id }, item, { new: true })
+    .then((updatedNotion) => {
+      if (!updatedNotion) {
+        return res.status(404).send('Document not found');
+      }
+
+      res.status(200).send('Notion Document updated successfully');
+    })
+    .catch((err) => {
+      console.error('There was a problem updating the Notion document:', err);
+      res.status(500).send('Internal Server Error');
+    });
+});
 
 module.exports = notionsRouter;
