@@ -12,6 +12,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@mui/icons-material": "^6.4.7",
     "@mui/material": "^6.4.6",
     "axios": "^1.8.1",
     "babel-loader": "^9.2.1",
