@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import axios from "axios";
 import FabricForm from "./FabricForm.jsx"
 
@@ -8,6 +8,8 @@ const Fabrics = () => {
   const [fabrics, setFabrics] = useState([]);
   const [fabricsNum, setFabricsNum] = useState(0);
   const [currFabric, setCurrFabric] = useState(fabrics[0]);
+  // const [editMode, setEditMode] = useState(false);
+  // const [fixFabric, setFixFabric] = useState({name: "x"});
   // have the below get request run upon mounting(with use effect);
   // create a request that takes in all fabric documents from the database
   const getAllFabrics = () => {
@@ -44,8 +46,10 @@ const turnStyle = (direction) => {
         break
   }
 
-}
 
+
+
+}
   if (fabrics.length) {
       return (
         <div key={currFabric._id} className="fabric-block">
@@ -63,8 +67,9 @@ const turnStyle = (direction) => {
         <div className="fabric-origin">From: {currFabric.origin}</div>
         <div className="fabric-brand">Brand: {currFabric.brand}</div>
         <button className="fabric-changer-back" onClick={() => turnStyle("back")}>PREVIOUS FABRIC</button>
+       
         <button className="fabric-changer-forward" onClick={() => turnStyle("forward")}>NEXT FABRIC</button>
-          <FabricForm getAllFabrics={getAllFabrics}/>
+          <FabricForm currFabric={currFabric}getAllFabrics={getAllFabrics} />
       </div>
         );
     } else {
