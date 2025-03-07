@@ -2,6 +2,7 @@ import React from "react";
 import {Route, Routes } from "react-router-dom";
 import Navbar from './NavBar.jsx';
 import Fabrics from "./Fabrics.jsx";
+import FabricForm from "./FabricForm.jsx";
 import Home from "./Home.jsx";
 import Layout from "./Layout.jsx";
 import Notions from "./Notions/Notions.jsx";
