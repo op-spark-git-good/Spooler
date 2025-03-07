@@ -37,6 +37,9 @@ const Notions = (props) => {
                 color={notion.color}
                 image={notion.image}
                 id={notion._id}
+                length={notion.length}
+                quantity={notion.quantity}
+                colorNum={notion.colorNum}
                 getAllNotionsDB={getAllNotionsDB}
               />
             </li>
