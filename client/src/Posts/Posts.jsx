@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Post from "./Post.jsx";
+// import FavoriteIcon from "@mui/icons-material/Favorite";
+// import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -11,9 +14,21 @@ const Posts = () => {
   const [editedPost, setEditedPost] = useState({ title: "", author: "", content: "" });
 
   // get post
+  // useEffect(() => {
+  //   axios.get("/api/posts")
+  //     .then((res) => setPosts(res.data))
+  //     .catch((err) => console.error("err fetching posts", err));
+  // }, []);
+
   useEffect(() => {
     axios.get("/api/posts")
-      .then((res) => setPosts(res.data))
+      .then((res) => {
+        const formPosts = res.data.map(post => ({
+          ...post,
+          likes: Array.isArray(post.likes) ? post.likes : [],
+        }));
+        setPosts(formPosts);
+      })
       .catch((err) => console.error("err fetching posts", err));
   }, []);
 
@@ -58,6 +73,19 @@ const Posts = () => {
       console.error("err updating post", err);
     }
   };
+
+  // like post
+const handleLike = async (postId) => {
+  try {
+    // hardcoding userId to test
+    const userId = "67c9ef8ea5a6b68c7d94b30b";
+    const response = await axios.put(`/api/posts/${postId}/like`, { userId });
+
+    setPosts(posts.map(post => post._id === postId ? response.data : post));
+  } catch (err) {
+    console.error("err liking post", err);
+  }
+};
 
   return (
     <div style={styles.container}>
@@ -116,6 +144,9 @@ const Posts = () => {
               <h3>{post.title}</h3>
               <p>{post.author}</p>
               <p>{post.content}</p>
+              <button onClick={() => handleLike(post._id)} style={styles.likeButton}>
+                {post.likes.includes("67c9ef8ea5a6b68c7d94b30b") ? "❤️" : "🤍"} {post.likes.length}
+              </button>
               <button onClick={() => handleEdit(post)} style={styles.editButton}>Edit</button>
               <button onClick={() => handleDelete(post._id)} style={styles.deleteButton}>Delete</button>
             </>
