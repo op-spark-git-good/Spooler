@@ -20,7 +20,7 @@ const Posts = () => {
       .catch(() => setUser(null));
   }, []);
 
-  // get posts
+  // get posts/feed
   useEffect(() => {
     axios.get("/api/posts")
       .then((res) => {
@@ -30,7 +30,7 @@ const Posts = () => {
         }));
         setPosts(formPosts);
       })
-      .catch((err) => console.error("err fetching posts", err));
+      .catch((err) => console.error("err fetching feed", err));
   }, []);
 
 
@@ -87,7 +87,7 @@ const handleLike = async (postId) => {
 
   return (
     <div style={styles.container}>
-      <h2>Posts</h2>
+      <h2>Community Feed</h2>
       <form onSubmit={handleSubmit} style={styles.form}>
         <input
           type="text"
@@ -105,41 +105,52 @@ const handleLike = async (postId) => {
         <button type="submit" style={styles.button}>Post</button>
       </form>
 
-      {posts.map((post) => (
-        <div key={post._id} style={styles.post}>
-          {editingPostId === post._id ? (
-            // edit
+      {posts.map((item) => (
+        <div key={item._id} style={styles.post}>
+          {item.type === "post" ? (
+            // posts
             <>
-              <input
-                type="text"
-                value={editedPost.title}
-                onChange={(event) => setEditedPost({ ...editedPost, title: event.target.value })}
-                style={styles.input}
-              />
-              <input
-                type="text"
-                value={editedPost.author}
-                onChange={(event) => setEditedPost({ ...editedPost, author: event.target.value })}
-                style={styles.input}
-              />
-              <textarea
-                value={editedPost.content}
-                onChange={(event) => setEditedPost({ ...editedPost, content: event.target.value })}
-                style={styles.textarea}
-              />
-              <button onClick={() => handleUpdate(post._id)} style={styles.saveButton}>Save</button>
+              {editingPostId === item._id ? (
+                <>
+                  <input
+                    type="text"
+                    value={editedPost.title}
+                    onChange={(event) => setEditedPost({ ...editedPost, title: event.target.value })}
+                    style={styles.input}
+                  />
+                  <input
+                    type="text"
+                    value={editedPost.author}
+                    onChange={(event) => setEditedPost({ ...editedPost, author: event.target.value })}
+                    style={styles.input}
+                  />
+                  <textarea
+                    value={editedPost.content}
+                    onChange={(event) => setEditedPost({ ...editedPost, content: event.target.value })}
+                    style={styles.textarea}
+                  />
+                  <button onClick={() => handleUpdate(item._id)} style={styles.saveButton}>Save</button>
+                </>
+              ) : (
+                <>
+                  <h3>{item.title}</h3>
+                  <p>{item.author}</p>
+                  <p>{item.content}</p>
+                  <button onClick={() => handleLike(item._id)} style={styles.likeButton}>
+                    {item.likes.includes(user?._id) ? <FavoriteIcon /> : <FavoriteBorderIcon />} {item.likes.length}
+                  </button>
+                  <button onClick={() => handleEdit(item)} style={styles.editButton}>Edit</button>
+                  <button onClick={() => handleDelete(item._id)} style={styles.deleteButton}>Delete</button>
+                </>
+              )}
             </>
           ) : (
-            // view
+            // patterns, notions, fabrics
             <>
-              <h3>{post.title}</h3>
-              <p>{post.author}</p>
-              <p>{post.content}</p>
-              <button onClick={() => handleLike(post._id)} style={styles.likeButton}>
-                {post.likes.includes(user?._id) ? <FavoriteIcon /> : <FavoriteBorderIcon />} {post.likes.length}
-              </button>
-              <button onClick={() => handleEdit(post)} style={styles.editButton}>Edit</button>
-              <button onClick={() => handleDelete(post._id)} style={styles.deleteButton}>Delete</button>
+              <p><strong>{user?.username || "User"}</strong> added a {item.type}</p>
+              <h3>{item.name || "Unnamed"}</h3>
+              <p>Brand: {item.brand || "Unknown"}</p>
+              {item.patternImage && <img src={item.patternImage} alt={item.name} style={styles.image} />}
             </>
           )}
         </div>
