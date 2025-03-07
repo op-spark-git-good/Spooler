@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Post from "./Post.jsx";
+// import Post from "./Post.jsx";
 // import FavoriteIcon from "@mui/icons-material/Favorite";
 // import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 
 const Posts = () => {
+  const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
   const [editingPostId, setEditingPostId] = useState(null);
   const [editedPost, setEditedPost] = useState({ title: "", author: "", content: "" });
 
-  // get post
-  // useEffect(() => {
-  //   axios.get("/api/posts")
-  //     .then((res) => setPosts(res.data))
-  //     .catch((err) => console.error("err fetching posts", err));
-  // }, []);
+  // get user
+  useEffect(() => {
+    axios.get("/auth/current_user")
+      .then((res) => setUser(res.data))
+      .catch(() => setUser(null));
+  }, []);
 
+  // get posts
   useEffect(() => {
     axios.get("/api/posts")
       .then((res) => {
@@ -35,12 +36,11 @@ const Posts = () => {
 
   // new post
   const handleSubmit = async () => {
-    const newPost = { title, author, content };
+    const newPost = { title, author: user.username, content };
     try {
       const response = await axios.post("/api/posts", newPost);
       setPosts([response.data, ...posts]);
       setTitle("");
-      setAuthor("");
       setContent("");
     } catch (err) {
       console.error("err submitting post", err);
@@ -76,11 +76,9 @@ const Posts = () => {
 
   // like post
 const handleLike = async (postId) => {
+  if (!user) return;
   try {
-    // hardcoding userId to test
-    const userId = "67c9ef8ea5a6b68c7d94b30b";
-    const response = await axios.put(`/api/posts/${postId}/like`, { userId });
-
+    const response = await axios.put(`/api/posts/${postId}/like`, { userId : user._id});
     setPosts(posts.map(post => post._id === postId ? response.data : post));
   } catch (err) {
     console.error("err liking post", err);
@@ -89,7 +87,7 @@ const handleLike = async (postId) => {
 
   return (
     <div style={styles.container}>
-      <h2>Community</h2>
+      <h2>Posts</h2>
       <form onSubmit={handleSubmit} style={styles.form}>
         <input
           type="text"
@@ -97,13 +95,6 @@ const handleLike = async (postId) => {
           onChange={(event) => setTitle(event.target.value)}
           style={styles.input}
           placeholder="Title"
-        />
-        <input
-          type="text"
-          value={author}
-          onChange={(event) => setAuthor(event.target.value)}
-          style={styles.input}
-          placeholder="Author"
         />
         <textarea
           value={content}
@@ -145,7 +136,7 @@ const handleLike = async (postId) => {
               <p>{post.author}</p>
               <p>{post.content}</p>
               <button onClick={() => handleLike(post._id)} style={styles.likeButton}>
-                {post.likes.includes("67c9ef8ea5a6b68c7d94b30b") ? "❤️" : "🤍"} {post.likes.length}
+                {post.likes.includes(user?._id) ? "❤️" : "🤍"} {post.likes.length}
               </button>
               <button onClick={() => handleEdit(post)} style={styles.editButton}>Edit</button>
               <button onClick={() => handleDelete(post._id)} style={styles.deleteButton}>Delete</button>
