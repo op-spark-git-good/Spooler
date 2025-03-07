@@ -8,8 +8,9 @@ const fabricsRouter = require('./routes/fabrics.js');
 const postsRouter = require("./routes/posts");
 const patternRouter = require("./routes/pattern.js");
 const notionsRouter = require("./routes/notions.js");
-const projectsRouter = require("./routes/projects.js")
+const projectsRouter = require("./routes/projects.js");
 const uploadRoutes = require("./cloud.js");
+const axios = require("axios");
 require('./passport.js');
 require('dotenv').config();
 
@@ -45,6 +46,12 @@ app.use(cors({
 }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'dist')));
+// app.get("/api", (req, res, next) => {
+//   axios.get("http://localhost:8080/auth/current_user").then((info) => {
+//     console.log(info.data);
+//   }).catch((err) => console.error(err))
+//   .finally((data) => {next(data)});
+// })
 app.use('/api/fabrics', fabricsRouter);
 app.use("/api/posts", postsRouter);
 app.use("/api/patterns", patternRouter)
