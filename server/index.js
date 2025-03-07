@@ -9,6 +9,7 @@ const postsRouter = require("./routes/posts");
 const patternRouter = require("./routes/pattern.js");
 const notionsRouter = require("./routes/notions.js");
 const projectsRouter = require("./routes/projects.js")
+const uploadRoutes = require("./cloud.js");
 require('./passport.js');
 require('dotenv').config();
 
@@ -49,6 +50,7 @@ app.use("/api/posts", postsRouter);
 app.use("/api/patterns", patternRouter)
 app.use('/api/notions', notionsRouter)
 app.use('/api/projects', projectsRouter)
+app.use("/api", uploadRoutes);
 
 //passport initialization
 app.use(passport.initialize());

@@ -21,27 +21,66 @@ const PatternForm = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
+  // Handle input changes for text fields and form validation errors
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: '' });
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
   };
 
+  // Handle image file changes
+  const handleFileChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+
+  // Validate form before submission
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.name) newErrors.name = 'Name is required';
-    if (!formData.description) newErrors.description = 'Description is required';
-    if (!formData.patternImage) newErrors.patternImage = 'Pattern Image URL is required';
-    if (!formData.notions) newErrors.notions = 'Notions are required';
-    if (!formData.size) newErrors.size = 'Size is required';
-    if (!formData.designer) newErrors.designer = 'Designer is required';
-    if (!formData.brand) newErrors.brand = 'Brand is required';
+    const requiredFields = ['name', 'description', 'notions', 'size', 'designer', 'brand'];
+
+    requiredFields.forEach((field) => {
+      if (!formData[field]) newErrors[field] = `${field} is required`;
+    });
+
     return newErrors;
   };
 
+  // Upload image to the server and return image URL
+  const uploadImage = async () => {
+    if (!imageFile) return null;
+
+    const imageData = new FormData();
+    imageData.append('image', imageFile);
+
+    try {
+      setUploading(true);
+      const response = await axios.post('/api/upload', imageData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      if (response.data.imageUrl) {
+        return response.data.imageUrl;
+      } else {
+        setMessage('Image upload failed: No imageUrl in response.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Image upload error:', error.response?.data || error.message);
+      setMessage('Failed to upload image.');
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate the form fields
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -52,16 +91,21 @@ const PatternForm = () => {
     setMessage('');
 
     try {
+      const uploadedImageUrl = await uploadImage();
+
+      if (!uploadedImageUrl && imageFile) {
+        setMessage('Image upload failed.');
+        return;
+      }
+
       const dataToSend = {
         ...formData,
+        patternImage: uploadedImageUrl || formData.patternImage,
         notions: formData.notions.split(',').map((notion) => notion.trim()),
       };
 
       const response = await axios.post('/api/patterns', dataToSend);
-      console.log('Pattern created:', response.data);
       setMessage('Pattern created successfully!');
-
-      // Redirect to /patterns after successful submission
       navigate('/patterns');
     } catch (error) {
       console.error('Error creating pattern:', error);
@@ -84,22 +128,9 @@ const PatternForm = () => {
         {errors.description && <span style={{ color: 'red' }}>{errors.description}</span>}
       </div>
       <div>
-        <label>Pattern Image URL:</label>
-        <input type="text" name="patternImage" value={formData.patternImage} onChange={handleChange} required />
-        {errors.patternImage && <span style={{ color: 'red' }}>{errors.patternImage}</span>}
-        {/* Image Preview */}
-        {formData.patternImage && (
-          <div style={{ marginTop: '10px' }}>
-            <img
-              src={formData.patternImage}
-              alt="Pattern Preview"
-              style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px' }}
-              onError={(e) => {
-                e.target.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8T-ZfxCjkMy8wWU8vDAtWk-NaLbv_2zFCCA&s'; // Fallback image if URL is invalid
-              }}
-            />
-          </div>
-        )}
+        <label>Upload Pattern Image:</label>
+        <input type="file" accept="image/*" onChange={handleFileChange} />
+        {uploading && <p>Uploading...</p>}
       </div>
       <div>
         <label>Fabric Type:</label>
@@ -143,7 +174,7 @@ const PatternForm = () => {
           <option value="paper">Paper</option>
         </select>
       </div>
-      <button type="submit" disabled={isSubmitting}>
+      <button type="submit" disabled={isSubmitting || uploading}>
         {isSubmitting ? 'Submitting...' : 'Create Pattern'}
       </button>
       {message && <div style={{ color: message.includes('success') ? 'green' : 'red' }}>{message}</div>}
