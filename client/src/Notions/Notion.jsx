@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-const Notion = ({ brand, color, image, title, id, getAllNotionsDB }) => {
+const Notion = ({ brand, color, image, title, id, getAllNotionsDB, length, quantity, colorNum }) => {
 
 
   const handleDelete = () => {
@@ -23,6 +23,9 @@ const Notion = ({ brand, color, image, title, id, getAllNotionsDB }) => {
       <div>{brand}</div>
       <img src={image} alt={title} style={{ width: '100px', height: 'auto' }} />
       <div>{color}</div>
+      <div>{quantity}</div>
+      <div>{length}</div>
+      <div>{colorNum}</div>
       <button>Update</button>
       <button onClick={handleDelete}>Delete</button>
     </div>
