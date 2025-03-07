@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 // import Post from "./Post.jsx";
-// import FavoriteIcon from "@mui/icons-material/Favorite";
-// import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 
 const Posts = () => {
@@ -136,7 +136,7 @@ const handleLike = async (postId) => {
               <p>{post.author}</p>
               <p>{post.content}</p>
               <button onClick={() => handleLike(post._id)} style={styles.likeButton}>
-                {post.likes.includes(user?._id) ? "❤️" : "🤍"} {post.likes.length}
+                {post.likes.includes(user?._id) ? <FavoriteIcon /> : <FavoriteBorderIcon />} {post.likes.length}
               </button>
               <button onClick={() => handleEdit(post)} style={styles.editButton}>Edit</button>
               <button onClick={() => handleDelete(post._id)} style={styles.deleteButton}>Delete</button>
