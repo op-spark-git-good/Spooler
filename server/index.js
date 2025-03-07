@@ -9,6 +9,7 @@ const postsRouter = require("./routes/posts");
 const patternRouter = require("./routes/pattern.js");
 const notionsRouter = require("./routes/notions.js");
 const projectsRouter = require("./routes/projects.js")
+const uploadRoutes = require("./cloud.js");
 require('./passport.js');
 require('dotenv').config();
 
@@ -27,25 +28,21 @@ function isLoggedIn(req, res, next) {
 
 const app = express();
 
-//session configuration
 app.use(
-  session(
-    { secret: 'Scrumbags', httpOnly: false, resave: false, saveUninitialized: true },
-    {
-      cookie: {
-        maxAge: 60000
-      }
-    }
-  )
+  session({
+    secret: process.env.SESSION_SECRET || "Scrumbags",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60000, httpOnly: true },
+  })
 );
-
-//passport initialization
-app.use(passport.initialize());
-app.use(passport.session());
 
 //middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:8080",
+  credentials: true,
+}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 app.use('/api/fabrics', fabricsRouter);
@@ -53,6 +50,11 @@ app.use("/api/posts", postsRouter);
 app.use("/api/patterns", patternRouter)
 app.use('/api/notions', notionsRouter)
 app.use('/api/projects', projectsRouter)
+app.use("/api", uploadRoutes);
+
+//passport initialization
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get(
   '/auth/google',
@@ -64,12 +66,16 @@ app.get(
   passport.authenticate('google', { failureRedirect: '/auth/failure' }),
   isLoggedIn,
   (req, res) => {
-    res.redirect('/fabrics');
+    res.redirect('/');
   }
 );
 
 app.get('/auth/failure', (req, res) => {
   res.send('Authentication failure');
+});
+
+app.get("/auth/current_user", (req, res) => {
+  res.send(req.user || null);
 });
 
 app.get('/protected', isLoggedIn, (req, res) => {
@@ -79,23 +85,22 @@ app.get('/protected', isLoggedIn, (req, res) => {
   res.send(`Hello ${req.user.username}`);
 });
 
-app.route('/logout').get((req, res) => {
-  req.logout(function (err) {
+app.get("/logout", async (req, res, next) => {
+  req.logout((err) => {
     if (err) {
       return next(err);
     }
-    req.session.destroy(err => {
+    req.session.destroy((err) => {
       if (err) {
-        console.error('Error destroying session:', err);
+        console.error(err);
         return res.status(500).send('Failed to log out');
       }
-
-      res.clearCookie('connect.sid');
-
-      res.redirect('/');
+      res.clearCookie("connect.sid");
+      res.redirect("/");
     });
   });
 });
+
 // temporarily removing "isLoggedIn" from the below router, just to make editing easier until we figure out Link security
 app.get('*', /*isLoggedIn, */(req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, '..', 'dist') });
