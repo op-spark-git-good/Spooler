@@ -4,24 +4,7 @@ import axios from "axios";
 
 const FabricForm = ({getAllFabrics, currFabric}) => {
   const [editMode, setEditMode] = useState(false);
-  // if (editMode) {
-    // const { register, handleSubmit, formState: { isSubmitSuccessful }, reset } = useForm({
-    //  defaultValues: {
-    //  name: currFabric.name,
-    //   image: currFabric.image,
-    //   description: currFabric.description,
-    //   quantity: currFabric.quantity,
-    //   color: currFabric.color,
-    //   weave: currFabric.weave,
-    //   brand: currFabric.brand,
-    //   origin: currFabric.origin,
-    //   care: currFabric.care,
-    //   notes: currFabric.notes,
-    // }
-    // });
-
-  // } else {
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+    const { register, reset, handleSubmit, setValue, formState: { errors } } = useForm();
 /**
  *useLocation to bring in state from the previous component.
  use setValue to set the values on the form
@@ -52,13 +35,15 @@ object.
 const postForm = (info) => {
   axios.post("/api/fabrics", {info})
   .then((result) => {
-    console.log(result);
+    reset();
     getAllFabrics;
   })
   .catch((err) => console.error(err));
 }
 const editEntry = () => {
   // scroll down to the form(and open the accordian)
+  
+  // setting edit mode to true will vanish the submit(post) button and replace it with the update(put) button
   setEditMode(true);
   setValue("name", `${currFabric.name}`);
   setValue("image", `${currFabric.image}`);
@@ -70,19 +55,31 @@ const editEntry = () => {
   setValue("origin", `${currFabric.origin}`);
   setValue("care", `${currFabric.care}`);
   setValue("notes", `${currFabric.notes}`);
-// hide submit
-// reveal update
 
 }
-const putForm = () => {
+const putForm = (info) => {
   console.log("put form called");
   // take id from currFabric
   // make an axios put request with that id and the form info
-  // .then: reset the form
-  // hide update button
-  // reveal submit button
+  axios.put(`/api/fabrics/${currFabric._id}`, {info})
+  .then(() => {
+    // .then: reset the form
+    reset();
+    // close the form(accordion)
+
+    // turn off edit mode
+    setEditMode(false);
+    // re-render.
+    getAllFabrics;
+  }).catch((err) => console.error(err));
+  
+}
+const abortEditMode = () => {
+  // reset the form
+  reset();
   // turn off edit mode
-  // re-render.
+  setEditMode(false);
+  // close the form(accordion)
 }
 
 return (
@@ -152,7 +149,7 @@ return (
       // <input onClick={handleSubmit(putForm)} type="submit" value="submit"/>
       <div>
       <button onClick={handleSubmit(putForm)} type="submit">UPDATE FABRIC</button>
-      <button>EXIT EDIT MODE</button>
+      <button onClick={abortEditMode}>EXIT EDIT MODE</button>
       </div>
       :
       // <input onClick={handleSubmit(postForm)} type="submit" value="submit" />
