@@ -60,7 +60,7 @@ fabricsRouter.delete("/:id", (req, res) => {
     if (result) {
       res.sendStatus(200);
     } else {
-      res.status(404).send("Unable to perform fabric request");
+      res.status(404).send("The fabric remains");
     }
   }).catch((err) => {
     console.error("failed to delete fabric", err);
