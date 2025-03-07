@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const Notion = ({ brand, color, image, title, id, getAllNotionsDB, length, quantity, colorNum }) => {
 
-
+  // axios delete function
   const handleDelete = () => {
     axios.delete(`/api/notions/${id}`)
       .then(() => {
