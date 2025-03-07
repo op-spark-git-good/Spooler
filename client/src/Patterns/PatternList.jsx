@@ -3,52 +3,126 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const PatternList = () => {
-    // State to store the list of patterns
   const [patterns, setPatterns] = useState([]);
-  const [editingPattern, setEditingPattern] = useState(null); // Track the pattern being edited
+  const [editingPattern, setEditingPattern] = useState(null);
+  const [cloudinaryLoaded, setCloudinaryLoaded] = useState(false);
 
-    // Function to handle the "Edit" button click
-  const handleEditClick = pattern => {
-    setEditingPattern(pattern); // Set the pattern to be edited
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://widget.cloudinary.com/v2.0/global/all.js';
+    script.async = true;
+    script.onload = () => {
+      setCloudinaryLoaded(true);
+    };
+    script.onerror = () => {
+      console.error('Failed to load Cloudinary widget script');
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const openCloudinaryWidget = () => {
+    return new Promise((resolve, reject) => {
+      if (
+        !cloudinaryLoaded ||
+        !window.cloudinary ||
+        !window.cloudinary.openUploadWidget
+      ) {
+        reject(new Error('Cloudinary widget not available'));
+        return;
+      }
+
+      window.cloudinary.openUploadWidget(
+        {
+          cloudName: 'djfvmivqq',
+          uploadPreset: 'ml_default',
+          sources: ['local', 'url'],
+          multiple: false
+        },
+        (error, result) => {
+          if (!error && result && result.event === 'success') {
+            resolve(result.info.secure_url);
+          } else {
+            reject(error || 'Upload failed');
+          }
+        }
+      );
+    });
   };
 
-
-    // Function to handle form submission for updating a pattern
-  const handleUpdateSubmit = async e => {
-    e.preventDefault();// Prevent the default form submission behavior
-
-        // Check if a pattern is selected for editing
-    if (!editingPattern || !editingPattern._id) {
-      console.error('Error: No pattern selected for editing!');
-      return;
-    }
-
+  const handleImageUpload = async event => {
+    const file = event.target.files[0];
+    if (!file) return;
+  
+    const formData = new FormData();
+    formData.append('image', file);
+  
     try {
-            // Send a PUT request to update the pattern on the server
-      const response = await axios.put(
-        `/api/patterns/${editingPattern._id}`,
-        editingPattern
-      );
-      console.log('Update successful:', response.data);
-
-      // Update the patterns list in the state
-      setPatterns(prevPatterns =>
-        prevPatterns.map(pattern =>
-          pattern._id === editingPattern._id ? response.data : pattern
-        )
-      );
-      setEditingPattern(null); // Clear the editing state
+      const response = await axios.post('/api/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+  
+      // Log the entire response object to inspect its structure
+      console.log('Server response:', response);
+  
+      // Use the correct field 'imageUrl' from the server response
+      if (response.data && response.data.imageUrl) {
+        console.log('Image uploaded successfully:', response.data.imageUrl);
+        setEditingPattern(prev => ({
+          ...prev,
+          patternImage: response.data.imageUrl // Update with the correct field
+        }));
+      } else {
+        console.error('Error: Image URL not found in response.');
+      }
     } catch (error) {
-      console.error('Error updating pattern:', error);
+      console.error('Error uploading image:', error);
     }
   };
 
-    // Fetch patterns from the server when the component mounts
+  const handleEditClick = pattern => {
+    // Ensure that notions is always an array, even if it's undefined
+    setEditingPattern({
+      ...pattern,
+      notions: pattern.notions || [] // Initialize notions as an empty array if it's undefined
+    });
+  };
+
+  const handleUpdateSubmit = async e => {
+    e.preventDefault(); // Prevents the default form submission behavior
+
+  if (!editingPattern || !editingPattern._id) {
+    console.error('Error: No pattern selected for editing!');
+    return;
+  }
+
+  try {
+    const response = await axios.put(
+      `/api/patterns/${editingPattern._id}`,
+      editingPattern
+    );
+    console.log('Update successful:', response.data);
+
+    setPatterns(prevPatterns =>
+      prevPatterns.map(pattern =>
+        pattern._id === editingPattern._id ? response.data : pattern
+      )
+    );
+
+    setEditingPattern(null); // Clear the editing state
+  } catch (error) {
+    console.error('Error updating pattern:', error);
+  }
+  };
+
   useEffect(() => {
     const fetchPatterns = async () => {
       try {
         const response = await axios.get('/api/patterns');
-        setPatterns(response.data);// Set the fetched patterns in the state
+        setPatterns(response.data);
       } catch (error) {
         console.error('Error fetching patterns:', error);
       }
@@ -58,7 +132,6 @@ const PatternList = () => {
   }, []);
 
   const handleDelete = id => {
-    console.log('Deleting pattern with ID:', id);
     if (!id) {
       console.error('Error: ID is undefined!');
       return;
@@ -67,8 +140,6 @@ const PatternList = () => {
     axios
       .delete(`/api/patterns/${id}`)
       .then(response => {
-        console.log(response);
-        // Remove the deleted pattern from the state
         setPatterns(prevPatterns =>
           prevPatterns.filter(pattern => pattern._id !== id)
         );
@@ -76,14 +147,12 @@ const PatternList = () => {
       .catch(error => console.error('Error deleting pattern:', error));
   };
 
- 
   return (
     <div>
       <h1>Patterns</h1>
       <Link to='/create-pattern'>Create New Pattern</Link>
 
       {editingPattern ? (
-        // Edit Form
         <form onSubmit={handleUpdateSubmit}>
           <h2>Edit Pattern</h2>
           <label>
@@ -125,7 +194,9 @@ const PatternList = () => {
             Notions:
             <input
               type='text'
-              value={editingPattern.notions.join(', ')}
+              value={
+                editingPattern.notions ? editingPattern.notions.join(', ') : ''
+              }
               onChange={e =>
                 setEditingPattern({
                   ...editingPattern,
@@ -190,13 +261,24 @@ const PatternList = () => {
               }
             />
           </label>
+          <label>
+            Pattern Image:
+            <input type='file' accept='image/*' onChange={handleImageUpload} />
+            {editingPattern?.patternImage && (
+              <img
+                src={editingPattern.patternImage}
+                alt='Pattern Preview'
+                style={{ maxWidth: '100px', height: 'auto' }}
+              />
+            )}
+          </label>
+
           <button type='submit'>Save Changes</button>
           <button type='button' onClick={() => setEditingPattern(null)}>
             Cancel
           </button>
         </form>
       ) : (
-        // Pattern List
         <ul>
           {patterns.map(pattern => (
             <li key={pattern._id}>
