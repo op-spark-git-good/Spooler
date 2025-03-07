@@ -40,9 +40,23 @@ const postForm = (info) => {
   })
   .catch((err) => console.error(err));
 }
+
+// Set an function to delete unwanted entries
+// try to remember to set a dialog warning before proceeding
+const deleteFabric = () => {
+axios.delete(`/api/fabrics/${currFabric._id}`)
+.then(() => {
+  getAllFabrics();
+})
+.catch((err) => {
+  console.error("Could not delete fabric", err)
+});
+};
+
+
 const editEntry = () => {
   // scroll down to the form(and open the accordian)
-  
+
   // setting edit mode to true will vanish the submit(post) button and replace it with the update(put) button
   setEditMode(true);
   setValue("name", `${currFabric.name}`);
@@ -86,6 +100,7 @@ return (
   <div>
 
      <button className="edit-button" onClick={editEntry}>EDIT THIS FABRIC</button>
+     <button className="delete-button" onClick={deleteFabric}>Have it abducted🛸</button>
     <form>
       <label htmlFor="name">Name:</label>
       <input {...register("name", {

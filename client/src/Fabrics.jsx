@@ -8,8 +8,6 @@ const Fabrics = () => {
   const [fabrics, setFabrics] = useState([]);
   const [fabricsNum, setFabricsNum] = useState(0);
   const [currFabric, setCurrFabric] = useState(fabrics[0]);
-  // const [editMode, setEditMode] = useState(false);
-  // const [fixFabric, setFixFabric] = useState({name: "x"});
   // have the below get request run upon mounting(with use effect);
   // create a request that takes in all fabric documents from the database
   const getAllFabrics = () => {
