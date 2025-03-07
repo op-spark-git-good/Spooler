@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 
 import Notion from './Notion.jsx'
 import SearchApi from "./SearchApi";
+
+
 const Notions = (props) => {
   const [notions, setNotions] = useState([]);
+  let navigate = useNavigate()
 
   // Function to fetch all notions from the backend
   const getAllNotionsDB = () => {
@@ -20,13 +24,15 @@ const Notions = (props) => {
 
   useEffect(() => {
     // Fetch all notions when the component mounts
+
     getAllNotionsDB();
   }, []);
 
   return (
     <div>
       <h2>Notion List</h2>
-      <SearchApi getAllNotionsDB={getAllNotionsDB} />
+      <button onClick={() => navigate('/notions-searchApi')}>Crate Notion</button>
+
       {notions.length > 0 ? (
         <ul>
           {notions.map((notion) => (
