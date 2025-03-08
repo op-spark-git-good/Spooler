@@ -1,30 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Button, Container, Typography, Box, TextField } from '@mui/material';
 
 const SearchApi = ({ getAllNotionsDB }) => {
   const [keyword, setSearchKeyword] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [info, setInfo] = useState([]);  // State to store info for the post request
-  const navigate = useNavigate(); // Use the `useNavigate` hook for navigation
+  const navigate = useNavigate();
 
   const handleSearch = async () => {
-    if (!keyword) return; // Don't make request if there's no search query
-
+    if (!keyword) return;
     setLoading(true);
     setError(null);
 
     try {
-      const response = await axios.get('/api/notions/search', {
-        params: {
-          query: keyword,
-        },
-      });
-
-      setResults(response.data.Data);  // Store the search results
+      const response = await axios.get('/api/notions/search', { params: { query: keyword } });
+      setResults(response.data.Data);
     } catch (err) {
       console.error('Error fetching data:', err);
       setError('Something went wrong!');
@@ -33,76 +26,60 @@ const SearchApi = ({ getAllNotionsDB }) => {
     }
   };
 
-  const handleAttributes = async (title, image, color, brand, upc) => {
-    // Add the selected item to the selectedItems state
-    const selectedItem = { title, image, color, brand, upc };
-
-    setSelectedItems((prevItems) => [...prevItems, selectedItem]);  // Update selected items state
-
-    try {
-      console.log('Sending POST request with selected item:', selectedItem); // Log the item you're sending
-      const response = await axios.post('/api/notions/', {
-        item: selectedItem,
-      });
-
-      // Log the response data after the POST request
-      console.log('Response from POST request:', response.data);
-
-      // Wait until the POST request is completed, then update the info state
-      setInfo(response.data)
-
-
-
-      // Once info is updated, navigate to the form page and pass the updated info
-      navigate('/notion-form', {
-        state: {
-          title,
-          image,
-          color,
-          brand,
-          upc,
-          info: response.data,
-        },
-      });
-
-    } catch (error) {
-      console.error('Error adding Notion:', error);
-      alert('Failed to add Notion!');
-    }
+  const handleAttributes = (title, image, color, brand, upc) => {
+    navigate('/notion-form', {
+      state: { title, image, color, brand, upc },
+    });
   };
 
-
-
-
   return (
-    <div>
-      <input
-        type="text"
-        value={keyword}
-        onChange={(e) => setSearchKeyword(e.target.value)}  // Update state with user input
-        placeholder="Enter search term"
-      />
-      <button onClick={handleSearch} disabled={loading}>
-        {loading ? 'Searching...' : 'Search'}
-      </button>
+    <Container maxWidth="md">
+      {/* Centered Search Box */}
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="50vh"
+      >
+        <TextField
+          label="Enter search term"
+          variant="outlined"
+          value={keyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          sx={{ width: '100%', maxWidth: 400, mb: 2 }}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSearch}
+          disabled={loading}
+        >
+          {loading ? 'Searching...' : 'Search'}
+        </Button>
+      </Box>
 
-      {error && <p>{error}</p>}
+      {/* Display Error */}
+      {error && <Typography color="error">{error}</Typography>}
 
       {/* Search Results */}
-      <div>
+      <Box mt={4}>
         {results.length > 0 ? (
-          <ul>
+          <ul style={{ textAlign: 'center' }}>
             {results.map((notion) => (
-              <li key={notion.item_attributes.upc}>
-                <h3>{notion.item_attributes.title}</h3>
-                <p>Brand: {notion.item_attributes.brand}</p>
-                <p>Color: {notion.item_attributes.color}</p>
+              <li key={notion.item_attributes.upc} style={{ marginBottom: '20px' }}>
+                <Typography variant="h6">{notion.item_attributes.title}</Typography>
+                <Typography>Brand: {notion.item_attributes.brand}</Typography>
+                <Typography>Color: {notion.item_attributes.color}</Typography>
                 <img
                   src={notion.item_attributes.image}
                   alt={notion.item_attributes.title}
-                  style={{ width: '100px', height: 'auto' }}
+                  style={{ width: '100px', height: 'auto', marginTop: '10px' }}
                 />
-                <button
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  sx={{ mt: 1 }}
                   onClick={() =>
                     handleAttributes(
                       notion.item_attributes.title,
@@ -113,16 +90,16 @@ const SearchApi = ({ getAllNotionsDB }) => {
                     )
                   }
                 >
-                  Edit information
-                </button>
+                  Edit Information
+                </Button>
               </li>
             ))}
           </ul>
         ) : (
-          <p>No results found.</p>
+          <Typography align="center">No results found.</Typography>
         )}
-      </div>
-    </div>
+      </Box>
+    </Container>
   );
 };
 
