@@ -6,7 +6,7 @@ import FabricForm from "./FabricForm.jsx";
 import Home from "./Home.jsx";
 import Layout from "./Layout.jsx";
 import Notions from "./Notions/Notions.jsx";
-import Patterns from "./Patterns/Patterns.jsx";
+// import Patterns from "./Patterns/Patterns.jsx";
 import PatternList from './Patterns/PatternList.jsx'
 import PatternDetail from './Patterns/PatternDetail.jsx';
 import Posts from './Posts/Posts.jsx';
