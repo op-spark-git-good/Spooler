@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Button, Container, Typography, Box, TextField } from '@mui/material';
-
+import { Button, Container, Grid2, TextField, Typography, Box } from '@mui/material';
 const SearchApi = ({ getAllNotionsDB }) => {
   const [keyword, setSearchKeyword] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [info, setInfo] = useState([]);  // State to store info for the post request
+  const navigate = useNavigate(); // Use the useNavigate hook for navigation
 
   const handleSearch = async () => {
-    if (!keyword) return;
+    if (!keyword) return; // Don't make request if there's no search query
+
     setLoading(true);
     setError(null);
 
     try {
-      const response = await axios.get('/api/notions/search', { params: { query: keyword } });
-      setResults(response.data.Data);
+      const response = await axios.get('/api/notions/search', {
+        params: {
+          query: keyword,
+        },
+      });
+
+      setResults(response.data.Data);  // Store the search results
     } catch (err) {
       console.error('Error fetching data:', err);
       setError('Something went wrong!');
@@ -26,11 +33,46 @@ const SearchApi = ({ getAllNotionsDB }) => {
     }
   };
 
-  const handleAttributes = (title, image, color, brand, upc) => {
-    navigate('/notion-form', {
-      state: { title, image, color, brand, upc },
-    });
+  const handleAttributes = async (title, image, color, brand, upc) => {
+    // Add the selected item to the selectedItems state
+    const selectedItem = { title, image, color, brand, upc };
+
+    setSelectedItems((prevItems) => [...prevItems, selectedItem]);  // Update selected items state
+
+    try {
+      console.log('Sending POST request with selected item:', selectedItem); // Log the item you're sending
+      const response = await axios.post('/api/notions/', {
+        item: selectedItem,
+      });
+
+      // Log the response data after the POST request
+      console.log('Response from POST request:', response.data);
+
+      // Wait until the POST request is completed, then update the info state
+      setInfo(response.data)
+
+
+
+      // Once info is updated, navigate to the form page and pass the updated info
+      navigate('/notion-form', {
+        state: {
+          title,
+          image,
+          color,
+          brand,
+          upc,
+          info: response.data,
+        },
+      });
+
+    } catch (error) {
+      console.error('Error adding Notion:', error);
+      alert('Failed to add Notion!');
+    }
   };
+
+
+
 
   return (
     <Container maxWidth="md">
@@ -99,8 +141,6 @@ const SearchApi = ({ getAllNotionsDB }) => {
           <Typography align="center">No results found.</Typography>
         )}
       </Box>
-    </Container>
-  );
+    </Container>)
 };
-
 export default SearchApi;

@@ -50,15 +50,15 @@ const NotionsForm = () => {
   }, [state, setValue]);
 
   // Handle form submission
-  const onSubmit = (data) => {
+  const onSubmit = (notion) => {
     // Construct the data to match the structure expected by the API
     const updatedData = {
       item: {
-        title: data.title || formData.title,
-        image: data.image,
-        color: data.color || formData.color,
-        brand: data.brand || formData.brand,
-        upc: data.upc || formData.upc,
+        title: notion.title || formData.title,
+        image: notion.image,
+        color: notion.color || formData.color,
+        brand: notion.brand || formData.brand,
+        upc: notion.upc || formData.upc,
         colorNum: formData.colorNumber,
         quantity: formData.quantity,
         length: formData.length,
@@ -68,7 +68,7 @@ const NotionsForm = () => {
     console.log('Data to be sent to the Database:', updatedData); // Log to check the structure of the payload
 
     // Sending a PUT request to update the notion data.
-    axios.put(`/api/notions/${formData.id}`, updatedData)
+    axios.put(`/api/notions/${state.info.item._id}`, updatedData)
       .then(response => {
 
         if (response.status === 200) {
@@ -95,7 +95,7 @@ const NotionsForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
-
+        {console.log(state)}
         <label>Title</label>
         <input
           type='text'
