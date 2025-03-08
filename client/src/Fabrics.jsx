@@ -1,8 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Menu, MenuItem, Button } from "@mui/material";
+import { Menu,
+  MenuItem,
+  Button,
+  Grid2,
+  Typography,
+  Box,
+  Paper
+    } from "@mui/material";
 import FabricForm from "./FabricForm.jsx";
-import FabricDropDown from "./FabricDropDown.jsx";
 
 // This component will hold the list of fabrics
 
@@ -11,6 +17,8 @@ const Fabrics = () => {
   const [fabricsNum, setFabricsNum] = useState(0);
   const [currFabric, setCurrFabric] = useState(fabrics[0]);
   const [anchorEl, setAnchorEl] = useState(null);
+  // singleMode will render only one entry at a time
+  const [singleMode, setSingleMode] = useState(false);
   // have the below get request run upon mounting(with use effect);
   // create a request that takes in all fabric documents from the database
   const getAllFabrics = () => {
@@ -26,17 +34,14 @@ const Fabrics = () => {
   // This is the function for the drop-down menu. I'll have it render on click and show each fabric and an exit button
 
   const createDropDown = (event) => {
-    // return the drop-down in names, bc that's the only required field
-    // return (
-    //   <select className="drop-down-fab-holder">
-    //     {/* <option onClick={}>CLOSE MENU</option> */}
-    //     {fabrics.map((fabric) => {
-    //       return <FabricDropDown key={fabric._id} fab={fabric} />;
-    //     })}
-    //   </select>
-    // );
     setAnchorEl(event.currentTarget)
   };
+  const singleOut = (index) => {
+    setSingleMode(true);
+    setFabricsNum(index);
+    setCurrFabric(fabrics[index]);
+  };
+
   const closeMenu = () => {
     setAnchorEl(null);
   }
@@ -74,10 +79,10 @@ const Fabrics = () => {
           style={{ width: "300px" }}
         />
         <Button variant="contained"
-        aria-haspopup="false"
+        aria-haspopup="true"
         onClick={createDropDown}
         >
-          Test Menu
+          Short List
         </Button>
           <Menu id="test-menu"
           anchorEl={anchorEl}
@@ -85,14 +90,11 @@ const Fabrics = () => {
           open={Boolean(anchorEl)}
           onClose={closeMenu}
           >
-            {fabrics.map((fabric) => (
-              <MenuItem key={fabric._id} onClick={closeMenu}>{fabric.name}</MenuItem>
+            {fabrics.map((fabric, i) => (
+              <MenuItem key={fabric._id} onClick={() => singleOut(i)}>{fabric.name}</MenuItem>
             ))}
           </Menu>
 
-        {/* <div className="drop-down-basket">
-          <button type="button" onClick={createDropDown}>Drop Down</button>
-        </div> */}
         <div className="fabric-name">{currFabric.name}</div>
         <p className="fabric-description">{currFabric.description}</p>
         <div className="fabric-color">Color: {currFabric.color.join(", ")}</div>
@@ -105,7 +107,7 @@ const Fabrics = () => {
         <button
           className="fabric-changer-back"
           onClick={() => turnStyle("back")}
-        >
+        >{/**DO SINGLEOUT WHEN YOU COME BACK OR AFTER RE-DEPLOYMENT */}
           PREVIOUS FABRIC
         </button>
 
