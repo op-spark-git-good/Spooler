@@ -16,23 +16,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// get post
-// router.get("/", async (req, res) => {
-//   try {
-//     const posts = await Posts.find();
-//     const formPosts = posts.map((post) => ({
-//       _id: post._id,
-//       title: post.title,
-//       author: post.author,
-//       content: post.content,
-//     }));
-//     res.json(formPosts);
-//   } catch (err) {
-//     console.error("err getting posts", err);
-//     res.sendStatus(500);
-//   }
-// });
-
+// get posts/feed
 router.get("/", async (req, res) => {
   try {
     const [posts, patterns, fabrics, notions] = await Promise.all([
@@ -44,7 +28,10 @@ router.get("/", async (req, res) => {
 
     const feed = [
       ...posts.map((post) => ({ ...post.toObject(), type: "post" })),
-      ...patterns.map((pattern) => ({ ...pattern.toObject(), type: "pattern" })),
+      ...patterns.map((pattern) => ({
+        ...pattern.toObject(),
+        type: "pattern",
+      })),
       ...fabrics.map((fabric) => ({ ...fabric.toObject(), type: "fabric" })),
       ...notions.map((notion) => ({ ...notion.toObject(), type: "notion" })),
     ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
