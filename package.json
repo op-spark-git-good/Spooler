@@ -12,8 +12,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.7",
-    "@mui/material": "^6.4.6",
+    "@mui/material": "^6.4.7",
     "axios": "^1.8.1",
     "babel-loader": "^9.2.1",
     "cloudinary": "^1.25.0",
