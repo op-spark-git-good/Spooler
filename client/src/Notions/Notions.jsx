@@ -1,62 +1,75 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios'
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
-
-import Notion from './Notion.jsx'
-import SearchApi from "./SearchApi";
-
+import Notion from './Notion.jsx';
+import { Button, Container, Grid2, Typography, Paper, Box, } from '@mui/material';
 
 const Notions = (props) => {
   const [notions, setNotions] = useState([]);
-  let navigate = useNavigate()
+  const [loading, setLoading] = useState(true); // To manage loading state
+  let navigate = useNavigate();
 
   // Function to fetch all notions from the backend
   const getAllNotionsDB = () => {
     axios.get('/api/notions')
       .then((response) => {
         setNotions(response.data); // Update the state with the fetched notions
+        setLoading(false); // Set loading to false when the data is fetched
       })
       .catch((err) => {
         console.error('Error fetching notions:', err);
+        setLoading(false); // Stop loading even if there was an error
       });
   };
 
   useEffect(() => {
     // Fetch all notions when the component mounts
-
     getAllNotionsDB();
   }, []);
 
   return (
-    <div>
-      <h2>Notion List</h2>
-      <button onClick={() => navigate('/notions-searchApi')}>Crate Notion</button>
+    <Container maxWidth="lg" sx={{ marginTop: 4 }}>
+      <Typography variant="h4" gutterBottom>Notion List</Typography>
 
-      {notions.length > 0 ? (
-        <ul>
+      <Box mb={2}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate('/notions-searchApi')}
+        >
+          Create Notion
+        </Button>
+      </Box>
+
+      {loading ? (
+        <Box display="flex" justifyContent="center" mt={4}>
+
+        </Box>
+      ) : notions.length > 0 ? (
+        <Grid2 container spacing={3}>
           {notions.map((notion) => (
-            <li key={notion._id}>
-              <Notion
-                title={notion.title}
-                brand={notion.brand}
-                color={notion.color}
-                image={notion.image}
-                id={notion._id}
-                length={notion.length}
-                quantity={notion.quantity}
-                colorNum={notion.colorNum}
-                getAllNotionsDB={getAllNotionsDB}
-              />
-            </li>
+            <Grid2 key={notion._id}>
+              <Paper elevation={16} sx={{ padding: 2 }}>
+                <Notion
+                  title={notion.title}
+                  brand={notion.brand}
+                  color={notion.color}
+                  image={notion.image}
+                  id={notion._id}
+                  length={notion.length}
+                  quantity={notion.quantity}
+                  colorNum={notion.colorNum}
+                  getAllNotionsDB={getAllNotionsDB}
+                />
+              </Paper>
+            </Grid2>
           ))}
-        </ul>
+        </Grid2>
       ) : (
-        <p>No notions found.</p>
+        <Typography>No notions found.</Typography>
       )}
-
-    </div>
-
+    </Container>
   );
 };
-export default Notions
+
+export default Notions;
