@@ -137,9 +137,21 @@ const Posts = () => {
             onChange={(event) => setContent(event.target.value)}
             sx={{ marginBottom: 2 }}
           />
-          <Button type="submit" variant="contained" fullWidth>
-            Post
-          </Button>
+          <Button
+  type="submit"
+  variant="contained"
+  fullWidth
+  sx={{
+    backgroundColor: 'rgb(31, 101, 66)',
+    color: 'rgb(229, 229, 234)',
+    '&:hover': {
+      backgroundColor: 'rgb(160, 132, 72)',
+      color: '#fff',
+    },
+  }}
+>
+  Post
+</Button>
         </form>
       </Card>
 
