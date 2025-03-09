@@ -112,10 +112,7 @@ const Posts = () => {
 
   return (
     <Box sx={{ maxWidth: 600, margin: "auto", padding: 2 }}>
-      <Typography variant="h5" fontWeight="bold" gutterBottom>
-        Community Feed
-      </Typography>
-
+      <Typography variant="h5" align='center' color='rgb(0, 0, 0)' gutterBottom>Community Feed</Typography>
       {/* post */}
       <Card sx={{ padding: 2, marginBottom: 2 }}>
         <form onSubmit={handleSubmit}>
