@@ -226,16 +226,23 @@ const Posts = () => {
                   Brand: {item.brand || "Unknown"}
                 </Typography>
                 {item.image && (
-                  <img
-                    src={item.image.startsWith("http") ? item.image : `http://localhost:8080/${item.image}`}
-                    alt={item.name || "Unnamed"}
-                    style={{
-                      width: "100%",
-                      marginTop: "10px",
-                      borderRadius: "8px",
-                    }}
-                    onError={(e) => (e.target.src = "https://via.placeholder.com/150")}
-                  />
+                  <Box display="flex" alignItems="center">
+                    <img
+                      src={
+                        item.image.startsWith("http")
+                          ? item.image
+                          : `http://localhost:8080/${item.image}`
+                      }
+                      alt={item.name || "Unnamed"}
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                        marginLeft: "10px",
+                      }}
+                    />
+                  </Box>
                 )}
               </>
             )}
