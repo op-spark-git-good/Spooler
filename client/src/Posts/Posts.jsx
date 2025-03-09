@@ -147,7 +147,7 @@ const Posts = () => {
       {posts.map((item) => (
         <Card key={item._id} sx={{ marginBottom: 2 }}>
           <CardContent>
-            {/* User Info Section */}
+            {/* user */}
             <Box display="flex" alignItems="center" mb={1}>
               <Avatar sx={{ marginRight: 2 }}>
                 {item.author ? item.author[0].toUpperCase() : "U"}
@@ -225,15 +225,16 @@ const Posts = () => {
                 <Typography variant="body2">
                   Brand: {item.brand || "Unknown"}
                 </Typography>
-                {item.patternImage && (
+                {item.image && (
                   <img
-                    src={item.patternImage}
-                    alt={item.name}
+                    src={item.image.startsWith("http") ? item.image : `http://localhost:8080/${item.image}`}
+                    alt={item.name || "Unnamed"}
                     style={{
                       width: "100%",
                       marginTop: "10px",
                       borderRadius: "8px",
                     }}
+                    onError={(e) => (e.target.src = "https://via.placeholder.com/150")}
                   />
                 )}
               </>
