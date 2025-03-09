@@ -77,7 +77,17 @@ const SearchApi = ({ getAllNotionsDB }) => {
           variant="outlined"
           value={keyword}
           onChange={(e) => setSearchKeyword(e.target.value)}
-          sx={{ width: '100%', maxWidth: 400, mb: 2 }}
+          sx={{
+            width: '100%',
+            maxWidth: 400,
+            mb: 2,
+            '& label.Mui-focused': { color: "rgb(31,101,66)" }, // Label color when focused
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': { borderColor: "rgb(31,101,66)" }, // Default outline color
+              '&:hover fieldset': { borderColor: "rgb(25,80,53)" }, // Darker green on hover
+              '&.Mui-focused fieldset': { borderColor: "rgb(31,101,66)" }, // Outline color when focused
+            },
+          }}
         />
         <Button
           variant="contained"

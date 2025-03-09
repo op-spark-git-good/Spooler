@@ -30,7 +30,7 @@ const Notions = (props) => {
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: 4 }}>
-      <Typography variant="h4" align='center' color='rgb(31, 101, 66)' gutterBottom>Notion Stash</Typography>
+      <Typography variant="h2" align='center' color='rgb(31, 101, 66)' gutterBottom>Thread Stash</Typography>
 
       <Box mb={2}>
         <Button
