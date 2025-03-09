@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from 'react-hook-form';
 import axios from "axios";
-import { Typography, Modal, Paper, Card,  } from "@mui/material";
+import { Typography,
+  Modal,
+  Paper,
+  Card,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from "@mui/material";
 
 const FabricForm = ({getAllFabrics, currFabric}) => {
   const [editMode, setEditMode] = useState(false);
+  
     const { register, reset, handleSubmit, setValue, formState: { errors } } = useForm();
 
 // set the onSubmit function to play with the useForm hook so that when the submission is made
@@ -64,7 +76,7 @@ const abortEditMode = () => {
 
 return (
   <div>
-
+  
      <button className="edit-button" onClick={editEntry}>EDIT THIS FABRIC</button>
     <form>
       <label htmlFor="name">Name:</label>

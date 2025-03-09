@@ -9,6 +9,13 @@ import {
   Typography,
   Box,
   Paper,
+  Modal,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import FabricForm from "./FabricForm.jsx";
 
@@ -21,6 +28,7 @@ const Fabrics = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   // singleMode will render only one entry at a time
   const [singleMode, toggleSingleMode] = useState(false);
+  const [open, setOpen] = useState(false);
   // have the below get request run upon mounting(with use effect);
   // create a request that takes in all fabric documents from the database
   const getAllFabrics = () => {
@@ -52,6 +60,15 @@ const Fabrics = () => {
   const handleFabricViewClick = () => {
     toggleSingleMode(!singleMode);
   }
+
+  // these are the functions for the modal that should pop up upon entering edit mode
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  }
+
 // this is a test to see if I can render anything to change on button press through my current method function
 // if it succeeds, I'll set the typical modal information into the rendered info
 // then, when that works, I'll move the forms(a prettier version) to that modal and have it be slave to
@@ -61,6 +78,7 @@ const Fabrics = () => {
 const deleteFabric = () => {
   axios.delete(`/api/fabrics/${currFabric._id}`)
   .then(() => {
+    toggleSingleMode(!singleMode)
     getAllFabrics();
   })
   .catch((err) => {
@@ -98,8 +116,8 @@ const deleteFabric = () => {
         component={Link}
         to="/fabric-form"
         variant="contained"
-        >Prolly to form</Button>
-        <Button variant="contained" onClick={() => testFunc()}>This is the test</Button>
+        >CREATE A FABRIC
+        </Button>
         {singleMode ? (
           <div>
             <img
@@ -155,7 +173,19 @@ const deleteFabric = () => {
               >
               NEXT FABRIC
             </button>
-            <FabricForm currFabric={currFabric} getAllFabrics={getAllFabrics} />
+            <Button variant="contained" onClick={handleClickOpen}>Edit dis shyt!</Button>
+             <Dialog
+             open={open}
+             onClose={handleClose}
+             >
+            <FabricForm
+            currFabric={currFabric}
+            getAllFabrics={getAllFabrics}
+            handleClose={handleClose}
+            editMode={true}
+            />
+             </Dialog>
+
           </div>
         ) : (
           <div>
