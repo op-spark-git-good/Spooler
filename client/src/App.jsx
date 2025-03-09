@@ -13,6 +13,7 @@ import Posts from './Posts/Posts.jsx';
 import PatternForm from './Patterns/PatternForm.jsx';
 import NotionsForm from './Notions/NotionsForm.jsx'
 import Projects from './Projects/Projects.jsx'
+import SearchApi from "./Notions/SearchApi.jsx";
 
 function App() {
   return (
