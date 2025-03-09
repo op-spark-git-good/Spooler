@@ -11,7 +11,28 @@ import {
   InputLabel,
   Button,
   Typography,
+  createTheme,
+  ThemeProvider,
 } from '@mui/material';
+
+// Define your custom theme with the provided colors
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: 'rgb(31, 101, 66)', // Green color
+    },
+    secondary: {
+      main: 'rgb(87, 27, 126)', // Purple color
+    },
+    background: {
+      default: 'rgb(31, 101, 66)', // Green color for the outside background
+    },
+    text: {
+      primary: 'rgb(0, 0, 0)', // Black color
+      secondary: 'rgb(106, 79, 12)', // Brown color
+    },
+  },
+});
 
 const PatternDetail = () => {
   const { id } = useParams();
@@ -58,135 +79,167 @@ const PatternDetail = () => {
   };
 
   return (
-    <Container maxWidth="md">
-      <Typography variant="h4" gutterBottom>
-        Edit Pattern
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              multiline
-              rows={4}
-              required
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Pattern Image URL"
-              name="patternImage"
-              value={formData.patternImage}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Fabric Type</InputLabel>
-              <Select
-                name="fabricType"
-                value={formData.fabricType}
+    <ThemeProvider theme={theme}>
+      <Container
+        maxWidth="md"
+        style={{ backgroundColor: theme.palette.background.default, minHeight: '100vh', padding: '20px' }}
+      >
+        <Typography variant="h4" gutterBottom style={{ color: '#ffffff' }}>
+          Edit Pattern
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Name"
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
-                label="Fabric Type"
-              >
-                <MenuItem value="woven">Woven</MenuItem>
-                <MenuItem value="stretched">Stretched</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Notions (comma-separated)"
-              name="notions"
-              value={formData.notions}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Size Range"
-              name="size"
-              value={formData.size}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Difficulty Level</InputLabel>
-              <Select
-                name="difficultyLevel"
-                value={formData.difficultyLevel}
+                required
+                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{ style: { color: '#ffffff' } }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Description"
+                name="description"
+                value={formData.description}
                 onChange={handleChange}
-                label="Difficulty Level"
-              >
-                <MenuItem value="beginner">Beginner</MenuItem>
-                <MenuItem value="intermediate">Intermediate</MenuItem>
-                <MenuItem value="advanced">Advanced</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Designer"
-              name="designer"
-              value={formData.designer}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Brand"
-              name="brand"
-              value={formData.brand}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Format</InputLabel>
-              <Select
-                name="format"
-                value={formData.format}
+                multiline
+                rows={4}
+                required
+                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{ style: { color: '#ffffff' } }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Pattern Image URL"
+                name="patternImage"
+                value={formData.patternImage}
                 onChange={handleChange}
-                label="Format"
+                required
+                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{ style: { color: '#ffffff' } }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel style={{ color: '#ffffff' }}>Fabric Type</InputLabel>
+                <Select
+                  name="fabricType"
+                  value={formData.fabricType}
+                  onChange={handleChange}
+                  label="Fabric Type"
+                  style={{ color: '#ffffff' }}
+                >
+                  <MenuItem value="woven">Woven</MenuItem>
+                  <MenuItem value="stretched">Stretched</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Notions (comma-separated)"
+                name="notions"
+                value={formData.notions}
+                onChange={handleChange}
+                required
+                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{ style: { color: '#ffffff' } }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Size Range"
+                name="size"
+                value={formData.size}
+                onChange={handleChange}
+                required
+                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{ style: { color: '#ffffff' } }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel style={{ color: '#ffffff' }}>Difficulty Level</InputLabel>
+                <Select
+                  name="difficultyLevel"
+                  value={formData.difficultyLevel}
+                  onChange={handleChange}
+                  label="Difficulty Level"
+                  style={{ color: '#ffffff' }}
+                >
+                  <MenuItem value="beginner">Beginner</MenuItem>
+                  <MenuItem value="intermediate">Intermediate</MenuItem>
+                  <MenuItem value="advanced">Advanced</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Designer"
+                name="designer"
+                value={formData.designer}
+                onChange={handleChange}
+                required
+                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{ style: { color: '#ffffff' } }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Brand"
+                name="brand"
+                value={formData.brand}
+                onChange={handleChange}
+                required
+                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{ style: { color: '#ffffff' } }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel style={{ color: '#ffffff' }}>Format</InputLabel>
+                <Select
+                  name="format"
+                  value={formData.format}
+                  onChange={handleChange}
+                  label="Format"
+                  style={{ color: '#ffffff' }}
+                >
+                  <MenuItem value="pdf">PDF</MenuItem>
+                  <MenuItem value="paper">Paper</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{
+                  backgroundColor: 'rgb(182, 152, 82)', // Gold color
+                  color: '#000000', // Black text for contrast
+                  '&:hover': {
+                    backgroundColor: 'rgb(160, 132, 72)', // Darker gold on hover
+                  },
+                }}
               >
-                <MenuItem value="pdf">PDF</MenuItem>
-                <MenuItem value="paper">Paper</MenuItem>
-              </Select>
-            </FormControl>
+                Update Pattern
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary">
-              Update Pattern
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
-    </Container>
+        </form>
+      </Container>
+    </ThemeProvider>
   );
 };
 
