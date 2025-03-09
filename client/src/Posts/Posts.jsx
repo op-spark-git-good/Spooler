@@ -138,20 +138,20 @@ const Posts = () => {
             sx={{ marginBottom: 2 }}
           />
           <Button
-  type="submit"
-  variant="contained"
-  fullWidth
-  sx={{
-    backgroundColor: 'rgb(31, 101, 66)',
-    color: 'rgb(229, 229, 234)',
-    '&:hover': {
-      backgroundColor: 'rgb(160, 132, 72)',
-      color: '#fff',
-    },
-  }}
->
-  Post
-</Button>
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{
+              backgroundColor: "rgb(31, 101, 66)",
+              color: "rgb(229, 229, 234)",
+              "&:hover": {
+                backgroundColor: "rgb(160, 132, 72)",
+                color: "#fff",
+              },
+            }}
+          >
+            Post
+          </Button>
         </form>
       </Card>
 
@@ -219,6 +219,13 @@ const Posts = () => {
                       onClick={() => handleUpdate(item._id)}
                       variant="contained"
                       size="small"
+                      sx={{
+                        backgroundColor: "rgb(229, 229, 234)",
+                        color: "rgb(87,27,126)",
+                        "&:hover": {
+                          backgroundColor: "rgb(200, 200, 220)",
+                        },
+                      }}
                     >
                       Save
                     </Button>
@@ -233,12 +240,14 @@ const Posts = () => {
             ) : (
               // patterns, notions, fabrics
               <>
-                <Typography variant="h6"><strong>{item.name || item.title}</strong></Typography>
+                <Typography variant="h6">
+                  <strong>{item.name || item.title}</strong>
+                </Typography>
                 <Typography variant="body2">
                   <strong>Brand:</strong> {item.brand || "Unknown"}
                 </Typography>
                 <Typography variant="body2">
-                <strong>Description:</strong> {item.description || "Unknown"}
+                  <strong>Description:</strong> {item.description || "Unknown"}
                 </Typography>
                 {item.image && (
                   <Box display="flex" alignItems="center">
