@@ -30,12 +30,20 @@ const Notions = (props) => {
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: 4 }}>
-      <Typography variant="h4" gutterBottom>Notion List</Typography>
+      <Typography variant="h4" align='center' color='rgb(31, 101, 66)' gutterBottom>Notion Stash</Typography>
 
       <Box mb={2}>
         <Button
-          variant="contained"
-          color="primary"
+          sx={{
+            backgroundColor: 'rgb(31, 101, 66)',
+            color: 'rgb(229, 229, 234)',
+            marginBottom: '20px',
+            '&:hover': {
+              backgroundColor: 'rgb(160, 132, 72)', // Darker gold on hover
+              color: '#fff'
+            },
+          }}
+
           onClick={() => navigate('/notions-searchApi')}
         >
           Create Notion

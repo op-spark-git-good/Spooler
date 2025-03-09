@@ -40,18 +40,24 @@ const Notion = ({ brand, color, image, title, id, getAllNotionsDB, length, quant
         <img src={image} alt={title} style={{ width: '80px', height: 'auto' }} />
       </Box>
 
-      <Typography variant="h6" fontWeight="bold">{title}</Typography>
-      <Typography variant="body2" color="text.secondary">Brand: {brand}</Typography>
-      <Typography variant="body2">Color: {color}</Typography>
-      <Typography variant="body2">Quantity of Spools: {quantity}</Typography>
-      <Typography variant="body2">Length of Thread: {length}</Typography>
-      <Typography variant="body2">Color Number: {colorNum}</Typography>
+      <Typography variant="h6" align='center' fontWeight="bold">{title}</Typography>
+      <Typography variant="body2" color="text.secondary"><strong>Brand:</strong> {brand}</Typography>
+      <Typography variant="body2"><strong>Color:</strong> {color}</Typography>
+      <Typography variant="body2"><strong>Quantity of Spools:</strong> {quantity}</Typography>
+      <Typography variant="body2"><strong>Length of Thread:</strong> {length}</Typography>
+      <Typography variant="body2"><strong>Color Number:</strong> {colorNum}</Typography>
 
       <Box mt={2} display="flex" justifyContent="center" gap={1}>
-        <Button variant="contained" color="primary" size="small" onClick={handleUpdate}>
+        <Button sx={{
+          backgroundColor: 'rgb(31, 101, 66)',
+          color: 'rgb(229, 229, 234)',
+        }} size="small" onClick={handleUpdate}>
           Update
         </Button>
-        <Button variant="outlined" onClick={handleClickOpen}>
+        <Button sx={{
+          backgroundColor: 'rgb(229, 229, 234)',
+          color: 'rgb(87,27,126)',
+        }} onClick={handleClickOpen}>
           Delete
         </Button>
       </Box>
