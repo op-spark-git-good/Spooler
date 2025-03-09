@@ -11,8 +11,8 @@ import PatternList from './Patterns/PatternList.jsx'
 import PatternDetail from './Patterns/PatternDetail.jsx';
 import Posts from './Posts/Posts.jsx';
 import PatternForm from './Patterns/PatternForm.jsx';
-import Projects from './Projects.jsx'
-import NotionsForm from "./Notions/NotionsForm.jsx";
+import NotionsForm from './Notions/NotionsForm.jsx'
+import Projects from './Projects/Projects.jsx'
 
 function App() {
   return (
