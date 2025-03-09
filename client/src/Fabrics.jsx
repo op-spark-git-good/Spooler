@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import {
   Menu,
@@ -51,9 +52,21 @@ const Fabrics = () => {
   const handleFabricViewClick = () => {
     toggleSingleMode(!singleMode);
   }
-
-  const testFunc = () => {}
-    
+// this is a test to see if I can render anything to change on button press through my current method function
+// if it succeeds, I'll set the typical modal information into the rendered info
+// then, when that works, I'll move the forms(a prettier version) to that modal and have it be slave to
+// the edit function.
+  // Set an function to delete unwanted entries
+// try to remember to set a dialog warning before proceeding
+const deleteFabric = () => {
+  axios.delete(`/api/fabrics/${currFabric._id}`)
+  .then(() => {
+    getAllFabrics();
+  })
+  .catch((err) => {
+    console.error("Could not delete fabric", err)
+  });
+  };
   // make a function that changes the currFabric variable to the next or previous number in the fabrics array
   const turnStyle = (direction) => {
     const max = fabrics.length - 1;
@@ -81,6 +94,12 @@ const Fabrics = () => {
   if (fabrics.length) {
     return (
       <div key={currFabric._id} className="fabric-block">
+        <Button
+        component={Link}
+        to="/fabric-form"
+        variant="contained"
+        >Prolly to form</Button>
+        <Button variant="contained" onClick={() => testFunc()}>This is the test</Button>
         {singleMode ? (
           <div>
             <img
@@ -88,6 +107,8 @@ const Fabrics = () => {
               src={currFabric.image}
               style={{ width: "500px" }}
               />
+                   <Button className="delete-button" onClick={deleteFabric}>Have it abducted🛸</Button>
+
             <Button
               variant="contained"
               aria-haspopup="true"

@@ -1,34 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from 'react-hook-form';
 import axios from "axios";
+import { Typography, Modal, Paper, Card,  } from "@mui/material";
 
 const FabricForm = ({getAllFabrics, currFabric}) => {
   const [editMode, setEditMode] = useState(false);
     const { register, reset, handleSubmit, setValue, formState: { errors } } = useForm();
-/**
- *useLocation to bring in state from the previous component.
- use setValue to set the values on the form
-
-Possibly better idea: move the edit button to this component.
-use setValue on click to give the forms their respective values
-hide the submit button
-reveal the update button.
-
-when the update button is clicked:
-get the _id of the currFabric object.
-set a put request to replace it with the contents of this form.
-Clean out the form values
-hide the update button
-reveal the submit button
-opt. rerender the fabrics array and start from that object.
-currFabric = fabrics[fabrics.indexOf(this fabric)].
-object.
-
- */
-  // }
-
-
-
 
 // set the onSubmit function to play with the useForm hook so that when the submission is made
 // We make a POST request to the db with the info the form holds, then empty out the form info
@@ -41,21 +18,10 @@ const postForm = (info) => {
   .catch((err) => console.error(err));
 }
 
-// Set an function to delete unwanted entries
-// try to remember to set a dialog warning before proceeding
-const deleteFabric = () => {
-axios.delete(`/api/fabrics/${currFabric._id}`)
-.then(() => {
-  getAllFabrics();
-})
-.catch((err) => {
-  console.error("Could not delete fabric", err)
-});
-};
 
 
 const editEntry = () => {
-  // scroll down to the form(and open the accordian)
+  // scroll down to the form(and open the accordion)
 
   // setting edit mode to true will vanish the submit(post) button and replace it with the update(put) button
   setEditMode(true);
@@ -100,7 +66,6 @@ return (
   <div>
 
      <button className="edit-button" onClick={editEntry}>EDIT THIS FABRIC</button>
-     <button className="delete-button" onClick={deleteFabric}>Have it abducted🛸</button>
     <form>
       <label htmlFor="name">Name:</label>
       <input {...register("name", {
@@ -118,6 +83,13 @@ return (
       type="textarea"
       id="fab-description"
       placeholder="describe the fabric"
+      sx={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: 100,
+        height: 100,
+      }}
       /><br></br>
       <label htmlFor="quantity">Quantity:</label>
       <input {...register("quantity")}
