@@ -175,8 +175,8 @@ const PatternList = () => {
           to="/create-pattern"
           variant="contained"
           sx={{
-            backgroundColor: 'rgb(31, 101, 66)', // Gold color
-            color: 'rgb(229, 229, 234)', // Black text for contrast
+            backgroundColor: 'rgb(31, 101, 66)',
+            color: 'rgb(229, 229, 234)',
             marginBottom: '20px',
             '&:hover': {
               backgroundColor: 'rgb(160, 132, 72)', // Darker gold on hover
