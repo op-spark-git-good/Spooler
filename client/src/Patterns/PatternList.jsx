@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import {
   Container,
-  Grid,
+  Grid2,
   Typography,
   Button,
   Card,
@@ -16,6 +16,8 @@ import {
   DialogActions,
   createTheme,
   ThemeProvider,
+
+
 } from '@mui/material';
 
 const theme = createTheme({
@@ -27,7 +29,7 @@ const theme = createTheme({
       main: 'rgb(87, 27, 126)', // Purple color
     },
     background: {
-      default: 'rgb(31, 101, 66)', // Green color for the outside background
+      default: '#fff)', // Green color for the outside background
     },
     text: {
       primary: 'rgb(0, 0, 0)', // Black color
@@ -72,8 +74,8 @@ const PatternList = () => {
 
       window.cloudinary.openUploadWidget(
         {
-          cloudName: 'djfvmivqq', 
-          uploadPreset: 'ml_default', 
+          cloudName: 'djfvmivqq',
+          uploadPreset: 'ml_default',
           sources: ['local', 'url'],
           multiple: false,
         },
@@ -164,7 +166,8 @@ const PatternList = () => {
   return (
     <ThemeProvider theme={theme}>
       <Container style={{ backgroundColor: theme.palette.background.default, minHeight: '100vh', padding: '20px' }}>
-        <Typography variant="h3" gutterBottom style={{ color: '#ffffff' }}>
+
+        <Typography variant="h3" align='center' gutterBottom style={{ color: 'rgb(31, 101, 66)' }}>
           Patterns
         </Typography>
         <Button
@@ -172,8 +175,8 @@ const PatternList = () => {
           to="/create-pattern"
           variant="contained"
           sx={{
-            backgroundColor: 'rgb(182, 152, 82)', // Gold color
-            color: '#000000', // Black text for contrast
+            backgroundColor: 'rgb(31, 101, 66)',
+            color: 'rgb(229, 229, 234)',
             marginBottom: '20px',
             '&:hover': {
               backgroundColor: 'rgb(160, 132, 72)', // Darker gold on hover
@@ -183,10 +186,10 @@ const PatternList = () => {
           Create New Pattern
         </Button>
 
-        <Grid container spacing={3}>
+        <Grid2 container spacing={3}>
           {patterns.map((pattern) => (
-            <Grid item xs={12} sm={6} md={4} key={pattern._id}>
-              <Card elevation={5} sx={{ backgroundColor: 'rgb(182, 152, 82)' }}> {/* Gold color for the patterns */}
+            <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={pattern._id}>
+              <Card elevation={10} sx={{ backgroundColor: '#fff)' }}> {/* Gold color for the patterns */}
                 {pattern.patternImage && (
                   <CardMedia
                     component="img"
@@ -194,6 +197,7 @@ const PatternList = () => {
                     height="200"
                     image={pattern.patternImage}
                   />
+
                 )}
                 <CardContent>
                   <Typography variant="h5">{pattern.name}</Typography>
@@ -239,9 +243,9 @@ const PatternList = () => {
                   </Button>
                 </CardContent>
               </Card>
-            </Grid>
+            </Grid2>
           ))}
-        </Grid>
+        </Grid2>
 
         <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
           <DialogTitle>Edit Pattern</DialogTitle>
@@ -372,7 +376,7 @@ const PatternList = () => {
           </DialogContent>
         </Dialog>
       </Container>
-    </ThemeProvider>
+    </ThemeProvider >
   );
 };
 

@@ -4,6 +4,7 @@ const NotionsSchema = {
   ownerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users',
+    default: () => new mongoose.Types.ObjectId()
   },
   upc: { type: String },
   title: { type: String },
