@@ -35,7 +35,7 @@ const Notion = ({ brand, color, image, title, id, getAllNotionsDB, length, quant
   };
 
   return (
-    <Box textAlign="center" p={2} boxShadow={2} borderRadius={2} border={1} borderColor="grey.300">
+    <Box textAlign="center" p={2} borderColor="grey.300">
       <Box display="flex" justifyContent="center">
         <img src={image} alt={title} style={{ width: '80px', height: 'auto' }} />
       </Box>
