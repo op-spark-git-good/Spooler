@@ -135,6 +135,8 @@ const NotionsForm = ({ initialData }) => {
             <TextField
               label="Quantity"
               type="number"
+              required
+              id='required'
               {...register('quantity', { required: 'Quantity is required' })}
               defaultValue={formData.quantity}
               fullWidth
@@ -143,6 +145,7 @@ const NotionsForm = ({ initialData }) => {
             <TextField
               label="Length (yards)"
               type="number"
+              min='0'
               {...register('length')}
               defaultValue={formData.length}
               fullWidth
