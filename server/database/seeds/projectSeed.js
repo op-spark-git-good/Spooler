@@ -13,7 +13,7 @@ const projects = [
       name:'Ensure that the pattern is sized correctly',
       description: "Meet with Daria on Friday to get measurements",
       isComplete: false,
-      priority: 2      
+      priority: 2
     }
   ],
   patterns: [

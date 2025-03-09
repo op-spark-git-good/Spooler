@@ -1,54 +1,135 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import {
+  Container,
+  Grid,
+  Typography,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material';
 
 const PatternList = () => {
-    // State to store the list of patterns
   const [patterns, setPatterns] = useState([]);
-  const [editingPattern, setEditingPattern] = useState(null); // Track the pattern being edited
+  const [editingPattern, setEditingPattern] = useState(null);
+  const [cloudinaryLoaded, setCloudinaryLoaded] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
-    // Function to handle the "Edit" button click
-  const handleEditClick = pattern => {
-    setEditingPattern(pattern); // Set the pattern to be edited
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://widget.cloudinary.com/v2.0/global/all.js';
+    script.async = true;
+    script.onload = () => {
+      setCloudinaryLoaded(true);
+    };
+    script.onerror = () => {
+      console.error('Failed to load Cloudinary widget script');
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const openCloudinaryWidget = () => {
+    return new Promise((resolve, reject) => {
+      if (
+        !cloudinaryLoaded ||
+        !window.cloudinary ||
+        !window.cloudinary.openUploadWidget
+      ) {
+        reject(new Error('Cloudinary widget not available'));
+        return;
+      }
+
+      window.cloudinary.openUploadWidget(
+        {
+          cloudName: 'djfvmivqq',
+          uploadPreset: 'ml_default',
+          sources: ['local', 'url'],
+          multiple: false,
+        },
+        (error, result) => {
+          if (!error && result && result.event === 'success') {
+            resolve(result.info.secure_url);
+          } else {
+            reject(error || 'Upload failed');
+          }
+        }
+      );
+    });
   };
 
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
 
-    // Function to handle form submission for updating a pattern
-  const handleUpdateSubmit = async e => {
-    e.preventDefault();// Prevent the default form submission behavior
+    const formData = new FormData();
+    formData.append('image', file);
 
-        // Check if a pattern is selected for editing
+    try {
+      const response = await axios.post('/api/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      if (response.data && response.data.imageUrl) {
+        setEditingPattern((prev) => ({
+          ...prev,
+          patternImage: response.data.imageUrl,
+        }));
+      } else {
+        console.error('Error: Image URL not found in response.');
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+  };
+
+  const handleEditClick = (pattern) => {
+    setEditingPattern({
+      ...pattern,
+      notions: pattern.notions || [],
+    });
+    setOpenDialog(true);
+  };
+
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault();
+
     if (!editingPattern || !editingPattern._id) {
       console.error('Error: No pattern selected for editing!');
       return;
     }
 
     try {
-            // Send a PUT request to update the pattern on the server
       const response = await axios.put(
         `/api/patterns/${editingPattern._id}`,
         editingPattern
       );
-      console.log('Update successful:', response.data);
-
-      // Update the patterns list in the state
-      setPatterns(prevPatterns =>
-        prevPatterns.map(pattern =>
+      setPatterns((prevPatterns) =>
+        prevPatterns.map((pattern) =>
           pattern._id === editingPattern._id ? response.data : pattern
         )
       );
-      setEditingPattern(null); // Clear the editing state
+      setOpenDialog(false);
     } catch (error) {
       console.error('Error updating pattern:', error);
     }
   };
 
-    // Fetch patterns from the server when the component mounts
   useEffect(() => {
     const fetchPatterns = async () => {
       try {
         const response = await axios.get('/api/patterns');
-        setPatterns(response.data);// Set the fetched patterns in the state
+        setPatterns(response.data);
       } catch (error) {
         console.error('Error fetching patterns:', error);
       }
@@ -57,8 +138,7 @@ const PatternList = () => {
     fetchPatterns();
   }, []);
 
-  const handleDelete = id => {
-    console.log('Deleting pattern with ID:', id);
+  const handleDelete = (id) => {
     if (!id) {
       console.error('Error: ID is undefined!');
       return;
@@ -66,167 +146,223 @@ const PatternList = () => {
 
     axios
       .delete(`/api/patterns/${id}`)
-      .then(response => {
-        console.log(response);
-        // Remove the deleted pattern from the state
-        setPatterns(prevPatterns =>
-          prevPatterns.filter(pattern => pattern._id !== id)
+      .then(() => {
+        setPatterns((prevPatterns) =>
+          prevPatterns.filter((pattern) => pattern._id !== id)
         );
       })
-      .catch(error => console.error('Error deleting pattern:', error));
+      .catch((error) => console.error('Error deleting pattern:', error));
   };
 
- 
   return (
-    <div>
-      <h1>Patterns</h1>
-      <Link to='/create-pattern'>Create New Pattern</Link>
+    <Container>
+      <Typography variant="h3" gutterBottom>
+        Patterns
+      </Typography>
+      <Button
+        component={Link}
+        to="/create-pattern"
+        variant="contained"
+        color="primary"
+        style={{ marginBottom: '20px' }}
+      >
+        Create New Pattern
+      </Button>
 
-      {editingPattern ? (
-        // Edit Form
-        <form onSubmit={handleUpdateSubmit}>
-          <h2>Edit Pattern</h2>
-          <label>
-            Name:
-            <input
-              type='text'
-              value={editingPattern.name}
-              onChange={e =>
-                setEditingPattern({ ...editingPattern, name: e.target.value })
-              }
-            />
-          </label>
-          <label>
-            Description:
-            <textarea
-              value={editingPattern.description}
-              onChange={e =>
-                setEditingPattern({
-                  ...editingPattern,
-                  description: e.target.value
-                })
-              }
-            />
-          </label>
-          <label>
-            Fabric Type:
-            <input
-              type='text'
-              value={editingPattern.fabricType}
-              onChange={e =>
-                setEditingPattern({
-                  ...editingPattern,
-                  fabricType: e.target.value
-                })
-              }
-            />
-          </label>
-          <label>
-            Notions:
-            <input
-              type='text'
-              value={editingPattern.notions.join(', ')}
-              onChange={e =>
-                setEditingPattern({
-                  ...editingPattern,
-                  notions: e.target.value.split(',').map(item => item.trim())
-                })
-              }
-            />
-          </label>
-          <label>
-            Size:
-            <input
-              type='text'
-              value={editingPattern.size}
-              onChange={e =>
-                setEditingPattern({ ...editingPattern, size: e.target.value })
-              }
-            />
-          </label>
-          <label>
-            Difficulty Level:
-            <input
-              type='text'
-              value={editingPattern.difficultyLevel}
-              onChange={e =>
-                setEditingPattern({
-                  ...editingPattern,
-                  difficultyLevel: e.target.value
-                })
-              }
-            />
-          </label>
-          <label>
-            Designer:
-            <input
-              type='text'
-              value={editingPattern.designer}
-              onChange={e =>
-                setEditingPattern({
-                  ...editingPattern,
-                  designer: e.target.value
-                })
-              }
-            />
-          </label>
-          <label>
-            Brand:
-            <input
-              type='text'
-              value={editingPattern.brand}
-              onChange={e =>
-                setEditingPattern({ ...editingPattern, brand: e.target.value })
-              }
-            />
-          </label>
-          <label>
-            Format:
-            <input
-              type='text'
-              value={editingPattern.format}
-              onChange={e =>
-                setEditingPattern({ ...editingPattern, format: e.target.value })
-              }
-            />
-          </label>
-          <button type='submit'>Save Changes</button>
-          <button type='button' onClick={() => setEditingPattern(null)}>
-            Cancel
-          </button>
-        </form>
-      ) : (
-        // Pattern List
-        <ul>
-          {patterns.map(pattern => (
-            <li key={pattern._id}>
-              <h2>{pattern.name}</h2>
-              <p>{pattern.description}</p>
+      <Grid container spacing={3}>
+        {patterns.map((pattern) => (
+          <Grid item xs={12} sm={6} md={4} key={pattern._id}>
+            <Card>
               {pattern.patternImage && (
-                <img
-                  src={pattern.patternImage}
+                <CardMedia
+                  component="img"
                   alt={pattern.name}
-                  style={{
-                    maxWidth: '100%',
-                    height: 'auto',
-                    borderRadius: '8px'
-                  }}
+                  height="200"
+                  image={pattern.patternImage}
                 />
               )}
-              <p>Fabric Type: {pattern.fabricType}</p>
-              <p>Notions: {pattern.notions.join(', ')}</p>
-              <p>Size range: {pattern.size}</p>
-              <p>Difficulty Level: {pattern.difficultyLevel}</p>
-              <p>Designer: {pattern.designer}</p>
-              <p>Brand: {pattern.brand}</p>
-              <p>Format: {pattern.format}</p>
-              <button onClick={() => handleEditClick(pattern)}>Edit</button>
-              <button onClick={() => handleDelete(pattern._id)}>Delete</button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+              <CardContent>
+                <Typography variant="h5">{pattern.name}</Typography>
+                <Typography variant="body2" color="textSecondary">
+                  {pattern.description}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Fabric Type:</strong> {pattern.fabricType}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Notions:</strong> {pattern.notions.join(', ')}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Size:</strong> {pattern.size}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Difficulty:</strong> {pattern.difficultyLevel}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Designer:</strong> {pattern.designer}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Brand:</strong> {pattern.brand}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Format:</strong> {pattern.format}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleEditClick(pattern)}
+                  style={{ marginRight: '10px', marginTop: '10px' }}
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => handleDelete(pattern._id)}
+                  style={{ marginTop: '10px' }}
+                >
+                  Delete
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Edit Pattern</DialogTitle>
+        <DialogContent>
+          <form onSubmit={handleUpdateSubmit}>
+            <TextField
+              fullWidth
+              label="Name"
+              value={editingPattern?.name || ''}
+              onChange={(e) =>
+                setEditingPattern({
+                  ...editingPattern,
+                  name: e.target.value,
+                })
+              }
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Description"
+              value={editingPattern?.description || ''}
+              onChange={(e) =>
+                setEditingPattern({
+                  ...editingPattern,
+                  description: e.target.value,
+                })
+              }
+              multiline
+              rows={4}
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Fabric Type"
+              value={editingPattern?.fabricType || ''}
+              onChange={(e) =>
+                setEditingPattern({
+                  ...editingPattern,
+                  fabricType: e.target.value,
+                })
+              }
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Notions (comma-separated)"
+              value={editingPattern?.notions?.join(', ') || ''}
+              onChange={(e) =>
+                setEditingPattern({
+                  ...editingPattern,
+                  notions: e.target.value.split(',').map((item) => item.trim()),
+                })
+              }
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Size"
+              value={editingPattern?.size || ''}
+              onChange={(e) =>
+                setEditingPattern({ ...editingPattern, size: e.target.value })
+              }
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Difficulty Level"
+              value={editingPattern?.difficultyLevel || ''}
+              onChange={(e) =>
+                setEditingPattern({
+                  ...editingPattern,
+                  difficultyLevel: e.target.value,
+                })
+              }
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Designer"
+              value={editingPattern?.designer || ''}
+              onChange={(e) =>
+                setEditingPattern({
+                  ...editingPattern,
+                  designer: e.target.value,
+                })
+              }
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Brand"
+              value={editingPattern?.brand || ''}
+              onChange={(e) =>
+                setEditingPattern({ ...editingPattern, brand: e.target.value })
+              }
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Format"
+              value={editingPattern?.format || ''}
+              onChange={(e) =>
+                setEditingPattern({ ...editingPattern, format: e.target.value })
+              }
+              margin="normal"
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              style={{ display: 'none' }}
+              id="upload-image"
+            />
+            <label htmlFor="upload-image">
+              <Button variant="contained" component="span" style={{ marginTop: '10px' }}>
+                Upload Pattern Image
+              </Button>
+            </label>
+            {editingPattern?.patternImage && (
+              <img
+                src={editingPattern.patternImage}
+                alt="Pattern Preview"
+                style={{ maxWidth: '100px', height: 'auto', marginTop: '10px' }}
+              />
+            )}
+            <DialogActions>
+              <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+              <Button type="submit" variant="contained" color="primary">
+                Save Changes
+              </Button>
+            </DialogActions>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </Container>
   );
 };
 

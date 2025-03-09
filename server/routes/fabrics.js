@@ -23,18 +23,50 @@ fabricsRouter.get("/", (req, res) => {
 });
 
 // set a POSt request handler to send in new fabrics to the database
-// fabricsRouter.post("/", (req, res) => {
-//   const { info } = req.body;
-//   Fabrics.create(info).then((fabric) => {
-//     if (fabric) {
-//       res.status(201).send("Fabric Added!");
-//     } else {
-//       res.status(404).send("Something went wrong");
-//     }
-//   }).catch((err => {
-//     console.error("Failed to save fabric", err);
-//     res.sendStatus(500);
-//   }))
-// })
+fabricsRouter.post("/", (req, res) => {
+  const { info } = req.body;
+  Fabrics.create(info).then((fabric) => {
+    if (fabric) {
+      res.status(201).send(fabric);
+    } else {
+      res.status(404).send("Something went wrong");
+    }
+  }).catch((err => {
+    console.error("Failed to save fabric", err);
+    res.sendStatus(500);
+  }))
+})
+
+// PUT request to replace given fabric with new form info
+fabricsRouter.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const { info } = req.body;
+  Fabrics.findByIdAndUpdate(id, info).then((result) => {
+    if (result) {
+      res.sendStatus(200);
+    } else {
+      res.status(404).send("Unable to perform fabric request");
+    }
+  }).catch((err) => {
+    console.error("failed to update fabric", err);
+    res.sendStatus(500);
+  })
+});
+
+// Set request to delete by id
+fabricsRouter.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  Fabrics.findByIdAndDelete(id).then((result) => {
+    if (result) {
+      res.sendStatus(200);
+    } else {
+      res.status(404).send("The fabric remains");
+    }
+  }).catch((err) => {
+    console.error("failed to delete fabric", err);
+    res.sendStatus(500);
+  })
+})
+
 
 module.exports = fabricsRouter;

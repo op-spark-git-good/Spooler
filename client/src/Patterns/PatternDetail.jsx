@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import {
+  Container,
+  Grid,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Button,
+  Typography,
+} from '@mui/material';
 
 const PatternDetail = () => {
   const { id } = useParams();
@@ -21,7 +32,7 @@ const PatternDetail = () => {
   useEffect(() => {
     const fetchPattern = async () => {
       try {
-        const response = await axios.get(`api/patterns/${id}`);
+        const response = await axios.get(`/api/patterns/${id}`);
         setFormData(response.data);
       } catch (error) {
         console.error('Error fetching pattern:', error);
@@ -47,59 +58,135 @@ const PatternDetail = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Name:</label>
-        <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-      </div>
-      <div>
-        <label>Description:</label>
-        <textarea name="description" value={formData.description} onChange={handleChange} required />
-      </div>
-      <div>
-        <label>Pattern Image URL:</label>
-        <input type="text" name="patternImage" value={formData.patternImage} onChange={handleChange} required />
-      </div>
-      <div>
-        <label>Fabric Type:</label>
-        <select name="fabricType" value={formData.fabricType} onChange={handleChange}>
-          <option value="woven">Woven</option>
-          <option value="stretched">Stretched</option>
-        </select>
-      </div>
-      <div>
-        <label>Notions (comma-separated):</label>
-        <input type="text" name="notions" value={formData.notions} onChange={handleChange} required />
-      </div>
-      <div>
-        <label>Size Range:</label>
-        <input type="text" name="size" value={formData.size} onChange={handleChange} required />
-      </div>
-      <div>
-        <label>Difficulty Level:</label>
-        <select name="difficultyLevel" value={formData.difficultyLevel} onChange={handleChange}>
-          <option value="beginner">Beginner</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="advanced">Advanced</option>
-        </select>
-      </div>
-      <div>
-        <label>Designer:</label>
-        <input type="text" name="designer" value={formData.designer} onChange={handleChange} required />
-      </div>
-      <div>
-        <label>Brand:</label>
-        <input type="text" name="brand" value={formData.brand} onChange={handleChange} required />
-      </div>
-      <div>
-        <label>Format:</label>
-        <select name="format" value={formData.format} onChange={handleChange}>
-          <option value="pdf">PDF</option>
-          <option value="paper">Paper</option>
-        </select>
-      </div>
-      <button type="submit">Update Pattern</button>
-    </form>
+    <Container maxWidth="md">
+      <Typography variant="h4" gutterBottom>
+        Edit Pattern
+      </Typography>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              multiline
+              rows={4}
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Pattern Image URL"
+              name="patternImage"
+              value={formData.patternImage}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
+              <InputLabel>Fabric Type</InputLabel>
+              <Select
+                name="fabricType"
+                value={formData.fabricType}
+                onChange={handleChange}
+                label="Fabric Type"
+              >
+                <MenuItem value="woven">Woven</MenuItem>
+                <MenuItem value="stretched">Stretched</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Notions (comma-separated)"
+              name="notions"
+              value={formData.notions}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Size Range"
+              name="size"
+              value={formData.size}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
+              <InputLabel>Difficulty Level</InputLabel>
+              <Select
+                name="difficultyLevel"
+                value={formData.difficultyLevel}
+                onChange={handleChange}
+                label="Difficulty Level"
+              >
+                <MenuItem value="beginner">Beginner</MenuItem>
+                <MenuItem value="intermediate">Intermediate</MenuItem>
+                <MenuItem value="advanced">Advanced</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Designer"
+              name="designer"
+              value={formData.designer}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Brand"
+              name="brand"
+              value={formData.brand}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
+              <InputLabel>Format</InputLabel>
+              <Select
+                name="format"
+                value={formData.format}
+                onChange={handleChange}
+                label="Format"
+              >
+                <MenuItem value="pdf">PDF</MenuItem>
+                <MenuItem value="paper">Paper</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <Button type="submit" variant="contained" color="primary">
+              Update Pattern
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+    </Container>
   );
 };
 
