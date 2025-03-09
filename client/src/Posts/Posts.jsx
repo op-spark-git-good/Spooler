@@ -221,9 +221,12 @@ const Posts = () => {
             ) : (
               // patterns, notions, fabrics
               <>
-                <Typography variant="h6">{item.name || "Unnamed"}</Typography>
+                <Typography variant="h6"><strong>{item.name || item.title}</strong></Typography>
                 <Typography variant="body2">
-                  Brand: {item.brand || "Unknown"}
+                  <strong>Brand:</strong> {item.brand || "Unknown"}
+                </Typography>
+                <Typography variant="body2">
+                <strong>Description:</strong> {item.description || "Unknown"}
                 </Typography>
                 {item.image && (
                   <Box display="flex" alignItems="center">
