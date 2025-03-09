@@ -7,14 +7,14 @@ const appRoot = document.getElementById("app");
 
 const root = createRoot(appRoot);
 //styling
-document.body.style.backgroundColor = 'rgb(31, 101, 66)';
+document.body.style.backgroundColor = 'rgb(229, 229, 234)';
 document.body.style.margin = '0';
 document.body.style.padding = '0';
 document.body.style.height = '100%';
 
 root.render(
   <BrowserRouter>
-   <App />
+    <App />
   </BrowserRouter>
 
 

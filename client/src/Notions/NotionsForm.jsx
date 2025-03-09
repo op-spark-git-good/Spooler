@@ -2,175 +2,179 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import { Container, Paper, Box, Typography, TextField, Button } from '@mui/material';
 
-const NotionsForm = () => {
-  const { state } = useLocation();  // Get the state passed from the previous component
-  const navigate = useNavigate();   // Hook to programmatically navigate
+const NotionsForm = ({ initialData }) => {
+  const { state } = useLocation();
+  const navigate = useNavigate();
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
 
-  // Local state to track the form data
+  const stashNotion = state || initialData || {};
+
   const [formData, setFormData] = useState({
     title: '',
-    image: '',
     color: '',
     brand: '',
     upc: '',
-    colorNumber: '',
+    colorNum: '',
     quantity: '',
     length: '',
+    image: '',
   });
 
-  // Autofill the form when the state is available
   useEffect(() => {
-    if (state) {
-      // Populate form data using setValue
-      setFormData({
-        title: state.title || '',
-        image: state.image || '',
-        color: state.color || '',
-        brand: state.brand || '',
-        upc: state.upc || '',
-        id: state.info.item._id,
-        colorNumber: state.colorNumber || '',
-        quantity: state.quantity || '',
-        length: state.length || '',
+    if (stashNotion) {
+      const newStashNotion = {
+        title: stashNotion.title || '',
+        color: stashNotion.color || '',
+        brand: stashNotion.brand || '',
+        upc: stashNotion.upc || '',
+        id: stashNotion._id,
+        colorNum: stashNotion.colorNum || '',
+        quantity: stashNotion.quantity || '',
+        length: stashNotion.length || '',
+        image: stashNotion.image || '',
+      };
+
+      setFormData(newStashNotion);
+
+      Object.keys(newStashNotion).forEach(key => {
+        setValue(key, newStashNotion[key]);
       });
-
-      // Set values in react-hook-form
-      setValue('title', state.title || '');
-      setValue('image', state.image || '');
-      setValue('color', state.color || '');
-      setValue('brand', state.brand || '');
-      setValue('upc', state.upc || '');
-      setValue('_id', state.info.item._id || '');
-      setValue('colorNumber', state.colorNumber || '');
-      setValue('quantity', state.quantity || '');
-      setValue('length', state.length || '');
     }
-  }, [state, setValue]);
+  }, [stashNotion, setValue]);
 
-  // Handle form submission
-  const onSubmit = (data) => {
-    // Construct the data to match the structure expected by the API
+  const onSubmit = (notion) => {
     const updatedData = {
       item: {
-        title: data.title || formData.title,
-        image: data.image,
-        color: data.color || formData.color,
-        brand: data.brand || formData.brand,
-        upc: data.upc || formData.upc,
-        colorNum: formData.colorNumber,
-        quantity: formData.quantity,
-        length: formData.length,
+        title: notion.title || formData.title,
+        color: notion.color || formData.color,
+        brand: notion.brand || formData.brand,
+        upc: notion.upc || formData.upc,
+        colorNum: notion.colorNum || formData.colorNum,
+        quantity: notion.quantity || formData.quantity,
+        length: notion.length || formData.length,
+        image: notion.image
       }
     };
 
-    console.log('Data to be sent to the Database:', updatedData); // Log to check the structure of the payload
-
-    // Sending a PUT request to update the notion data.
-    axios.put(`/api/notions/${formData.id}`, updatedData)
+    axios.put(`/api/notions/${stashNotion.id || state.info.item._id}`, updatedData)
       .then(response => {
-
         if (response.status === 200) {
           navigate('/notions');
         } else {
-          throw new Error('Failed to update');
+          throw new Error('Update failed');
         }
       })
       .catch(error => {
         console.error('Error updating data:', error);
-        alert('Failed to update the item!');
+        alert('Update failed!');
       });
   };
 
-  // Handle input change
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
+    <Container maxWidth="sm">
+      {/* Page Title */}
+      <Box sx={{ textAlign: 'center', mt: 4, mb: 2 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Edit Notion
+        </Typography>
+      </Box>
 
-        <label>Title</label>
-        <input
-          type='text'
-          {...register('title', { required: 'Title is required' })}
-          value={formData.title}
-          onChange={handleInputChange}
-        />
-        {errors.title && <span>{errors.title.message}</span>}
-      </div>
+      {/* Paper Wrapper for Form */}
+      <Paper
+        elevation={3}
+        sx={{ padding: 4, borderRadius: 2, backgroundColor: '#fff' }}
+      >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <TextField
+              label="Title"
+              {...register('title', { required: 'Title is required' })}
+              defaultValue={formData.title}
+              error={!!errors.title}
+              helperText={errors.title?.message}
+              fullWidth
+            />
 
-      <div>
-        <label>Brand</label>
-        <input
-          type='text'
-          {...register('brand', { required: 'Brand is required' })}
-          value={formData.brand}
-          onChange={handleInputChange}
-        />
-        {errors.brand && <span>{errors.brand.message}</span>}
-      </div>
+            <TextField
+              label="Brand"
+              {...register('brand', { required: 'Brand is required' })}
+              defaultValue={formData.brand}
+              error={!!errors.brand}
+              helperText={errors.brand?.message}
+              fullWidth
+            />
 
-      <div>
-        <label>Color</label>
-        <input
-          type='text'
-          {...register('color', { required: 'Color is required' })}
-          value={formData.color}
-          onChange={handleInputChange}
-        />
-        {errors.color && <span>{errors.color.message}</span>}
-      </div>
+            <TextField
+              label="Color"
+              {...register('color', { required: 'Color is required' })}
+              defaultValue={formData.color}
+              error={!!errors.color}
+              helperText={errors.color?.message}
+              fullWidth
+            />
 
-      <div>
-        <label>Color Number</label>
-        <input
-          type='number'
-          {...register('colorNumber')}
-          value={formData.colorNumber}
-          onChange={handleInputChange}
-        />
-      </div>
+            <TextField
+              label="Color Number"
+              type="number"
+              {...register('colorNum')}
+              defaultValue={formData.colorNum}
+              fullWidth
+            />
 
-      <div>
-        <label>UPC Number</label>
-        <input
-          type='text'
-          {...register('upc', { required: 'UPC Number is required' })}
-          value={formData.upc}
-          onChange={handleInputChange}
-        />
-        {errors.upc && <span>{errors.upc.message}</span>}
-      </div>
+            <TextField
+              label="UPC Number"
+              {...register('upc', { required: 'UPC Number is required' })}
+              defaultValue={formData.upc}
+              error={!!errors.upc}
+              helperText={errors.upc?.message}
+              fullWidth
+            />
 
-      <div>
-        <label>Quantity</label>
-        <input
-          type='number'
-          {...register('quantity', { required: 'Quantity is required' })}
-          value={formData.quantity}
-          onChange={handleInputChange}
-        />
-      </div>
+            <TextField
+              label="Quantity"
+              type="number"
+              {...register('quantity', { required: 'Quantity is required' })}
+              defaultValue={formData.quantity}
+              fullWidth
+            />
 
-      <div>
-        <label>Length in yards</label>
-        <input
-          type='number'
-          {...register('length')}
-          value={formData.length}
-          onChange={handleInputChange}
-        />
-      </div>
+            <TextField
+              label="Length (yards)"
+              type="number"
+              {...register('length')}
+              defaultValue={formData.length}
+              fullWidth
+            />
 
-      <button type='submit'>Submit</button>
-    </form>
+            {/* Display Current Image */}
+            {formData.image && (
+              <Box sx={{ textAlign: 'center', mt: 2 }}>
+                <Typography variant="subtitle1">Current Image</Typography>
+                <img
+                  src={formData.image}
+                  alt="Notion Item"
+                  style={{ width: '150px', height: 'auto', marginTop: '10px' }}
+                />
+              </Box>
+            )}
+
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{
+                mt: 3, backgroundColor: 'rgb(31, 101, 66)',
+                color: 'rgb(229, 229, 234)'
+              }}
+            >
+              Spool On
+            </Button>
+          </Box>
+        </form>
+      </Paper>
+    </Container>
   );
 };
 
