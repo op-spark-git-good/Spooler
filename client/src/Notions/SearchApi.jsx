@@ -11,64 +11,35 @@ const SearchApi = ({ getAllNotionsDB }) => {
   const [info, setInfo] = useState([]);  // State to store info for the post request
   const navigate = useNavigate(); // Use the useNavigate hook for navigation
 
-  const handleSearch = async () => {
-    if (!keyword) return; // Don't make request if there's no search query
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await axios.get('/api/notions/search', {
-        params: {
-          query: keyword,
-        },
-      });
-
-      setResults(response.data.Data);  // Store the search results
-    } catch (err) {
-      console.error('Error fetching data:', err);
-      setError('Something went wrong!');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleAttributes = async (title, image, color, brand, upc) => {
-    // Add the selected item to the selectedItems state
+  const handleAttributes = (title, image, color, brand, upc) => {
     const selectedItem = { title, image, color, brand, upc };
 
-    setSelectedItems((prevItems) => [...prevItems, selectedItem]);  // Update selected items state
+    setSelectedItems((prevItems) => {
+      if (!prevItems.some(item => item.upc === upc)) {
+        return [...prevItems, selectedItem];
+      }
+      return prevItems;
+    });
 
-    try {
-      console.log('Sending POST request with selected item:', selectedItem); // Log the item you're sending
-      const response = await axios.post('/api/notions/', {
-        item: selectedItem,
+    console.log('Sending POST request with selected item:', selectedItem);
+
+    axios.post('/api/notions/', { item: selectedItem })
+      .then(response => {
+        console.log('Response from POST request:', response.data);
+
+        if (response.data) {
+          setInfo(response.data);
+
+          // Navigate after state is updated
+          navigate('/notion-form', {
+            state: { title, image, color, brand, upc, info: response.data },
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Error adding Notion:', error);
+        alert('Failed to add Notion!');
       });
-
-      // Log the response data after the POST request
-      console.log('Response from POST request:', response.data);
-
-      // Wait until the POST request is completed, then update the info state
-      setInfo(response.data)
-
-
-
-      // Once info is updated, navigate to the form page and pass the updated info
-      navigate('/notion-form', {
-        state: {
-          title,
-          image,
-          color,
-          brand,
-          upc,
-          info: response.data,
-        },
-      });
-
-    } catch (error) {
-      console.error('Error adding Notion:', error);
-      alert('Failed to add Notion!');
-    }
   };
 
 
