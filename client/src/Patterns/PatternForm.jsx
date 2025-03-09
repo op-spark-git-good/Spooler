@@ -13,27 +13,9 @@ import {
   CircularProgress,
   Alert,
   Grid,
-  createTheme,
-  ThemeProvider,
+  Paper,
+  Box,
 } from '@mui/material';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: 'rgb(31, 101, 66)', // Green color
-    },
-    secondary: {
-      main: 'rgb(87, 27, 126)', // Purple color
-    },
-    background: {
-      default: 'rgb(31, 101, 66)', // Green color for the outside background
-    },
-    text: {
-      primary: 'rgb(0, 0, 0)', // Black color
-      secondary: 'rgb(106, 79, 12)', // Brown color
-    },
-  },
-});
 
 const PatternForm = () => {
   const navigate = useNavigate();
@@ -57,19 +39,16 @@ const PatternForm = () => {
   const [imageFile, setImageFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
-  // Handle input changes for text fields and form validation errors
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
     setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
   };
 
-  // Handle image file changes
   const handleFileChange = (e) => {
     setImageFile(e.target.files[0]);
   };
 
-  // Validate form before submission
   const validateForm = () => {
     const newErrors = {};
     const requiredFields = ['name', 'description', 'notions', 'size', 'designer', 'brand'];
@@ -81,7 +60,6 @@ const PatternForm = () => {
     return newErrors;
   };
 
-  // Upload image to the server and return image URL
   const uploadImage = async () => {
     if (!imageFile) return null;
 
@@ -109,11 +87,9 @@ const PatternForm = () => {
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate the form fields
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -149,14 +125,11 @@ const PatternForm = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container
-        maxWidth="md"
-        style={{ backgroundColor: theme.palette.background.default, minHeight: '100vh', padding: '20px' }}
-      >
-        <Typography variant="h4" gutterBottom style={{ color: '#ffffff' }}>
-          Create New Pattern
-        </Typography>
+    <Container>
+      <Typography variant="h4" align="center" gutterBottom style={{ color: 'rgb(31, 101, 66)' }}>
+        Create New Pattern
+      </Typography>
+      <Paper elevation={3} sx={{ padding: 3, backgroundColor: '#fff' }}>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -169,8 +142,6 @@ const PatternForm = () => {
                 error={!!errors.name}
                 helperText={errors.name}
                 required
-                InputLabelProps={{ style: { color: '#ffffff' } }}
-                InputProps={{ style: { color: '#ffffff' } }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -185,8 +156,6 @@ const PatternForm = () => {
                 multiline
                 rows={4}
                 required
-                InputLabelProps={{ style: { color: '#ffffff' } }}
-                InputProps={{ style: { color: '#ffffff' } }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -202,27 +171,26 @@ const PatternForm = () => {
                   variant="contained"
                   component="span"
                   sx={{
-                    backgroundColor: 'rgb(182, 152, 82)', // Gold color
-                    color: '#000000', // Black text for contrast
+                    backgroundColor: 'rgb(31, 101, 66)', // Gold color
+                    color: '#', // Black text for contrast
                     '&:hover': {
-                      backgroundColor: 'rgb(160, 132, 72)', // Darker gold on hover
+                      backgroundColor: 'rgb(182, 152, 82)', // Darker gold on hover
                     },
                   }}
                 >
                   Upload Pattern Image
                 </Button>
               </label>
-              {uploading && <CircularProgress size={24} style={{ marginLeft: 10, color: '#ffffff' }} />}
+              {uploading && <CircularProgress size={24} style={{ marginLeft: 10 }} />}
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-                <InputLabel style={{ color: '#ffffff' }}>Fabric Type</InputLabel>
+                <InputLabel>Fabric Type</InputLabel>
                 <Select
                   name="fabricType"
                   value={formData.fabricType}
                   onChange={handleChange}
                   label="Fabric Type"
-                  style={{ color: '#ffffff' }}
                 >
                   <MenuItem value="woven">Woven</MenuItem>
                   <MenuItem value="stretched">Stretched</MenuItem>
@@ -239,8 +207,6 @@ const PatternForm = () => {
                 error={!!errors.notions}
                 helperText={errors.notions}
                 required
-                InputLabelProps={{ style: { color: '#ffffff' } }}
-                InputProps={{ style: { color: '#ffffff' } }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -253,19 +219,16 @@ const PatternForm = () => {
                 error={!!errors.size}
                 helperText={errors.size}
                 required
-                InputLabelProps={{ style: { color: '#ffffff' } }}
-                InputProps={{ style: { color: '#ffffff' } }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-                <InputLabel style={{ color: '#ffffff' }}>Difficulty Level</InputLabel>
+                <InputLabel>Difficulty Level</InputLabel>
                 <Select
                   name="difficultyLevel"
                   value={formData.difficultyLevel}
                   onChange={handleChange}
                   label="Difficulty Level"
-                  style={{ color: '#ffffff' }}
                 >
                   <MenuItem value="beginner">Beginner</MenuItem>
                   <MenuItem value="intermediate">Intermediate</MenuItem>
@@ -283,8 +246,6 @@ const PatternForm = () => {
                 error={!!errors.designer}
                 helperText={errors.designer}
                 required
-                InputLabelProps={{ style: { color: '#ffffff' } }}
-                InputProps={{ style: { color: '#ffffff' } }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -297,19 +258,16 @@ const PatternForm = () => {
                 error={!!errors.brand}
                 helperText={errors.brand}
                 required
-                InputLabelProps={{ style: { color: '#ffffff' } }}
-                InputProps={{ style: { color: '#ffffff' } }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
-                <InputLabel style={{ color: '#ffffff' }}>Format</InputLabel>
+                <InputLabel>Format</InputLabel>
                 <Select
                   name="format"
                   value={formData.format}
                   onChange={handleChange}
                   label="Format"
-                  style={{ color: '#ffffff' }}
                 >
                   <MenuItem value="pdf">PDF</MenuItem>
                   <MenuItem value="paper">Paper</MenuItem>
@@ -317,20 +275,35 @@ const PatternForm = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{
-                  backgroundColor: 'rgb(182, 152, 82)', // Gold color
-                  color: '#000000', // Black text for contrast
-                  '&:hover': {
-                    backgroundColor: 'rgb(160, 132, 72)', // Darker gold on hover
-                  },
-                }}
-                disabled={isSubmitting || uploading}
-              >
-                {isSubmitting ? 'Submitting...' : 'Create Pattern'}
-              </Button>
+              <Box display="flex" justifyContent="flex-end" gap={2}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: 'rgb(229, 229, 234)', // Light gray color
+                    color: 'rgb(87, 27, 126)', // Purple text
+                    '&:hover': {
+                      backgroundColor: 'rgb(200, 200, 200)', // Darker gray on hover
+                    },
+                  }}
+                  onClick={() => navigate('/patterns')}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    backgroundColor: 'rgb(31, 101, 66)', // Green color
+                    color: 'rgb(229, 229, 234)', // Light gray text
+                    '&:hover': {
+                      backgroundColor: 'rgb(20, 80, 50)', // Darker green on hover
+                    },
+                  }}
+                  disabled={isSubmitting || uploading}
+                >
+                  {isSubmitting ? 'Submitting...' : 'Create Pattern'}
+                </Button>
+              </Box>
             </Grid>
             {message && (
               <Grid item xs={12}>
@@ -341,8 +314,8 @@ const PatternForm = () => {
             )}
           </Grid>
         </form>
-      </Container>
-    </ThemeProvider>
+      </Paper>
+    </Container>
   );
 };
 
