@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Navbar from './NavBar.jsx';
 import Fabrics from "./Fabrics.jsx";
-import FabricForm from "./FabricForm.jsx";
+import FabricForm from "./FabricForm.jsx"
 import Home from "./Home.jsx";
 import Layout from "./Layout.jsx";
 import Notions from "./Notions/Notions.jsx";
@@ -21,6 +21,7 @@ function App() {
         <Route path='/' element={<Layout />} />
         <Route index element={<Home />} />
         <Route path='fabrics' element={<Fabrics />} />
+        <Route path='fabric-form' element={<FabricForm />} />
         <Route path='notions' element={<Notions />} />
         <Route path='/notion-form' element={<NotionsForm />} />
         <Route path='projects' element={<Projects />} />
