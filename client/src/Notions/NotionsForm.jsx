@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import { Container, Paper, Box, Typography, TextField, Button } from '@mui/material';
 
 const NotionsForm = ({ initialData }) => {
   const { state } = useLocation();
@@ -72,55 +73,108 @@ const NotionsForm = ({ initialData }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Title</label>
-        <input type="text" {...register('title', { required: 'Title is required' })} defaultValue={formData.title} />
-        {errors.title && <span>{errors.title.message}</span>}
-      </div>
+    <Container maxWidth="sm">
+      {/* Page Title */}
+      <Box sx={{ textAlign: 'center', mt: 4, mb: 2 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Edit Notion
+        </Typography>
+      </Box>
 
-      <div>
-        <label>Brand</label>
-        <input type="text" {...register('brand', { required: 'Brand is required' })} defaultValue={formData.brand} />
-        {errors.brand && <span>{errors.brand.message}</span>}
-      </div>
+      {/* Paper Wrapper for Form */}
+      <Paper
+        elevation={3}
+        sx={{ padding: 4, borderRadius: 2, backgroundColor: '#fff' }}
+      >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <TextField
+              label="Title"
+              {...register('title', { required: 'Title is required' })}
+              defaultValue={formData.title}
+              error={!!errors.title}
+              helperText={errors.title?.message}
+              fullWidth
+            />
 
-      <div>
-        <label>Color</label>
-        <input type="text" {...register('color', { required: 'Color is required' })} defaultValue={formData.color} />
-        {errors.color && <span>{errors.color.message}</span>}
-      </div>
+            <TextField
+              label="Brand"
+              {...register('brand', { required: 'Brand is required' })}
+              defaultValue={formData.brand}
+              error={!!errors.brand}
+              helperText={errors.brand?.message}
+              fullWidth
+            />
 
-      <div>
-        <label>Color Number</label>
-        <input type="number" {...register('colorNum')} defaultValue={formData.colorNum} />
-      </div>
+            <TextField
+              label="Color"
+              {...register('color', { required: 'Color is required' })}
+              defaultValue={formData.color}
+              error={!!errors.color}
+              helperText={errors.color?.message}
+              fullWidth
+            />
 
-      <div>
-        <label>UPC Number</label>
-        <input type="text" {...register('upc', { required: 'UPC Number is required' })} defaultValue={formData.upc} />
-        {errors.upc && <span>{errors.upc.message}</span>}
-      </div>
+            <TextField
+              label="Color Number"
+              type="number"
+              {...register('colorNum')}
+              defaultValue={formData.colorNum}
+              fullWidth
+            />
 
-      <div>
-        <label>Quantity</label>
-        <input type="number" {...register('quantity', { required: 'Quantity is required' })} defaultValue={formData.quantity} />
-      </div>
+            <TextField
+              label="UPC Number"
+              {...register('upc', { required: 'UPC Number is required' })}
+              defaultValue={formData.upc}
+              error={!!errors.upc}
+              helperText={errors.upc?.message}
+              fullWidth
+            />
 
-      <div>
-        <label>Length in yards</label>
-        <input type="number" {...register('length')} defaultValue={formData.length} />
-      </div>
+            <TextField
+              label="Quantity"
+              type="number"
+              {...register('quantity', { required: 'Quantity is required' })}
+              defaultValue={formData.quantity}
+              fullWidth
+            />
 
-      {formData.image && (
-        <div>
-          <label>Current Image</label>
-          <img src={formData.image} alt="Notion Item" style={{ width: '150px', height: 'auto', marginTop: '10px' }} />
-        </div>
-      )}
+            <TextField
+              label="Length (yards)"
+              type="number"
+              {...register('length')}
+              defaultValue={formData.length}
+              fullWidth
+            />
 
-      <button type="submit">Spool On</button>
-    </form>
+            {/* Display Current Image */}
+            {formData.image && (
+              <Box sx={{ textAlign: 'center', mt: 2 }}>
+                <Typography variant="subtitle1">Current Image</Typography>
+                <img
+                  src={formData.image}
+                  alt="Notion Item"
+                  style={{ width: '150px', height: 'auto', marginTop: '10px' }}
+                />
+              </Box>
+            )}
+
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{
+                mt: 3, backgroundColor: 'rgb(31, 101, 66)',
+                color: 'rgb(229, 229, 234)'
+              }}
+            >
+              Spool On
+            </Button>
+          </Box>
+        </form>
+      </Paper>
+    </Container>
   );
 };
 
