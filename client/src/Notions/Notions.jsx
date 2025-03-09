@@ -49,8 +49,8 @@ const Notions = (props) => {
       ) : notions.length > 0 ? (
         <Grid2 container spacing={3}>
           {notions.map((notion) => (
-            <Grid2 key={notion._id}>
-              <Paper elevation={16} sx={{ padding: 2 }}>
+            <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={notion._id}>
+              <Paper elevation={16} >
                 <Notion
                   title={notion.title}
                   brand={notion.brand}

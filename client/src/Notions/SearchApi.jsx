@@ -10,7 +10,24 @@ const SearchApi = ({ getAllNotionsDB }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [info, setInfo] = useState([]);  // State to store info for the post request
   const navigate = useNavigate(); // Use the useNavigate hook for navigation
+  const handleSearch = () => {
+    if (!keyword) return; // Prevent unnecessary requests
 
+    setLoading(true);
+    setError(null);
+
+    axios.get('/api/notions/search', { params: { query: keyword } })
+      .then(response => {
+        setResults(response.data.Data); // Ensure response structure is correct
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setError('Something went wrong!');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
   const handleAttributes = (title, image, color, brand, upc) => {
     const selectedItem = { title, image, color, brand, upc };
 
