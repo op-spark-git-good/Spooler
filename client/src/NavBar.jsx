@@ -1,27 +1,39 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {
 
+  Typography,
+
+} from "@mui/material";
 const Navbar = () => {
   return (
     <nav style={styles.nav}>
       <ul style={styles.ul}>
         <li style={styles.li}>
-          <Link to="/" style={styles.link}>Home</Link>
+          <Typography>
+            <Link to="/" style={styles.link}>Home</Link>
+          </Typography>
         </li>
         <li style={styles.li}>
-          <Link to="/fabrics" style={styles.link}>Fabrics</Link>
+          <Typography>
+            <Link to="/fabrics" style={styles.link}>Fabrics</Link>
+          </Typography>
+        </li>
+        <Typography>
+          <li style={styles.li}>
+            <Link to="/notions" style={styles.link}>Notions</Link>
+
+          </li>
+        </Typography>
+        <li style={styles.li}>
+          <Typography> <Link to="/patterns" style={styles.link}>Patterns</Link>
+          </Typography>
         </li>
         <li style={styles.li}>
-          <Link to="/notions" style={styles.link}>Notions</Link>
+          <Typography> <Link to="/projects" style={styles.link}>Projects</Link></Typography>
         </li>
         <li style={styles.li}>
-          <Link to="/patterns" style={styles.link}>Patterns</Link>
-        </li> 
-        <li style={styles.li}>
-          <Link to="/projects" style={styles.link}>Projects</Link>
-        </li>
-        <li style={styles.li}>
-          <Link to="/posts" style={styles.link}>Community</Link>
+          <Typography> <Link to="/posts" style={styles.link}>Community</Link> </Typography>
         </li>
       </ul>
     </nav>
@@ -31,7 +43,7 @@ const Navbar = () => {
 // Inline styles
 const styles = {
   nav: {
-    backgroundColor: '#333',
+    backgroundColor: '#181A18',
     padding: '10px',
   },
   ul: {
