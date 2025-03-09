@@ -12,8 +12,28 @@ import {
   Typography,
   CircularProgress,
   Alert,
+  Grid,
+  createTheme,
+  ThemeProvider,
 } from '@mui/material';
-import Grid from '@mui/material/Grid'; // Use stable Grid component
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: 'rgb(31, 101, 66)', // Green color
+    },
+    secondary: {
+      main: 'rgb(87, 27, 126)', // Purple color
+    },
+    background: {
+      default: 'rgb(31, 101, 66)', // Green color for the outside background
+    },
+    text: {
+      primary: 'rgb(0, 0, 0)', // Black color
+      secondary: 'rgb(106, 79, 12)', // Brown color
+    },
+  },
+});
 
 const PatternForm = () => {
   const navigate = useNavigate();
@@ -129,164 +149,200 @@ const PatternForm = () => {
   };
 
   return (
-    <Container maxWidth="md">
-      <Typography variant="h4" gutterBottom>
-        Create New Pattern
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              error={!!errors.name}
-              helperText={errors.name}
-              required
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              error={!!errors.description}
-              helperText={errors.description}
-              multiline
-              rows={4}
-              required
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              style={{ display: 'none' }}
-              id="upload-image"
-            />
-            <label htmlFor="upload-image">
-              <Button variant="contained" component="span">
-                Upload Pattern Image
-              </Button>
-            </label>
-            {uploading && <CircularProgress size={24} style={{ marginLeft: 10 }} />}
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Fabric Type</InputLabel>
-              <Select
-                name="fabricType"
-                value={formData.fabricType}
-                onChange={handleChange}
-                label="Fabric Type"
-              >
-                <MenuItem value="woven">Woven</MenuItem>
-                <MenuItem value="stretched">Stretched</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Notions (comma-separated)"
-              name="notions"
-              value={formData.notions}
-              onChange={handleChange}
-              error={!!errors.notions}
-              helperText={errors.notions}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Size Range"
-              name="size"
-              value={formData.size}
-              onChange={handleChange}
-              error={!!errors.size}
-              helperText={errors.size}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Difficulty Level</InputLabel>
-              <Select
-                name="difficultyLevel"
-                value={formData.difficultyLevel}
-                onChange={handleChange}
-                label="Difficulty Level"
-              >
-                <MenuItem value="beginner">Beginner</MenuItem>
-                <MenuItem value="intermediate">Intermediate</MenuItem>
-                <MenuItem value="advanced">Advanced</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Designer"
-              name="designer"
-              value={formData.designer}
-              onChange={handleChange}
-              error={!!errors.designer}
-              helperText={errors.designer}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Brand"
-              name="brand"
-              value={formData.brand}
-              onChange={handleChange}
-              error={!!errors.brand}
-              helperText={errors.brand}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel>Format</InputLabel>
-              <Select
-                name="format"
-                value={formData.format}
-                onChange={handleChange}
-                label="Format"
-              >
-                <MenuItem value="pdf">PDF</MenuItem>
-                <MenuItem value="paper">Paper</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              disabled={isSubmitting || uploading}
-            >
-              {isSubmitting ? 'Submitting...' : 'Create Pattern'}
-            </Button>
-          </Grid>
-          {message && (
+    <ThemeProvider theme={theme}>
+      <Container
+        maxWidth="md"
+        style={{ backgroundColor: theme.palette.background.default, minHeight: '100vh', padding: '20px' }}
+      >
+        <Typography variant="h4" gutterBottom style={{ color: '#ffffff' }}>
+          Create New Pattern
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={3}>
             <Grid item xs={12}>
-              <Alert severity={message.includes('success') ? 'success' : 'error'}>
-                {message}
-              </Alert>
+              <TextField
+                fullWidth
+                label="Name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                error={!!errors.name}
+                helperText={errors.name}
+                required
+                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{ style: { color: '#ffffff' } }}
+              />
             </Grid>
-          )}
-        </Grid>
-      </form>
-    </Container>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                error={!!errors.description}
+                helperText={errors.description}
+                multiline
+                rows={4}
+                required
+                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{ style: { color: '#ffffff' } }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+                id="upload-image"
+              />
+              <label htmlFor="upload-image">
+                <Button
+                  variant="contained"
+                  component="span"
+                  sx={{
+                    backgroundColor: 'rgb(182, 152, 82)', // Gold color
+                    color: '#000000', // Black text for contrast
+                    '&:hover': {
+                      backgroundColor: 'rgb(160, 132, 72)', // Darker gold on hover
+                    },
+                  }}
+                >
+                  Upload Pattern Image
+                </Button>
+              </label>
+              {uploading && <CircularProgress size={24} style={{ marginLeft: 10, color: '#ffffff' }} />}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel style={{ color: '#ffffff' }}>Fabric Type</InputLabel>
+                <Select
+                  name="fabricType"
+                  value={formData.fabricType}
+                  onChange={handleChange}
+                  label="Fabric Type"
+                  style={{ color: '#ffffff' }}
+                >
+                  <MenuItem value="woven">Woven</MenuItem>
+                  <MenuItem value="stretched">Stretched</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Notions (comma-separated)"
+                name="notions"
+                value={formData.notions}
+                onChange={handleChange}
+                error={!!errors.notions}
+                helperText={errors.notions}
+                required
+                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{ style: { color: '#ffffff' } }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Size Range"
+                name="size"
+                value={formData.size}
+                onChange={handleChange}
+                error={!!errors.size}
+                helperText={errors.size}
+                required
+                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{ style: { color: '#ffffff' } }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel style={{ color: '#ffffff' }}>Difficulty Level</InputLabel>
+                <Select
+                  name="difficultyLevel"
+                  value={formData.difficultyLevel}
+                  onChange={handleChange}
+                  label="Difficulty Level"
+                  style={{ color: '#ffffff' }}
+                >
+                  <MenuItem value="beginner">Beginner</MenuItem>
+                  <MenuItem value="intermediate">Intermediate</MenuItem>
+                  <MenuItem value="advanced">Advanced</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Designer"
+                name="designer"
+                value={formData.designer}
+                onChange={handleChange}
+                error={!!errors.designer}
+                helperText={errors.designer}
+                required
+                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{ style: { color: '#ffffff' } }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Brand"
+                name="brand"
+                value={formData.brand}
+                onChange={handleChange}
+                error={!!errors.brand}
+                helperText={errors.brand}
+                required
+                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{ style: { color: '#ffffff' } }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel style={{ color: '#ffffff' }}>Format</InputLabel>
+                <Select
+                  name="format"
+                  value={formData.format}
+                  onChange={handleChange}
+                  label="Format"
+                  style={{ color: '#ffffff' }}
+                >
+                  <MenuItem value="pdf">PDF</MenuItem>
+                  <MenuItem value="paper">Paper</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{
+                  backgroundColor: 'rgb(182, 152, 82)', // Gold color
+                  color: '#000000', // Black text for contrast
+                  '&:hover': {
+                    backgroundColor: 'rgb(160, 132, 72)', // Darker gold on hover
+                  },
+                }}
+                disabled={isSubmitting || uploading}
+              >
+                {isSubmitting ? 'Submitting...' : 'Create Pattern'}
+              </Button>
+            </Grid>
+            {message && (
+              <Grid item xs={12}>
+                <Alert severity={message.includes('success') ? 'success' : 'error'}>
+                  {message}
+                </Alert>
+              </Grid>
+            )}
+          </Grid>
+        </form>
+      </Container>
+    </ThemeProvider>
   );
 };
 
