@@ -52,6 +52,8 @@ const Fabrics = () => {
     toggleSingleMode(!singleMode);
   }
 
+  const testFunc = () => {}
+    
   // make a function that changes the currFabric variable to the next or previous number in the fabrics array
   const turnStyle = (direction) => {
     const max = fabrics.length - 1;
