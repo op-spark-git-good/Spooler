@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Notion from './Notion.jsx';
 import { Button, Container, Grid2, Typography, Paper, Box, } from '@mui/material';
 
+
 const Notions = (props) => {
   const [notions, setNotions] = useState([]);
   const [loading, setLoading] = useState(true); // To manage loading state
@@ -55,6 +56,7 @@ const Notions = (props) => {
                   brand={notion.brand}
                   color={notion.color}
                   image={notion.image}
+                  upc={notion.upc}
                   id={notion._id}
                   length={notion.length}
                   quantity={notion.quantity}
