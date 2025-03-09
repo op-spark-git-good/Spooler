@@ -19,13 +19,13 @@ import {
 const theme = createTheme({
   palette: {
     primary: {
-      main: 'rgb(31, 101, 66)', // Green color
+      main: '#fff)', // Green color
     },
     secondary: {
       main: 'rgb(87, 27, 126)', // Purple color
     },
     background: {
-      default: 'rgb(31, 101, 66)', // Green color for the outside background
+      default: 'rgb(229, 229, 234)', // Green color for the outside background
     },
     text: {
       primary: 'rgb(0, 0, 0)', // Black color

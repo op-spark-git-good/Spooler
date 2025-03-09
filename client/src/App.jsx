@@ -12,6 +12,7 @@ import Posts from './Posts/Posts.jsx';
 import PatternForm from './Patterns/PatternForm.jsx';
 import NotionsForm from './Notions/NotionsForm.jsx'
 import Projects from './Projects/Projects.jsx'
+import SearchApi from "./Notions/SearchApi.jsx";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path='fabric-form' element={<FabricForm />} />
         <Route path='notions' element={<Notions />} />
         <Route path='/notion-form' element={<NotionsForm />} />
+        <Route path='notions-searchApi' element={<SearchApi />} />
         <Route path='projects' element={<Projects />} />
         <Route path='/patterns' element={<PatternList />} />
         <Route path='/create-pattern' element={<PatternForm />} />
