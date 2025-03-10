@@ -182,7 +182,6 @@ const deleteFabric = () => {
             currFabric={currFabric}
             getAllFabrics={getAllFabrics}
             handleClose={handleClose}
-            editMode={true}
             />
              </Dialog>
 
