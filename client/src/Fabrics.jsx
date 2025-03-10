@@ -16,6 +16,7 @@ import {
   Modal,
   TextField,
   Dialog,
+  dialogClasses,
   DialogActions,
   DialogContent,
   DialogContentText,
@@ -75,7 +76,8 @@ const Fabrics = () => {
 
   // Set an function to delete unwanted entries
   // try to remember to set a dialog warning before proceeding
-  const deleteFabric = () => {
+  const deleteFabric = () =>{
+    
     axios
       .delete(`/api/fabrics/${currFabric._id}`)
       .then(() => {
@@ -140,15 +142,15 @@ const Fabrics = () => {
             <Button
             variant="contained"
             className="delete-button"
-            sx={{backgroundColor: "rgb(15, 139, 69)"}}
+            sx={{backgroundColor: "rgb(31, 101, 66)"}}
             onClick={deleteFabric}>
-              Cut fabric ✂️
+              Delete Fabric ✂️
             </Button>
 
             <Button
               variant="contained"
               aria-haspopup="true"
-              sx={{ backgroundColor: "rgb(157, 131, 17)", marginTop: "auto" }}
+              sx={{ backgroundColor: "rgb(182, 152, 82)", marginTop: "auto" }}
               onClick={createDropDown}
             >
               Short List
@@ -171,7 +173,7 @@ const Fabrics = () => {
             <Button
               variant="contained"
               sx={{
-                backgroundColor: "rgb(9, 98, 28)",
+                backgroundColor: "rgb(31, 101, 66)",
                 marginTop: "fixed",
               }}
               onClick={handleFabricViewClick}
@@ -182,11 +184,11 @@ const Fabrics = () => {
                 minHeight: "40px",
                 fontSize: "10px",
               }}
-            >See All Fabrics</Button>
+            >See All</Button>
             </Box>
               <Button
               sx={{
-                backgroundColor: "rgb(177, 129, 17)",
+                backgroundColor: "rgb(182, 152, 82)",
                 marginTop: "fixed",
               }}
               variant="contained"
@@ -213,7 +215,7 @@ const Fabrics = () => {
             <div className="fabric-brand">Brand: {currFabric.brand}</div>
             <Button
             sx={{
-              backgroundColor: "rgb(9, 98, 28)",
+              backgroundColor: "rgb(31, 101, 66)",
             }}
               variant="contained"
               className="fabric-changer-back"
@@ -224,7 +226,7 @@ const Fabrics = () => {
 
             <Button
             sx={{
-              backgroundColor: "rgb(170, 145, 18)",
+              backgroundColor: "rgb(182, 152, 82)",
             }}
               variant="contained"
               className="fabric-changer-forward"
@@ -239,7 +241,7 @@ const Fabrics = () => {
               <Button
                 variant="string"
                 sx={{
-                  backgroundColor: "rgb(157, 131, 17)",
+                  backgroundColor: "rgb(182, 152, 82)",
                   marginTop: "fixed",
                 }}
                 onClick={handleFabricViewClick}
@@ -259,7 +261,7 @@ const Fabrics = () => {
             <Button
               variant="contained"
               aria-haspopup="true"
-              sx={{ backgroundColor: "rgb(157, 131, 17)", marginTop: "auto" }}
+              sx={{ backgroundColor: "rgb(182, 152, 82)", marginTop: "auto" }}
               onClick={createDropDown}
             >
               Short List
@@ -293,7 +295,6 @@ const Fabrics = () => {
                     padding: "10px",
                     marginRight: "10px",
                     marginTop: "10px",
-                    backgroundColor: "rgb(160, 132, 72)",
                   }}
                 >
                   <CardActionArea onClick={() => singleOut(i)}>
