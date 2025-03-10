@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
 
 const ProjectSchema = new mongoose.Schema({
-  owner: { type: mongoose.Schema.Types.ObjectId, ref: "Users", default: null},
-  name: { type: String},
-  description: { type: String },
+  name: { type: String, required: true},
+  description: { type: String, default: 'Project description'},
   // a todo list for a project
   tasks: [{
       name: { type: String, required: true },
       description: { type: String },
       isComplete: { type: Boolean, default: false },
-      priority: { type: Number }
+      priority: { type: Number, default: 0}
   },],
   // patterns, fabrics and notions should contain objects describing materials
   patterns: [{
@@ -18,7 +17,7 @@ const ProjectSchema = new mongoose.Schema({
     stashed: { type: mongoose.Schema.Types.ObjectId, ref: "Patterns" },
   },],
   fabrics: [{
-    description: { type: String },
+    description: { type: String, required: true },
     quantity : { type: Number, default: null },
     stashed: { type: mongoose.Schema.Types.ObjectId, ref: "Fabrics" },
   },],
