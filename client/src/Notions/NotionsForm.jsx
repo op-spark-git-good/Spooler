@@ -121,6 +121,7 @@ const NotionsForm = ({ initialData }) => {
               {...register('colorNum')}
               defaultValue={formData.colorNum}
               fullWidth
+              inputProps={{ min: 0 }}
             />
 
             <TextField
@@ -130,25 +131,29 @@ const NotionsForm = ({ initialData }) => {
               error={!!errors.upc}
               helperText={errors.upc?.message}
               fullWidth
+              inputProps={{ min: 0 }}
             />
 
             <TextField
               label="Quantity"
               type="number"
+
               required
               id='required'
               {...register('quantity', { required: 'Quantity is required' })}
               defaultValue={formData.quantity}
               fullWidth
+              inputProps={{ min: 0 }}
             />
 
             <TextField
               label="Length (yards)"
               type="number"
-              min='0'
+
               {...register('length')}
               defaultValue={formData.length}
               fullWidth
+              inputProps={{ min: 0 }}
             />
 
             {/* Display Current Image */}
