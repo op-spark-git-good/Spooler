@@ -63,7 +63,7 @@ const Fabrics = () => {
 
   const handleFabricViewClick = () => {
     toggleSingleMode(!singleMode);
-  }
+  };
 
   // these are the functions for the modal that should pop up upon entering edit mode
   const handleClickOpen = () => {
@@ -71,23 +71,20 @@ const Fabrics = () => {
   };
   const handleClose = () => {
     setOpen(false);
-  }
+  };
 
-// this is a test to see if I can render anything to change on button press through my current method function
-// if it succeeds, I'll set the typical modal information into the rendered info
-// then, when that works, I'll move the forms(a prettier version) to that modal and have it be slave to
-// the edit function.
   // Set an function to delete unwanted entries
-// try to remember to set a dialog warning before proceeding
-const deleteFabric = () => {
-  axios.delete(`/api/fabrics/${currFabric._id}`)
-  .then(() => {
-    toggleSingleMode(!singleMode)
-    getAllFabrics();
-  })
-  .catch((err) => {
-    console.error("Could not delete fabric", err)
-  });
+  // try to remember to set a dialog warning before proceeding
+  const deleteFabric = () => {
+    axios
+      .delete(`/api/fabrics/${currFabric._id}`)
+      .then(() => {
+        toggleSingleMode(!singleMode);
+        getAllFabrics();
+      })
+      .catch((err) => {
+        console.error("Could not delete fabric", err);
+      });
   };
   // make a function that changes the currFabric variable to the next or previous number in the fabrics array
   const turnStyle = (direction) => {
@@ -116,26 +113,44 @@ const deleteFabric = () => {
   if (fabrics.length) {
     return (
       <div key={currFabric._id} className="fabric-block">
-        <Button
-        component={Link}
-        to="/fabric-form"
-        variant="contained"
-        >CREATE A FABRIC
-        </Button>
+        <Box textAlign="center">
+          <Button
+            component={Link}
+            to="/fabric-form"
+            variant="contained"
+            sx={{ backgroundColor: "rgb(31, 101, 66)" }}
+            style={{
+              maxWidth: "250px",
+              maxHeight: "60px",
+              minWidth: "250px",
+              minHeight: "60px",
+              fontSize: "30px",
+            }}
+          >
+            ADD FABRICS
+          </Button>
+        </Box>
         {singleMode ? (
           <div>
             <img
               className="fabric-image"
               src={currFabric.image}
               style={{ width: "500px" }}
-              />
-                   <Button className="delete-button" onClick={deleteFabric}>Have it abducted🛸</Button>
+            />
+            <Button
+            variant="contained"
+            className="delete-button"
+            sx={{backgroundColor: "rgb(15, 139, 69)"}}
+            onClick={deleteFabric}>
+              Cut fabric ✂️
+            </Button>
 
             <Button
               variant="contained"
               aria-haspopup="true"
+              sx={{ backgroundColor: "rgb(157, 131, 17)", marginTop: "auto" }}
               onClick={createDropDown}
-              >
+            >
               Short List
             </Button>
             <Menu
@@ -144,7 +159,7 @@ const deleteFabric = () => {
               keepMounted
               open={Boolean(anchorEl)}
               onClose={closeMenu}
-              >
+            >
               <MenuItem onClick={closeMenu}>CLOSE LIST</MenuItem>
               {fabrics.map((fabric, i) => (
                 <MenuItem key={fabric._id} onClick={() => singleOut(i)}>
@@ -152,7 +167,39 @@ const deleteFabric = () => {
                 </MenuItem>
               ))}
             </Menu>
-              <Button onClick={handleFabricViewClick}>See All Fabrics</Button>
+            <Box textAlign="left">
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "rgb(9, 98, 28)",
+                marginTop: "fixed",
+              }}
+              onClick={handleFabricViewClick}
+              style={{
+                maxWidth: "120px",
+                maxHeight: "40px",
+                minWidth: "120px",
+                minHeight: "40px",
+                fontSize: "10px",
+              }}
+            >See All Fabrics</Button>
+            </Box>
+              <Button
+              sx={{
+                backgroundColor: "rgb(177, 129, 17)",
+                marginTop: "fixed",
+              }}
+              variant="contained"
+              onClick={handleClickOpen}>
+                Edit This Fabric
+              </Button>
+              <Dialog open={open} onClose={handleClose}>
+                <FabricForm
+                  currFabric={currFabric}
+                  getAllFabrics={getAllFabrics}
+                  handleClose={handleClose}
+                />
+              </Dialog>
             <div className="fabric-name">{currFabric.name}</div>
             <p className="fabric-description">{currFabric.description}</p>
             <div className="fabric-color">
@@ -164,42 +211,57 @@ const deleteFabric = () => {
             <div className="fabric-weave">Type: {currFabric.weave}</div>
             <div className="fabric-origin">From: {currFabric.origin}</div>
             <div className="fabric-brand">Brand: {currFabric.brand}</div>
-            <button
+            <Button
+            sx={{
+              backgroundColor: "rgb(9, 98, 28)",
+            }}
+              variant="contained"
               className="fabric-changer-back"
               onClick={() => turnStyle("back")}
-              >
+            >
               PREVIOUS FABRIC
-            </button>
+            </Button>
 
-            <button
+            <Button
+            sx={{
+              backgroundColor: "rgb(170, 145, 18)",
+            }}
+              variant="contained"
               className="fabric-changer-forward"
               onClick={() => turnStyle("forward")}
-              >
+            >
               NEXT FABRIC
-            </button>
-            <Button variant="contained" onClick={handleClickOpen}>Edit dis shyt!</Button>
-             <Dialog
-             open={open}
-             onClose={handleClose}
-             >
-            <FabricForm
-            currFabric={currFabric}
-            getAllFabrics={getAllFabrics}
-            handleClose={handleClose}
-            />
-             </Dialog>
-
+            </Button>
           </div>
         ) : (
           <div>
-            <button onClick={handleFabricViewClick}>Single Mode</button>
+            <Box textAlign="center">
+              <Button
+                variant="string"
+                sx={{
+                  backgroundColor: "rgb(157, 131, 17)",
+                  marginTop: "fixed",
+                }}
+                onClick={handleFabricViewClick}
+                style={{
+                  maxWidth: "80px",
+                  maxHeight: "35px",
+                  minWidth: "80px",
+                  minHeight: "35px",
+                  fontSize: "10px",
+                }}
+              >
+                Single Mode
+              </Button>
+            </Box>
             <h1>Your Closet</h1>
-            <img src="https://th.bing.com/th/id/OIP.Zm4Qalb34N9WbYu1Ivm6cgHaE1?w=301&h=196&c=7&r=0&o=5&dpr=1.5&pid=1.7"/>
+            <img src="https://th.bing.com/th/id/OIP.Zm4Qalb34N9WbYu1Ivm6cgHaE1?w=301&h=196&c=7&r=0&o=5&dpr=1.5&pid=1.7" />
             <Button
               variant="contained"
               aria-haspopup="true"
+              sx={{ backgroundColor: "rgb(157, 131, 17)", marginTop: "auto" }}
               onClick={createDropDown}
-              >
+            >
               Short List
             </Button>
             <Menu
@@ -208,7 +270,7 @@ const deleteFabric = () => {
               keepMounted
               open={Boolean(anchorEl)}
               onClose={closeMenu}
-              >
+            >
               <MenuItem onClick={closeMenu}>CLOSE LIST</MenuItem>
               {fabrics.map((fabric, i) => (
                 <MenuItem key={fabric._id} onClick={() => singleOut(i)}>
@@ -216,55 +278,59 @@ const deleteFabric = () => {
                 </MenuItem>
               ))}
             </Menu>
-              <h1>Fabrics</h1>
+            <h1>Fabrics</h1>
+            <Typography>
+              <em>*click a fabric section for options*</em>
+            </Typography>
             <div className="fabric-overview">
               {fabrics.map((fabric, i) => (
                 <Card
-                key={fabric._id}
-                className="fabric-overview-block" 
-                elevation={10}
-                sx={{
-                  maxWidth: 345,
-                  padding: "10px",
-                  marginRight: '10px',
-                  marginTop: '10px'
-                  }}>
+                  key={fabric._id}
+                  className="fabric-overview-block"
+                  elevation={10}
+                  sx={{
+                    maxWidth: 345,
+                    padding: "10px",
+                    marginRight: "10px",
+                    marginTop: "10px",
+                    backgroundColor: "rgb(160, 132, 72)",
+                  }}
+                >
                   <CardActionArea onClick={() => singleOut(i)}>
                     <CardMedia
-                    component="img"
-                    height="140"
-                    image={fabric.image}
-                    alt="Fabric not pictured"
+                      component="img"
+                      height="200"
+                      image={fabric.image}
+                      alt="Fabric not pictured"
                     />
                     <CardContent>
-                      <Typography variant="h5" component="div">{fabric.name}</Typography>
-                      <Typography variant="body2" sx={{color: "text.secondary"}}>
+                      <Typography variant="h5" component="div">
+                        {fabric.name}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{ color: "text.secondary" }}
+                      >
                         {fabric.description}
                       </Typography>
-                      <Typography>Color: {fabric.color}</Typography>
-                      <Typography>Inventory: {fabric.quantity}yds</Typography>
-                      <Typography>Type: {fabric.weave}</Typography>
-                      <Typography>From: {fabric.origin}</Typography>
-                      <Typography>Brand: {fabric.brand}</Typography>
+                      <Typography>
+                        <strong>Color:</strong> {fabric.color}
+                      </Typography>
+                      <Typography>
+                        <strong>Inventory:</strong> {fabric.quantity}
+                        <em>yds</em>
+                      </Typography>
+                      <Typography>
+                        <strong>Type:</strong> {fabric.weave}
+                      </Typography>
+                      <Typography>
+                        <strong>From:</strong> {fabric.origin}
+                      </Typography>
+                      <Typography>
+                        <strong>Brand:</strong> {fabric.brand}
+                      </Typography>
                     </CardContent>
                   </CardActionArea>
-                   {/* <img
-              className="fabric-image"
-              src={fabric.image}
-              onClick={() => singleOut(i)}
-              style={{ width: "300px" }}
-              />
-                  <div className="fabric-name" onClick={() => singleOut(i)}>{fabric.name}</div>
-                  <p className="fabric-description">{fabric.description}</p>
-                  <div className="fabric-color">
-                    Color: {fabric.color.join(", ")}
-                  </div>
-                  <div className="fabric-quantity">
-                    Inventory: {fabric.quantity}yds
-                  </div>
-                  <div className="fabric-weave">Type: {fabric.weave}</div>
-                  <div className="fabric-origin">From: {fabric.origin}</div>
-                  <div className="fabric-brand">Brand: {fabric.brand}</div> */}
                 </Card>
               ))}
             </div>
