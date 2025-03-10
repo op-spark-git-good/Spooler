@@ -102,9 +102,11 @@ const Posts = () => {
       const response = await axios.put(`/api/posts/${postId}/like`, {
         userId: user._id,
       });
-      setPosts(
-        posts.map((post) => (post._id === postId ? response.data : post))
-      );
+      setPosts(posts.map(post =>
+        post._id === postId
+          ? { ...post, likes: response.data.likes }
+          : post
+      ));
     } catch (err) {
       console.error("err liking post", err);
     }
