@@ -1,109 +1,63 @@
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
-// const ProjectForm = () => {
-//   // axios post request containing form data
-//   const createProject = (q) => {
-//     axios
-//       .post("/api/projects", q)
-//       .done()
-//   };
-
-//   // form submission handler
-//   const submitForm = (e) => {
-//     // prevent default form submission
-//     e.preventDefault()
-//     // capture inputs from form
-//     const formData = new FormData(e.target)
-//     // convert to a js object
-//     const newProject = Object.fromEntries(formData)
-//     // post new project to db
-//     createProject(newProject)
-//     .then((res) => {
-//       //confirm that project posted
-//       //check status code of res
-//       console.alert("New Project Created");
-//     })
-//     .catch((err) => {
-//       console.alert("Failed to create Project");
-//       console.error(err);
-//     });
-//   }
-//   // actual html for the form
-//   return(
-//     <form onSubmit={submitForm}>
-//       <label>Project Name</label>
-//       <input type="text" name="name" placeholder="Enter Project Name" />
-//     </form>
-//   )
-// }
 import React, { useState } from "react";
+import axios from "axios";
 
-const DynamicForm = ({ submitData }) => {
-  const [categories, setCategories] = useState({
-    notions: [],
-    patterns: [],
-    fabrics: [],
-    tasks: []
-  });
-  const [project, setProj] = useState({
+import CategoryForm from "./CategoryForm";
+
+const ProjectForm = () => {
+
+  const [project, setProject] = useState({
     name: '',
     description: '',
-    owner: '',
   });
+  
+  const [tasks, setTasks] = useState([]);
+  const [patterns, setPatterns] = useState([]);
+  const [fabrics, setFabrics] = useState([]);
+  const [notions, setNotions] = useState([]);
 
-  //ON SUBMIT: extend categories to proj
-
-  const handleAddField = (category) => {
-    setCategories((prevState) => ({
-      ...prevState,
-      [category]: [...prevState[category], ""], 
-    }));
+  const clearInputs = () => {
+    setProject({name: "", description: "" });
+    setTasks([]);
+    setPatterns([]);
+    setFabrics([]);
+    setNotions([]);
+  }
+  const handleInputChange = (e) => {
+    const {name, value} = e.target;
+    setProject((prev) => ({...prev, [name]: value}));
   };
-
-  const handleInputChange = (category, index, value) => {
-    setCategories((prevState) => {
-      const updatedInputs = [...prevState[category]];
-      updatedInputs[index] = value; 
-      return {
-        ...prevState,
-        [category]: updatedInputs,
-      };
-    });
-  };
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(categories); // Submit the categories with their arrays
+    const submittedProject = { ...project, tasks, patterns, fabrics, notions };
+    console.log(submittedProject);
+    try {
+      await axios.post('/api/projects/', submittedProject);
+      console.alert('Project created');
+      clearInputs();
+    } catch (err) {
+      console.alert('Failed to create Project')
+    };
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      
-      {Object.entries(categories).map(([category, inputs]) => (
-        <div key={category}>
-          <h3>{category}</h3>
-          {inputs.map((input, index) => (
-            <div key={index}>
-              <input
-                type="text"
-                value={input}
-                onChange={(e) =>
-                  handleInputChange(category, index, e.target.value)
-                }
-                placeholder={`Enter value for ${category}`}
-              />
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={() => handleAddField(category)}
-          >
-            Add Field
-          </button>
-        </div>
-      ))}
-      <button type="submit">Submit</button>
+      <div className="project-form-name">
+      <label>Project Name</label>
+      <input type="text" name="name" value={project.name} onChange={handleInputChange} required />
+      </div>
+      <div className="project-form-description">
+      <label>Description</label>
+      <input type="text" name="description" value={project.description} onChange={handleInputChange} />
+      </div>
+      <div className="project-form-categories">
+      <CategoryForm  category="tasks" items={tasks} setItems={setTasks} fields={["name", "priority"]} />
+      <CategoryForm  category="patterns" items={patterns} setItems={setPatterns} fields={["name", "description"]} />
+      <CategoryForm  category="fabrics" items={fabrics} setItems={setFabrics} fields={["name", "description", "quantity"]} />
+      <CategoryForm  category="notions" items={notions} setItems={setNotions} fields={["name", "description", "quantity"]} />
+      </div>
+      <button type="submit">Create Project</button>
     </form>
   );
 };
 
-export default DynamicForm
+export default ProjectForm

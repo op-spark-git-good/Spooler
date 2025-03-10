@@ -20,7 +20,7 @@ const projects = [
     {
     name: 'Fancy Dress',
     description: 'A very fancy dress pattern',
-    default: null
+    stashed: null
     }
   ],
   fabrics:[

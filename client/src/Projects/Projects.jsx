@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import DynamicForm from "./ProjectForm";
+import ProjectFrom from "./ProjectForm";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -22,7 +22,7 @@ const Projects = () => {
 
   const projectsHTML = projects.map((project) => {
     return (
-      <div className="project-entry" id={project._id}>
+      <div className="project-entry" key={project._id}>
         <h1>{project.name}</h1>
         <div className="description">{project.description}</div>
         <div className="fabric-list">
@@ -61,11 +61,13 @@ const Projects = () => {
     );
   });
   return (
+    <div>
     <div id="projects-body">
       {projectsHTML}
       <div id="projects-create">
-        <DynamicForm />
+      <ProjectFrom />
       </div>
+    </div>
     </div>
   );
 };
