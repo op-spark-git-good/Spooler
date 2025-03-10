@@ -7,6 +7,10 @@ import {
   Button,
   Grid2,
   Typography,
+  Card,
+  CardContent,
+  CardActionArea,
+  CardMedia,
   Box,
   Paper,
   Modal,
@@ -215,13 +219,40 @@ const deleteFabric = () => {
               <h1>Fabrics</h1>
             <div className="fabric-overview">
               {fabrics.map((fabric, i) => (
-                <div key={fabric._id} className="fabric-overview-block">
-                   <img
+                <Card
+                key={fabric._id}
+                className="fabric-overview-block" 
+                elevation={10}
+                sx={{
+                  maxWidth: 345,
+                  padding: "10px",
+                  marginRight: '10px',
+                  marginTop: '10px'
+                  }}>
+                  <CardActionArea onClick={() => singleOut(i)}>
+                    <CardMedia
+                    component="img"
+                    height="140"
+                    image={fabric.image}
+                    alt="Fabric not pictured"
+                    />
+                    <CardContent>
+                      <Typography variant="h5" component="div">{fabric.name}</Typography>
+                      <Typography variant="body2" sx={{color: "text.secondary"}}>
+                        {fabric.description}
+                      </Typography>
+                      <Typography>Color: {fabric.color}</Typography>
+                      <Typography>Inventory: {fabric.quantity}yds</Typography>
+                      <Typography>Type: {fabric.weave}</Typography>
+                      <Typography>From: {fabric.origin}</Typography>
+                      <Typography>Brand: {fabric.brand}</Typography>
+                    </CardContent>
+                  </CardActionArea>
+                   {/* <img
               className="fabric-image"
               src={fabric.image}
               onClick={() => singleOut(i)}
               style={{ width: "300px" }}
-              
               />
                   <div className="fabric-name" onClick={() => singleOut(i)}>{fabric.name}</div>
                   <p className="fabric-description">{fabric.description}</p>
@@ -233,8 +264,8 @@ const deleteFabric = () => {
                   </div>
                   <div className="fabric-weave">Type: {fabric.weave}</div>
                   <div className="fabric-origin">From: {fabric.origin}</div>
-                  <div className="fabric-brand">Brand: {fabric.brand}</div>
-                </div>
+                  <div className="fabric-brand">Brand: {fabric.brand}</div> */}
+                </Card>
               ))}
             </div>
           </div>
