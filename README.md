@@ -5,6 +5,63 @@
 
 Spooler aims to streamline organizing materials and plans for sewing projects. Spooler allows users to keep a list of all of their materials and projects that they can access from anywhere. It also allows users to connect with their fellow sewists, where they can share updates and such about their projects.
 
+## Getting Started
+### Dev Setup
+> After cloning Spooler, ensure you have the following environment set up:
+- **Node version**: 20
+- **NPM** is installed
+- **MongoDB** is installed (if you're in a windows environment, ensure that it is running as well)
+### To Start Application
+> Complete the following steps **in order** to launch the app
+1. Create a `.env` file in the root directory
+2. Obtain a `GOOGLE_CLIENT_ID` and a `GOOGLE_CLIENT_SECRET` through the Google API. Add these as variables in the `.env` file
+3. Add `MONGODB_URI = mongodb://localhost:27017/Spooler` to the `.env` file
+4. Obtain an API key from Barcode Spider and add it as `BARCODE_TOKEN`
+>The free Barcode Spider account only has 10 calls per day per user
+5. Obtain credentials from Cloudinary, and add them as `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET`
+6. Export all variables from the `.env` file
+7. Run the following in the terminal in root directory
+- `npm install`
+  > Ensure that all modules were installed successfully (warnings are ok)
+- `npm run build`
+- `npm start`
+  > This should provide a link to the webpage and confirm that you have connected to the database
+- `npm run seed`
+> Now Spooler should be running, congratulations!
+
+
+
+## Tech Stack
+### Frontend
+- **React 19** – UI framework
+- **React Router** – Client-side routing
+- **React Hook Form** – Form handling
+- **Material UI** (@mui/material, @mui/icons-material, @emotion/react, @emotion/styled) – Styling and UI components
+### Backend
+- **Express.js** – Server framework
+- **Mongoose** – MongoDB ORM
+- **Passport** (Google OAuth 2.0) – Authentication
+- **Express Session** – Session management
+- **Cors** – Cross-origin request handling
+- **Dotenv** – Environment variable management
+- **[Cloudinary](https://cloudinary.com/documentation) + [Multer](https://www.npmjs.com/package/multer)** – File/image uploads
+- **[Barcode Spider](https://devapi.barcodespider.com/documentation)** – Search by keyword
+### Database
+- **MongoDB** – NoSQL database
+- **Mongoose** – ODM for MongoDB
+### Utilities & Dev Tools:
+- **Axios** – API requests
+- **Dayjs** – Date/time handling
+- **Lodash** – Utility functions
+- **Webpack** – Bundling
+- **Babel** – JavaScript compiler (React/ES6+)
+- **ESLint** (Airbnb rules) – Linting
+- **Nodemon** – Development server auto-reload
+- **Rimraf** – File deletion utility
+### APIs & External Services
+- Google Passport – Image recognition
+- **[Cloudinary](https://cloudinary.com/documentation)** – Cloud-based media storage
+- **[Barcode Spider](https://devapi.barcodespider.com/documentation)** – Search by keyword
 
 ## Client Side
 - **Nav Bar** - Users traverse the site using the Nav Bar. 
@@ -65,43 +122,3 @@ Spooler aims to streamline organizing materials and plans for sewing projects. S
  - **description** a description of the project, defaults to
  - **Categories** (tasks, patterns, notions, fabrics) all are arrays, and most of them can optionally refer to a corresponding document in another model
 #### **Users** 
-
-
-### Authentication  
-
-### Request Handling
-
-
-## Tech Stack
-### Frontend
-- **React 19** – UI framework
-- **React Router** – Client-side routing
-- **React Hook Form** – Form handling
-- **Material UI** (@mui/material, @mui/icons-material, @emotion/react, @emotion/styled) – Styling and UI components
-### Backend
-- **Express.js** – Server framework
-- **Mongoose** – MongoDB ORM
-- **Passport** (Google OAuth 2.0) – Authentication
-- **Express Session** – Session management
-- **Cors** – Cross-origin request handling
-- **Dotenv** – Environment variable management
-- **[Cloudinary](https://cloudinary.com/documentation) + [Multer](https://www.npmjs.com/package/multer)** – File/image uploads
-- **[Barcode Spider](https://devapi.barcodespider.com/documentation)** – Search by keyword
-### Database
-- **MongoDB** – NoSQL database
-- **Mongoose** – ODM for MongoDB
-### Utilities & Dev Tools:
-- **Axios** – API requests
-- **Dayjs** – Date/time handling
-- **Lodash** – Utility functions
-- **Webpack** – Bundling
-- **Babel** – JavaScript compiler (React/ES6+)
-- **ESLint** (Airbnb rules) – Linting
-- **Nodemon** – Development server auto-reload
-- **Rimraf** – File deletion utility
-### APIs & External Services
-- Google Passport – Image recognition
-- **[Cloudinary](https://cloudinary.com/documentation)** – Cloud-based media storage
-- **[Barcode Spider](https://devapi.barcodespider.com/documentation)** – Search by keyword
-
-
