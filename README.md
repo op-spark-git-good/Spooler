@@ -122,3 +122,11 @@ Spooler aims to streamline organizing materials and plans for sewing projects. S
  - **description** a description of the project, defaults to
  - **Categories** (tasks, patterns, notions, fabrics) all are arrays, and most of them can optionally refer to a corresponding document in another model
 #### **Users** 
+>The User model represents users in the Spooler application. It stores authentication details and profile information, allowing users to log in, manage their account, and interact with stored sewing materials, patterns, and projects.
+- **username** (String, optional) – The display name of the user.
+- **googleId** (String, optional) – Unique identifier for users who authenticate via Google OAuth.
+- **email** (String, optional) – User's email address.
+- **password** (String, optional) – Hashed password for authentication (if not using Google OAuth).
+- **profilePicture** (String, optional) – URL for the user's profile picture.
+- **createdAt** (Date, default: Date.now()) – Timestamp indicating when the account was created.
+>This model supports both traditional email/password authentication and Google OAuth, providing flexibility in user sign-up and login.
