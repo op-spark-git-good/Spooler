@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Button, Container, Grid2, TextField, Typography, Box } from '@mui/material';
-const SearchApi = ({ getAllNotionsDB }) => {
+import { Button, Container, Grid2, TextField, Typography, Box, Card, CardContent, CardMedia } from '@mui/material';
+const SearchApi = () => {
   const [keyword, setSearchKeyword] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -75,15 +75,27 @@ const SearchApi = ({ getAllNotionsDB }) => {
         <TextField
           label="Enter search term"
           variant="outlined"
+          required
+          id='required'
           value={keyword}
           onChange={(e) => setSearchKeyword(e.target.value)}
-          sx={{ width: '100%', maxWidth: 400, mb: 2 }}
+          sx={{
+            width: '100%',
+            maxWidth: 400,
+            mb: 2,
+            '& label.Mui-focused': { color: "rgb(31,101,66)" }, // Label color when focused
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': { borderColor: "rgb(31,101,66)" }, // Default outline color
+              '&:hover fieldset': { borderColor: "rgb(25,80,53)" }, // Darker green on hover
+              '&.Mui-focused fieldset': { borderColor: "rgb(31,101,66)" }, // Outline color when focused
+            },
+          }}
         />
         <Button
           variant="contained"
-          color="primary"
           onClick={handleSearch}
           disabled={loading}
+          sx={{ backgroundColor: "rgb(31,101,66)" }}
         >
           {loading ? 'Searching...' : 'Search'}
         </Button>
@@ -93,38 +105,51 @@ const SearchApi = ({ getAllNotionsDB }) => {
       {error && <Typography color="error">{error}</Typography>}
 
       {/* Search Results */}
+
       <Box mt={4}>
         {results.length > 0 ? (
-          <ul style={{ textAlign: 'center' }}>
+          <Grid2 container spacing={2} justifyContent="center">
             {results.map((notion) => (
-              <li key={notion.item_attributes.upc} style={{ marginBottom: '20px' }}>
-                <Typography variant="h6">{notion.item_attributes.title}</Typography>
-                <Typography>Brand: {notion.item_attributes.brand}</Typography>
-                <Typography>Color: {notion.item_attributes.color}</Typography>
-                <img
-                  src={notion.item_attributes.image}
-                  alt={notion.item_attributes.title}
-                  style={{ width: '100px', height: 'auto', marginTop: '10px' }}
-                />
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  sx={{ mt: 1 }}
-                  onClick={() =>
-                    handleAttributes(
-                      notion.item_attributes.title,
-                      notion.item_attributes.image,
-                      notion.item_attributes.color,
-                      notion.item_attributes.brand,
-                      notion.item_attributes.upc
-                    )
-                  }
-                >
-                  Edit Information
-                </Button>
-              </li>
+              <Grid2 item xs={12} sm={6} md={4} key={notion.item_attributes.upc}>
+                <Card sx={{ borderRadius: 4, elevation: 16, boxShadow: 16 }}>
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={notion.item_attributes.image}
+                    alt={notion.item_attributes.title}
+                    sx={{ objectFit: 'contain', p: 2 }}
+                  />
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                      {notion.item_attributes.title}
+                    </Typography>
+                    <Typography>Brand: {notion.item_attributes.brand}</Typography>
+                    <Typography>Color: {notion.item_attributes.color}</Typography>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        mt: 2,
+                        backgroundColor: 'rgb(31,101,66)',
+                        color: 'rgb(229,229,234)',
+                        '&:hover': { backgroundColor: 'rgb(25,80,53)' },
+                      }}
+                      onClick={() =>
+                        handleAttributes(
+                          notion.item_attributes.title,
+                          notion.item_attributes.image,
+                          notion.item_attributes.color,
+                          notion.item_attributes.brand,
+                          notion.item_attributes.upc
+                        )
+                      }
+                    >
+                      Edit Information
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid2>
             ))}
-          </ul>
+          </Grid2>
         ) : (
           <Typography align="center">No results found.</Typography>
         )}

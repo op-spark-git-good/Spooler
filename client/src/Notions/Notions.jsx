@@ -30,7 +30,7 @@ const Notions = (props) => {
 
   return (
     <Container maxWidth="lg" sx={{ marginTop: 4 }}>
-      <Typography variant="h4" align='center' color='rgb(31, 101, 66)' gutterBottom>Notion Stash</Typography>
+      <Typography variant="h3" align='center' color='rgb(31, 101, 66)' gutterBottom>Thread Stash</Typography>
 
       <Box mb={2}>
         <Button
@@ -58,7 +58,7 @@ const Notions = (props) => {
         <Grid2 container spacing={3}>
           {notions.map((notion) => (
             <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={notion._id}>
-              <Paper elevation={16} >
+              <Paper elevation={16} sx={{ borderRadius: 2 }}>
                 <Notion
                   title={notion.title}
                   brand={notion.brand}
