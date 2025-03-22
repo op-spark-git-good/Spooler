@@ -12,7 +12,7 @@ Spooler aims to streamline organizing materials and plans for sewing projects. S
 - **NPM** is installed
 - **MongoDB** is installed (if you're in a windows environment, ensure that it is running as well)
 ### To Start Application
-> Complete the following steps **in order** to launch the app
+> Complete the following steps **in order** after pulling the repo to launch the app
 1. Create a `.env` file in the root directory
 2. Obtain a `GOOGLE_CLIENT_ID` and a `GOOGLE_CLIENT_SECRET` through the Google API. Add these as variables in the `.env` file
 3. Add `MONGODB_URI = mongodb://localhost:27017/Spooler` to the `.env` file
@@ -68,6 +68,7 @@ Spooler aims to streamline organizing materials and plans for sewing projects. S
 - **Home** - A page that redirects Users to sign in using their Google accounts. If a User attempts to access any other portion of the site without first signing in, they should be redirected to here
 - **Stashes** - Users are able to see all of their supplies in one convenient location. They are able to update these stashes to reflect changes in their real life stashes. Users will be able to avoid accidentally buy thing they already have thanks to these handy lists!
 - **Patterns** - When Users add a new Pattern to their stash, they must fill out the whole form and upload an image of the Pattern.
+- **Fabrics** - Users can see their entered fabrics in an overview or singleton view, and can update information about these fabrics as changes occur. Great for keeping a tidy closet
 - **Notions** - When Users add thread to their stash, they make a search and get a list of results of the brand/color they searched. They then can choose and entry from the list and add additional details before finally adding it to their stash.
 - **Projects** - Users may create Projects, which will keep track of tasks and materials required for their sewing projects. As they work on the Project, they can update the tasks and materials to reflect their progress.
 - **Community** - Users can create Posts about their projects and see and interact with other Users. They also can like other Users' Posts, as well as edit or delete their own Posts. When a User add to their stashes, a description of the addition will be added to their feed.
@@ -130,3 +131,15 @@ Spooler aims to streamline organizing materials and plans for sewing projects. S
 - **profilePicture** (String, optional) – URL for the user's profile picture.
 - **createdAt** (Date, default: Date.now()) – Timestamp indicating when the account was created.
 >This model supports both traditional email/password authentication and Google OAuth, providing flexibility in user sign-up and login.
+
+# **Known Bugs**
+- **Login** Cannot log in due to uri mismatch in deployed product (remedy: should be fine if you set up your own google account for authorization)
+- **projects** is currently non-functional
+- **fabrics** form doesn't dirty (doesn't read as if there is info inside of it) when populated in edit mode
+
+# Contributors
+- [@KatherineHebbler](https://github.com/khebbler)
+- [@StefanPoole](https://github.com/steviepee)
+- [@DanielleGoldberg](https://github.com/mydogditto)
+- [@KhamalChaney](https://github.com/khamal22)
+- [@JosephFurman](https://github.com/joespaf)
