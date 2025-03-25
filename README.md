@@ -64,7 +64,7 @@ Spooler aims to streamline organizing materials and plans for sewing projects. S
 - **[Barcode Spider](https://devapi.barcodespider.com/documentation)** – Search by keyword
 
 ## Client Side
-- **Nav Bar** - Users traverse the site using the Nav Bar. 
+- **Nav Bar** - Users traverse the site using the Nav Bar, easing movement from one page to another.
 - **Home** - A page that redirects Users to sign in using their Google accounts. If a User attempts to access any other portion of the site without first signing in, they should be redirected to here
 - **Stashes** - Users are able to see all of their supplies in one convenient location. They are able to update these stashes to reflect changes in their real life stashes. Users will be able to avoid accidentally buy thing they already have thanks to these handy lists!
 - **Patterns** - When Users add a new Pattern to their stash, they must fill out the whole form and upload an image of the Pattern.
@@ -79,20 +79,29 @@ Spooler aims to streamline organizing materials and plans for sewing projects. S
 #### **Fabrics** 
 >The fabrics feature is geared towards simplicity for the user displaying prominent buttons to easily switch between an overview of all your fabrics, or just one at a time for special attention. The information held by the database as fabrics is concerned is:
 1. The name of the fabric
-2. A link to its image
+2. A URL to its image
 3. A detailed(or brief) description of the fabric
 4. A number representing how many yards of fabric you have
-5. The primary colors in the fabric
-6. The weave/type that composes it
-7. The brand(if you know it)
-8. Where you acquired the fabric(if you remember)
+5. The main colors in the fabric
+6. The weave/type that composes the fabric
+7. The brand(this one is optional)
+8. Where you acquired the fabric(also optional)
 9. Care instructions
 10. Any additional notes you might have about the experience of using that fabric, etc..
->The view-change feature is meant to simulate zooming in to a particular fabric in you vast closet of things. As such, the editing options are only available when in singular mode. No worries there, though, since a simple click on any picture or title will take you straight to their singular view. Not to mention a short list that holds the names of all your fabrics with the same convenience as the clickable titles in the scroll-down menu.
-#### **Notions** 
-> The notions model is designed with thread in mind. It has all the significant aspects of the Barcode Spider, upc, title, color, image, and brand. I also added additional items specific to major thread companies and what we wanted to do with the app. colorNum,  quantity, and length are meant to come in yards.
+>The view-change feature is meant to simulate zooming in to a particular fabric in your vast closet of things. As such, the editing options are only available when in singular mode. No worries there, though, since a simple click on any picture or title will take you straight to their singular view. Not to mention a short list that holds the names of all your fabrics with the same convenience as the clickable titles in the scroll-down menu.
+#### **Notions**
+> The notions model is designed with thread in mind. It holds these significant aspects:
+ - **upc** The barcode upc for use with the barcode API.
+ - **title** The name of the notion.
+ - **color** The color (the current incarnation of this model presumes thread is the notion entered).
+ - **image** An image of the notion.
+ - **brand** self-explanatory.
+ - **colorNum** the number in the thread's color description found on the spool.
+ - **quantity** the amount in your possession.
+ - **length**
+quantity, and length are meant to be measured in yards.
 
-#### **Patterns** 
+#### **Patterns**
 >The Pattern model represents a sewing pattern in the Spooler application. It stores essential details about sewing patterns, including fabric type, required notions, size, difficulty level, and designer information. This allows users to organize their pattern collection efficiently.
  - **name** (String, required, default: "unknown") – The name of the pattern.
 - **ownerId** (ObjectId, references Users) – The user who owns the pattern.
@@ -134,6 +143,7 @@ Spooler aims to streamline organizing materials and plans for sewing projects. S
 
 # **Known Bugs**
 - **Login** Cannot log in due to uri mismatch in deployed product (remedy: should be fine if you set up your own google account for authorization)
+**Authorization** endpoints are not currently protected. There's a commented-out piece of code at the bottom of the server index that will re-instate protections, but those protections are not extended to traversal via the nav bar. Making that change will cause an unauthorized screen to show if the user goes to a page via the navbar, then code is changed, then the page is refreshed.
 - **projects** is currently non-functional
 - **fabrics** form doesn't dirty (doesn't read as if there is info inside of it) when populated in edit mode
 
