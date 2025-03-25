@@ -33,33 +33,33 @@ Spooler aims to streamline organizing materials and plans for sewing projects. S
 
 ## Tech Stack
 ### Frontend
-- **React 19** – UI framework
-- **React Router** – Client-side routing
-- **React Hook Form** – Form handling
-- **Material UI** (@mui/material, @mui/icons-material, @emotion/react, @emotion/styled) – Styling and UI components
+- **[React 19](https://react.dev/blog/2024/04/25/react-19-upgrade-guide)** – UI framework
+- **[React Router](https://reactrouter.com/home)** – Client-side routing
+- **[React Hook Form](https://www.react-hook-form.com/api/)** – Form handling
+- **[Material UI](https://mui.com/material-ui/getting-started/)** (@mui/material, @mui/icons-material, @emotion/react, @emotion/styled) – Styling and UI components
 ### Backend
-- **Express.js** – Server framework
-- **Mongoose** – MongoDB ORM
-- **Passport** (Google OAuth 2.0) – Authentication
-- **Express Session** – Session management
-- **Cors** – Cross-origin request handling
-- **Dotenv** – Environment variable management
+- **[Express.js](https://expressjs.com/)** – Server framework
+- **[Mongoose](https://mongoosejs.com/docs/)** – MongoDB ORM
+- **[Passport](https://www.passportjs.org/docs/)** (Google OAuth 2.0) – Authentication
+- **[Express Session]()** – Session management
+- **[Cors](https://www.npmjs.com/package/cors)** – Cross-origin request handling
+- **[Dotenv](https://www.npmjs.com/package/dotenv)** – Environment variable management
 - **[Cloudinary](https://cloudinary.com/documentation) + [Multer](https://www.npmjs.com/package/multer)** – File/image uploads
 - **[Barcode Spider](https://devapi.barcodespider.com/documentation)** – Search by keyword
 ### Database
-- **MongoDB** – NoSQL database
-- **Mongoose** – ODM for MongoDB
+- **[MongoDB](https://www.mongodb.com/docs/)** – NoSQL database
+- **[Mongoose](https://mongoosejs.com/docs/)** – ODM for MongoDB
 ### Utilities & Dev Tools:
-- **Axios** – API requests
-- **Dayjs** – Date/time handling
-- **Lodash** – Utility functions
-- **Webpack** – Bundling
-- **Babel** – JavaScript compiler (React/ES6+)
-- **ESLint** (Airbnb rules) – Linting
-- **Nodemon** – Development server auto-reload
-- **Rimraf** – File deletion utility
+- **[Axios](https://axios-http.com/docs/intro)** – API requests
+- **[Dayjs](https://day.js.org/docs/en/installation/installation)** – Date/time handling
+- **[Lodash](https://lodash.com/docs/)** – Utility functions
+- **[Webpack](https://webpack.js.org/concepts/)** – Bundling
+- **[Babel](https://babeljs.io/docs/)** – JavaScript compiler (React/ES6+)
+- **[ESLint](https://eslint.org/docs/latest/)** (Airbnb rules) – Linting
+- **[Nodemon](https://www.npmjs.com/package/nodemon)** – Development server auto-reload
+- **[Rimraf](https://www.npmjs.com/package/rimraf)** – File deletion utility
 ### APIs & External Services
-- Google Passport – Image recognition
+- **[Google Passport](https://www.passportjs.org/concepts/authentication/google/)** – Image recognition
 - **[Cloudinary](https://cloudinary.com/documentation)** – Cloud-based media storage
 - **[Barcode Spider](https://devapi.barcodespider.com/documentation)** – Search by keyword
 
